@@ -2,10 +2,10 @@
 #include "Application.h"
 #include "p2Log.h"
 #include "FileSystem.h"
-#include "PhysFS/include/physfs.h"
-#include "SDL/include/SDL.h"
+#include "Engine/PhysFS/include/physfs.h"
+#include "Engine/SDL/include/SDL.h"6
 
-#pragma comment( lib, "PhysFS/libx86/physfs.lib" )
+#pragma comment( lib, "Engine/PhysFS/libx86/physfs.lib" )
 
 j1FileSystem::j1FileSystem(const char* game_path) : Module()
 {

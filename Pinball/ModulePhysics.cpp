@@ -7,9 +7,9 @@
 #include "math.h"
 
 #ifdef _DEBUG
-#pragma comment( lib, "Box2D/libx86/Debug/Box2D.lib" )
+#pragma comment( lib, "Engine/Box2D/libx86/Debug/Box2D.lib" )
 #else
-#pragma comment( lib, "Box2D/libx86/Release/Box2D.lib" )
+#pragma comment( lib, "Engine/Box2D/libx86/Release/Box2D.lib" )
 #endif
 
 ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -31,11 +31,9 @@ bool ModulePhysics::Start()
 	world = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
 	world->SetContactListener(this);
 
-	// needed to create joints like mouse joint
 	b2BodyDef bd;
 	ground = world->CreateBody(&bd);
 
-	// big static circle as "ground" in the middle of the screen
 	
 	return true;
 }
@@ -181,8 +179,6 @@ update_status ModulePhysics::PostUpdate()
 	bool body_clicked = false;
 	b2Body* click_body = nullptr;
 
-	// Bonus code: this will iterate all objects in the world and draw the circles
-	// You need to provide your own macro to translate meters to pixels
 	for(b2Body* b = world->GetBodyList(); b; b = b->GetNext())
 	{
 		for(b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
@@ -251,8 +247,6 @@ update_status ModulePhysics::PostUpdate()
 				break;
 			}
 
-			// TODO 1: If mouse button 1 is pressed ...
-			// test if the current body contains mouse position
 			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 			{
 
@@ -266,10 +260,6 @@ update_status ModulePhysics::PostUpdate()
 		}
 	}
 
-	// If a body was selected we will attach a mouse joint to it
-	// so we can pull it around
-	// TODO 2: If a body was selected, create a mouse joint
-	// using mouse_joint class property
 	b2MouseJointDef def;
 
 	if (body_clicked)
@@ -289,11 +279,6 @@ update_status ModulePhysics::PostUpdate()
 		mouse_joint->SetTarget({ PIXEL_TO_METERS(App->input->GetMouseX()), PIXEL_TO_METERS(App->input->GetMouseY()) });
 		App->renderer->DrawLine((App->input->GetMouseX()), (App->input->GetMouseY()), METERS_TO_PIXELS(mouse_joint->GetAnchorB().x), METERS_TO_PIXELS(mouse_joint->GetAnchorB().y), 255, 0, 0);
 	}
-	
-	// TODO 3: If the player keeps pressing the mouse button, update
-	// target position and draw a red line between both anchor points
-
-	// TODO 4: If the player releases the mouse button, destroy the joint
 
 	if (mouse_joint && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
 	{
@@ -310,7 +295,6 @@ bool ModulePhysics::CleanUp()
 {
 	LOG("Destroying physics world");
 
-	// Delete the whole physics world!
 	delete world;
 
 	return true;
@@ -361,7 +345,6 @@ int PhysBody::RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& no
 	{
 		if(fixture->GetShape()->RayCast(&output, input, body->GetTransform(), 0) == true)
 		{
-			// do we want the normal ?
 
 			float fx = x2 - x1;
 			float fy = y2 - y1;

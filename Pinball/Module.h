@@ -2,7 +2,7 @@
 
 #include "Globals.h"
 #include "p2String.h"
-#include "PugiXml\src\pugixml.hpp"
+#include "Engine/PugiXml\src\pugixml.hpp"
 
 class Application;
 class PhysBody;

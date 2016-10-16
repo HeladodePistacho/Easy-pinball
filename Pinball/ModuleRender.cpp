@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
+#include "ModuleInput.h"
 #include <math.h>
 
 ModuleRender::ModuleRender(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -50,9 +51,11 @@ update_status ModuleRender::PreUpdate()
 // Update: debug camera
 update_status ModuleRender::Update()
 {
+	
 	/*
 	int speed = 3;
 
+	
 	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		App->renderer->camera.y += speed;
 
@@ -66,6 +69,7 @@ update_status ModuleRender::Update()
 		App->renderer->camera.x -= speed;
 	*/
 	return UPDATE_CONTINUE;
+	
 }
 
 // PostUpdate present buffer to screen

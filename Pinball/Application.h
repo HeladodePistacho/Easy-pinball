@@ -4,7 +4,7 @@
 #include "p2List.h"
 #include "Globals.h"
 #include "Module.h"
-#include "PugiXml\src\pugixml.hpp"
+#include "Engine/PugiXml\src\pugixml.hpp"
 
 class Module;
 class ModuleRender;
@@ -74,9 +74,6 @@ public:
 
 	uint				frames;
 	float				dt;
-	// TODO 2: Create two new variables from pugui namespace:
-	// a xml_document to store the while config file and
-	// a xml_node to read specific branches of the xml
 
 	pugi::xml_document general_config;
 	pugi::xml_node module_config;

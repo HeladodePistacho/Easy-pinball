@@ -1,7 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
-#include "Box2D/Box2D/Box2D.h"
+#include "Engine/Box2D/Box2D/Box2D.h"
 
 #define GRAVITY_X 0.0f
 #define GRAVITY_Y -7.0f
@@ -31,7 +31,7 @@ public:
 };
 
 // Module --------------------------------------
-class ModulePhysics : public Module, public b2ContactListener // TODO
+class ModulePhysics : public Module, public b2ContactListener
 {
 public:
 	ModulePhysics(Application* app, bool start_enabled = true);

@@ -1,10 +1,10 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleAudio.h"
-#include "SDL\include\SDL.h"
-#include "SDL_mixer\include\SDL_mixer.h"
+#include "Engine/SDL\include\SDL.h"
+#include "Engine/SDL_mixer\include\SDL_mixer.h"
 
-#pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
+#pragma comment( lib, "Engine/SDL_mixer/libx86/SDL2_mixer.lib" )
 
 ModuleAudio::ModuleAudio(Application* app, bool start_enabled) : Module(app, start_enabled), music(NULL)
 {}
