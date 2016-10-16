@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Globals.h"
+#include "p2String.h"
+#include "PugiXml\src\pugixml.hpp"
 
 class Application;
 class PhysBody;
@@ -15,6 +17,10 @@ public:
 
 	Module(Application* parent, bool start_enabled = true) : App(parent), enabled(start_enabled)
 	{}
+
+	Module() : active(false)
+	{}
+
 
 	virtual ~Module()
 	{}
@@ -75,4 +81,10 @@ public:
 	virtual void OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	{
 	}
+
+public:
+
+	p2SString	name;
+	bool		active;
+
 };

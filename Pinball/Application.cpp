@@ -130,3 +130,28 @@ void Application::AddModule(Module* mod)
 {
 	list_modules.add(mod);
 }
+
+int Application::GetArgc() const
+{
+	return argc;
+}
+
+// ---------------------------------------
+const char* Application::GetArgv(int index) const
+{
+	if (index < argc)
+		return args[index];
+	else
+		return NULL;
+}
+
+const char* Application::GetTitle() const
+{
+	return title.GetString();
+}
+
+// ---------------------------------------
+const char* Application::GetOrganization() const
+{
+	return organization.GetString();
+}

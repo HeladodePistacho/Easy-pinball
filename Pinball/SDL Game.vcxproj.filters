@@ -9,8 +9,11 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Header Files\Containers">
+    <Filter Include="Containers">
       <UniqueIdentifier>{97c4111e-b102-4ba8-9053-6f07ccbbe3d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pugi_XML">
+      <UniqueIdentifier>{03ade788-0248-4776-8d81-e5e36f3ca403}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -36,10 +39,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="p2Point.h">
-      <Filter>Header Files\Containers</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="p2DynArray.h">
-      <Filter>Header Files\Containers</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="ModulePlayer.h">
       <Filter>Header Files</Filter>
@@ -51,10 +54,25 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="p2List.h">
-      <Filter>Header Files\Containers</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="ModulePhysics.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="p2Defs.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="p2String.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="pugiconfig.hpp">
+      <Filter>Pugi_XML</Filter>
+    </ClInclude>
+    <ClInclude Include="pugixml.hpp">
+      <Filter>Pugi_XML</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -62,9 +80,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ModuleWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
@@ -90,6 +105,15 @@
     </ClCompile>
     <ClCompile Include="ModulePhysics.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FileSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="p2Log.cpp">
+      <Filter>Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="pugixml.cpp">
+      <Filter>Pugi_XML</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
