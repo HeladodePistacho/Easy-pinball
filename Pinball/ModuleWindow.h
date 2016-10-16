@@ -15,6 +15,7 @@ public:
 	// Destructor
 	virtual ~ModuleWindow();
 
+	bool Awake(pugi::xml_node&);
 	bool Init();
 	bool CleanUp();
 
@@ -26,6 +27,12 @@ public:
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface;
+
+private:
+	p2SString	title;
+	uint		width;
+	uint		height;
+	uint		scale;
 };
 
 #endif // __ModuleWindow_H__

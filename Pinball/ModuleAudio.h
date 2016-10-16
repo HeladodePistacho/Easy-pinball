@@ -13,6 +13,7 @@ public:
 	ModuleAudio(Application* app, bool start_enabled = true);
 	~ModuleAudio();
 
+	bool Awake(pugi::xml_node&);
 	bool Init();
 	bool CleanUp();
 

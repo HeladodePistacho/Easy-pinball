@@ -7,14 +7,14 @@ struct SDL_RWops;
 
 int close_sdl_rwops(SDL_RWops *rw);
 
-class j1FileSystem : public Module
+class FileSystem : public Module
 {
 public:
 
-	j1FileSystem(const char* game_path);
+	FileSystem(Application* app, bool start_enabled = true);
 
 	// Destructor
-	virtual ~j1FileSystem();
+	virtual ~FileSystem();
 
 	// Called before render is available
 	bool Awake(pugi::xml_node&);

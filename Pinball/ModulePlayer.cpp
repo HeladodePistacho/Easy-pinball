@@ -4,10 +4,18 @@
 
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	name.create("player");
 }
 
 ModulePlayer::~ModulePlayer()
 {}
+
+bool ModulePlayer::Awake(pugi::xml_node& config) {
+
+
+
+	return true;
+}
 
 // Load assets
 bool ModulePlayer::Start()

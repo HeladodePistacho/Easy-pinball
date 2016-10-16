@@ -9,12 +9,28 @@ ModuleInput::ModuleInput(Application* app, bool start_enabled) : Module(app, sta
 	keyboard = new KEY_STATE[MAX_KEYS];
 	memset(keyboard, KEY_IDLE, sizeof(KEY_STATE) * MAX_KEYS);
 	memset(mouse_buttons, KEY_IDLE, sizeof(KEY_STATE) * MAX_MOUSE_BUTTONS);
+	name.create("input");
 }
 
 // Destructor
 ModuleInput::~ModuleInput()
 {
 	delete[] keyboard;
+}
+
+bool ModuleInput::Awake(pugi::xml_node& config)
+{
+	LOG("Init SDL input event system");
+	bool ret = true;
+	SDL_Init(0);
+
+	if (SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
+	{
+		LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
+		ret = false;
+	}
+
+	return ret;
 }
 
 // Called before render is available

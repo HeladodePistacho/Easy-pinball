@@ -8,11 +8,29 @@
 
 ModuleTextures::ModuleTextures(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	name.create("textures");
 }
 
 // Destructor
 ModuleTextures::~ModuleTextures()
 {}
+
+bool ModuleTextures::Awake(pugi::xml_node& config)
+{
+	LOG("Init Image library");
+	bool ret = true;
+	// load support for the PNG image format
+	int flags = IMG_INIT_PNG;
+	int init = IMG_Init(flags);
+
+	if ((init & flags) != flags)
+	{
+		LOG("Could not initialize Image lib. IMG_Init: %s", IMG_GetError());
+		ret = false;
+	}
+
+	return ret;
+}
 
 // Called before render is available
 bool ModuleTextures::Init()

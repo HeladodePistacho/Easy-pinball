@@ -9,6 +9,7 @@ public:
 	ModulePlayer(Application* app, bool start_enabled = true);
 	virtual ~ModulePlayer();
 
+	bool Awake(pugi::xml_node&);
 	bool Start();
 	update_status Update();
 	bool CleanUp();

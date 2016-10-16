@@ -9,13 +9,15 @@
 enum main_states
 {
 	MAIN_CREATION,
+	MAIN_AWAKE,
 	MAIN_START,
 	MAIN_UPDATE,
 	MAIN_FINISH,
-	MAIN_EXIT
+	MAIN_EXIT,
+	FAIL
 };
 
-int main(int argc, char ** argv)
+int main(int argc, char ** args)
 {
 	LOG("Starting game '%s'...", TITLE);
 
@@ -31,7 +33,20 @@ int main(int argc, char ** argv)
 
 			LOG("-------------- Application Creation --------------");
 			App = new Application();
-			state = MAIN_START;
+			state = MAIN_AWAKE;
+			break;
+
+			// Awake all modules -----------------------------------------------
+		case MAIN_AWAKE:
+			LOG("AWAKE PHASE ===============================");
+			if (App->Awake() == true)
+				state = MAIN_START;
+			else
+			{
+				LOG("ERROR: Awake failed");
+				state = FAIL;
+			}
+
 			break;
 
 		case MAIN_START:
@@ -77,6 +92,13 @@ int main(int argc, char ** argv)
 
 			state = MAIN_EXIT;
 
+			break;
+
+			// Exit with errors and shame ---------------------------------------
+		case FAIL:
+			LOG("Exiting with errors :(");
+			main_return = EXIT_FAILURE;
+			state = MAIN_EXIT;
 			break;
 
 		}

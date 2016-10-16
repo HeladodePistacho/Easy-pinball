@@ -12,6 +12,7 @@ public:
 	ModuleSceneIntro(Application* app, bool start_enabled = true);
 	~ModuleSceneIntro();
 
+	bool Awake(pugi::xml_node&);
 	bool Start();
 	update_status Update();
 	bool CleanUp();

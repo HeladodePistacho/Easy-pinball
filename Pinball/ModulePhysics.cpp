@@ -17,11 +17,18 @@ ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app,
 	world = NULL;
 	mouse_joint = NULL;
 	debug = true;
+	name.create("physics");
 }
 
 // Destructor
 ModulePhysics::~ModulePhysics()
 {
+}
+
+bool ModulePhysics::Awake(pugi::xml_node& config) {
+
+
+	return true;
 }
 
 bool ModulePhysics::Start()

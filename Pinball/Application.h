@@ -15,7 +15,7 @@ class ModuleAudio;
 class ModulePlayer;
 class ModuleSceneIntro;
 class ModulePhysics;
-class ModuleFileSystem;
+class FileSystem;
 
 class Application
 {
@@ -28,7 +28,7 @@ public:
 	ModulePlayer* player;
 	ModuleSceneIntro* scene_intro;
 	ModulePhysics* physics;
-	ModuleFileSystem* file_system;
+	FileSystem* file_system;
 
 private:
 
@@ -53,23 +53,6 @@ public:
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
 
-private:
-
-	// Call modules before each loop iteration
-	void PrepareUpdate();
-
-	// Call modules before each loop iteration
-	void FinishUpdate();
-
-	// Call modules before each loop iteration
-	bool PreUpdate();
-
-	// Call modules on each loop iteration
-	bool DoUpdate();
-
-	// Call modules after each loop iteration
-	bool PostUpdate();
-
 public:
 
 	uint				frames;
@@ -81,6 +64,10 @@ public:
 
 private:
 
+	// Load config file
+	pugi::xml_node LoadConfig(pugi::xml_document&) const;
+
+
 	p2List<Module*>	modules;
 	int					argc;
 	char**				args;
@@ -90,7 +77,5 @@ private:
 
 
 };
-
-extern Application* App;
 
 #endif

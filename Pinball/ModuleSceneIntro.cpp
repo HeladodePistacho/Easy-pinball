@@ -12,10 +12,20 @@ ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Modul
 	circle = box = rick = NULL;
 	ray_on = false;
 	sensed = false;
+	name.create("scene");
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
 {}
+
+bool ModuleSceneIntro::Awake(pugi::xml_node& config)
+{
+	LOG("Loading Scene");
+
+	bool ret = true;
+	
+	return ret;
+}
 
 // Load assets
 bool ModuleSceneIntro::Start()

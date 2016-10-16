@@ -10,6 +10,7 @@ public:
 	ModuleRender(Application* app, bool start_enabled = true);
 	~ModuleRender();
 
+	bool Awake(pugi::xml_node&);
 	bool Init();
 	update_status PreUpdate();
 	update_status Update();

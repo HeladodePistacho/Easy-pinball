@@ -37,6 +37,7 @@ public:
 	ModulePhysics(Application* app, bool start_enabled = true);
 	~ModulePhysics();
 
+	bool Awake(pugi::xml_node&);
 	bool Start();
 	update_status PreUpdate();
 	update_status PostUpdate();

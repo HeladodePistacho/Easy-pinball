@@ -11,11 +11,43 @@ ModuleRender::ModuleRender(Application* app, bool start_enabled) : Module(app, s
 	camera.x = camera.y = 0;
 	camera.w = SCREEN_WIDTH;
 	camera.h = SCREEN_HEIGHT;
+	name.create("render");
 }
 
 // Destructor
 ModuleRender::~ModuleRender()
 {}
+
+bool ModuleRender::Awake(pugi::xml_node& config)
+{
+	LOG("Create SDL rendering context");
+	bool ret = true;
+	// load flags
+	Uint32 flags = SDL_RENDERER_ACCELERATED;
+
+	if (config.child("vsync").attribute("value").as_bool() == true)
+	{
+		flags |= SDL_RENDERER_PRESENTVSYNC;
+		LOG("Using vsync");
+	}
+
+	renderer = SDL_CreateRenderer(App->window->window, -1, flags);
+
+	if (renderer == NULL)
+	{
+		LOG("Could not create the renderer! SDL_Error: %s\n", SDL_GetError());
+		ret = false;
+	}
+	else
+	{
+		camera.w = App->window->screen_surface->w;
+		camera.h = App->window->screen_surface->h;
+		camera.x = 0;
+		camera.y = 0;
+	}
+
+	return ret;
+}
 
 // Called before render is available
 bool ModuleRender::Init()

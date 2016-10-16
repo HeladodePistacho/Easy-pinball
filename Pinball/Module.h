@@ -48,6 +48,11 @@ public:
 		}
 	}
 
+	virtual bool Awake(pugi::xml_node&)
+	{
+		return true;
+	}
+
 	virtual bool Init() 
 	{
 		return true; 

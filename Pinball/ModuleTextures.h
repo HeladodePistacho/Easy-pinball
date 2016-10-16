@@ -10,6 +10,7 @@ public:
 	ModuleTextures(Application* app, bool start_enabled = true);
 	~ModuleTextures();
 
+	bool Awake(pugi::xml_node&);
 	bool Init();
 	bool CleanUp();
 

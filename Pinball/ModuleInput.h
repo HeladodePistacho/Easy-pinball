@@ -21,6 +21,7 @@ public:
 	ModuleInput(Application* app, bool start_enabled = true);
 	~ModuleInput();
 
+	bool Awake(pugi::xml_node&);
 	bool Init();
 	update_status PreUpdate();
 	bool CleanUp();
