@@ -6,12 +6,12 @@
     <organization>UPC</organization>
   </app>
 	
-  <renderer>
-    <vsync value="false"/>
-  </renderer>
+  <render>
+    <vsync value="true"/>
+  </render>
 
   <window>
-    <resolution width="1024" height="768" scale="1"/>
+    <resolution width="1040" height="915" scale="1"/>
     <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="false"/>

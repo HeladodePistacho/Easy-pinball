@@ -17,19 +17,10 @@ ModuleTextures::~ModuleTextures()
 
 bool ModuleTextures::Awake(pugi::xml_node& config)
 {
-	LOG("Init Image library");
-	bool ret = true;
-	// load support for the PNG image format
-	int flags = IMG_INIT_PNG;
-	int init = IMG_Init(flags);
 
-	if ((init & flags) != flags)
-	{
-		LOG("Could not initialize Image lib. IMG_Init: %s", IMG_GetError());
-		ret = false;
-	}
+	LOG("ModuleTextures Configuration Loaded!");
 
-	return ret;
+	return true;
 }
 
 // Called before render is available

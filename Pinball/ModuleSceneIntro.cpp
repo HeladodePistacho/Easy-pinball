@@ -20,11 +20,8 @@ ModuleSceneIntro::~ModuleSceneIntro()
 
 bool ModuleSceneIntro::Awake(pugi::xml_node& config)
 {
-	LOG("Loading Scene");
-
-	bool ret = true;
-	
-	return ret;
+	LOG("ModuleScene Configuration Loaded!");
+	return true;
 }
 
 // Load assets

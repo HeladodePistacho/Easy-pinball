@@ -13,7 +13,7 @@ ModulePlayer::~ModulePlayer()
 bool ModulePlayer::Awake(pugi::xml_node& config) {
 
 
-
+	LOG("ModulePlayer Configuration Loaded!");
 	return true;
 }
 

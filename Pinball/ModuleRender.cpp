@@ -20,32 +20,12 @@ ModuleRender::~ModuleRender()
 
 bool ModuleRender::Awake(pugi::xml_node& config)
 {
-	LOG("Create SDL rendering context");
-	bool ret = true;
-	// load flags
-	Uint32 flags = SDL_RENDERER_ACCELERATED;
-
-	if (config.child("vsync").attribute("value").as_bool() == true)
-	{
-		flags |= SDL_RENDERER_PRESENTVSYNC;
-		LOG("Using vsync");
+	bool ret = false;
+	if (config != NULL) {
+		vsync = config.child("vsync").attribute("value").as_bool();
+		LOG("ModuleRender Configuration Loaded!");
+		ret = true;
 	}
-
-	renderer = SDL_CreateRenderer(App->window->window, -1, flags);
-
-	if (renderer == NULL)
-	{
-		LOG("Could not create the renderer! SDL_Error: %s\n", SDL_GetError());
-		ret = false;
-	}
-	else
-	{
-		camera.w = App->window->screen_surface->w;
-		camera.h = App->window->screen_surface->h;
-		camera.x = 0;
-		camera.y = 0;
-	}
-
 	return ret;
 }
 
@@ -56,7 +36,7 @@ bool ModuleRender::Init()
 	bool ret = true;
 	Uint32 flags = 0;
 
-	if(VSYNC == true)
+	if(vsync == true)
 	{
 		flags |= SDL_RENDERER_PRESENTVSYNC;
 	}

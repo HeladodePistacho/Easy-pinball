@@ -27,7 +27,7 @@ ModulePhysics::~ModulePhysics()
 
 bool ModulePhysics::Awake(pugi::xml_node& config) {
 
-
+	LOG("ModulePhysics Configuration Loaded!");
 	return true;
 }
 

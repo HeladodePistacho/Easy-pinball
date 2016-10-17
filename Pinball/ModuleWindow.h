@@ -29,10 +29,16 @@ public:
 	SDL_Surface* screen_surface;
 
 private:
+
 	p2SString	title;
 	uint		width;
 	uint		height;
 	uint		scale;
+	bool fullscreen = false;
+	bool resizable = false;
+	bool borderless = false;
+	bool fullscreen_window = false;
+	bool vsync = true;
 };
 
 #endif // __ModuleWindow_H__

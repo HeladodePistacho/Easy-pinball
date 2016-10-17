@@ -20,17 +20,8 @@ ModuleInput::~ModuleInput()
 
 bool ModuleInput::Awake(pugi::xml_node& config)
 {
-	LOG("Init SDL input event system");
-	bool ret = true;
-	SDL_Init(0);
-
-	if (SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
-	{
-		LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
-		ret = false;
-	}
-
-	return ret;
+	LOG("ModuleInput Configuration Loaded!");
+	return true;
 }
 
 // Called before render is available

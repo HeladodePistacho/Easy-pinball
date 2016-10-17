@@ -25,4 +25,6 @@ public:
 public:
 	SDL_Renderer* renderer;
 	SDL_Rect camera;
+private:
+	bool vsync = false;
 };
