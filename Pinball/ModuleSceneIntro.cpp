@@ -32,10 +32,13 @@ bool ModuleSceneIntro::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
-	circle = App->textures->Load("pinball/wheel.png"); 
-	box = App->textures->Load("pinball/crate.png");
-	rick = App->textures->Load("pinball/rick_head.png");
-	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
+	circle = App->textures->Load("Textures/wheel.png"); 
+	box = App->textures->Load("Textures/crate.png");
+	rick = App->textures->Load("Textures/rick_head.png");
+	bonus_fx = App->audio->LoadFx("Audio/bonus.wav");
+
+	//Pinball background
+	background = App->textures->Load("Textures/background.png");
 
 	return ret;
 }
@@ -51,6 +54,10 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
+	//Blit the clean background
+	App->renderer->Blit(background, 0, 0);
+
+
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		ray_on = !ray_on;

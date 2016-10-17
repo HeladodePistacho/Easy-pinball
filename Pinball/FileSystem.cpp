@@ -15,7 +15,11 @@ FileSystem::FileSystem(Application* app, bool start_enabled) : Module(app, start
 	PHYSFS_init(base_path);
 	SDL_free(base_path);
 
+	//Generañ directory
 	AddPath(".");
+	//Pinball data directory
+	AddPath("Pinball", ".");
+
 }
 
 // Destructor

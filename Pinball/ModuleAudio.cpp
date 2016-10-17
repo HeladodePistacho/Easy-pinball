@@ -1,6 +1,8 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleAudio.h"
+#include "FileSystem.h"
+
 #include "Engine/SDL\include\SDL.h"
 #include "Engine/SDL_mixer\include\SDL_mixer.h"
 
@@ -102,7 +104,7 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 		Mix_FreeMusic(music);
 	}
 
-	music = Mix_LoadMUS(path);
+	music = Mix_LoadMUS_RW(App->file_system->Load(path), 1);
 
 	if(music == NULL)
 	{
@@ -141,7 +143,7 @@ unsigned int ModuleAudio::LoadFx(const char* path)
 
 	unsigned int ret = 0;
 
-	Mix_Chunk* chunk = Mix_LoadWAV(path);
+	Mix_Chunk* chunk = Mix_LoadWAV_RW(App->file_system->Load(path), 1);
 
 	if(chunk == NULL)
 	{
