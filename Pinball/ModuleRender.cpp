@@ -3,6 +3,7 @@
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "ModuleInput.h"
+#include "ModuleSceneIntro.h"
 #include <math.h>
 
 ModuleRender::ModuleRender(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -214,7 +215,6 @@ bool ModuleRender::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 
 	}
 
 	result = SDL_RenderDrawPoints(renderer, points, 360);
-
 	if(result != 0)
 	{
 		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
