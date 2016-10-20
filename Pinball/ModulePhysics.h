@@ -44,6 +44,7 @@ public:
 	bool CleanUp();
 
 	PhysBody* CreateCircle(int x, int y, int radius);
+	PhysBody* CreateStaticCircle(int x, int y, int radius);
 	PhysBody* CreateRectangle(int x, int y, int width, int height);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
 	PhysBody* CreateChain(int x, int y, int* points, int size);
@@ -57,4 +58,19 @@ private:
 	b2World* world;
 	b2MouseJoint* mouse_joint;
 	b2Body* ground;
+
+	PhysBody* flap_up_right;
+	PhysBody* flap_down_right;
+	PhysBody* flap_up_left;
+	PhysBody* flap_down_left;
+
+	PhysBody* flap_up_right_point;
+	PhysBody* flap_down_right_point;
+	PhysBody* flap_up_left_point;
+	PhysBody* flap_down_left_point;
+
+	b2RevoluteJoint* flap_up_right_fix_joint;
+	b2RevoluteJoint* flap_down_right_fix_joint;
+	b2RevoluteJoint* flap_up_left_fix_joint;
+	b2RevoluteJoint* flap_down_left_fix_joint;
 };

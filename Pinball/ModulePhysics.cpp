@@ -41,6 +41,62 @@ bool ModulePhysics::Start()
 	b2BodyDef bd;
 	ground = world->CreateBody(&bd);
 
+	//Flaps
+	flap_down_right = App->physics->CreateRectangle(535, 784, 70, 12);
+	flap_down_left = App->physics->CreateRectangle(388, 783, 70, 12);
+	flap_up_left = App->physics->CreateRectangle(300, 309, 70, 12);
+	flap_up_right = App->physics->CreateRectangle(630, 375, 70, 12);
+
+	//Flaps points
+	flap_down_right_point = App->physics->CreateStaticCircle(535, 784, 4);
+	flap_down_left_point = App->physics->CreateStaticCircle(388, 783, 4);
+	flap_up_left_point = App->physics->CreateStaticCircle(300, 309, 4);
+	flap_up_right_point = App->physics->CreateStaticCircle(630, 375, 4);
+
+	//Flaps joints
+	b2RevoluteJointDef def;
+	int x, y;
+
+	//Up Right
+	flap_up_right_point->GetPosition(x, y);
+	def.bodyA = flap_up_right_point->body;
+	def.bodyB = flap_up_right->body;
+	def.lowerAngle = -60 * DEGTORAD;
+	def.upperAngle = 0 * DEGTORAD;
+	def.enableLimit = true;
+	def.localAnchorB = { 0.500f,0.0f };
+	flap_up_right_fix_joint = (b2RevoluteJoint*)world->CreateJoint(&def);
+
+	//Down Right
+	flap_down_right_point->GetPosition(x, y);
+	def.bodyA = flap_down_right_point->body;
+	def.bodyB = flap_down_right->body;
+	def.lowerAngle = -28 * DEGTORAD;
+	def.upperAngle = 50 * DEGTORAD;
+	def.enableLimit = true;
+	def.localAnchorB = { 0.500f,0.0f };
+	flap_down_right_fix_joint = (b2RevoluteJoint*)world->CreateJoint(&def);
+
+	//Up Left
+	flap_up_left_point->GetPosition(x, y);
+	def.bodyA = flap_up_left_point->body;
+	def.bodyB = flap_up_left->body;
+	def.lowerAngle = -30 * DEGTORAD;
+	def.upperAngle = 0 * DEGTORAD;
+	def.enableLimit = true;
+	def.localAnchorB = { -0.500f,0.0f };
+	flap_up_left_fix_joint = (b2RevoluteJoint*)world->CreateJoint(&def);
+
+	//Down Left
+	flap_down_left_point->GetPosition(x, y);
+	def.bodyA = flap_down_left_point->body;
+	def.bodyB = flap_down_left->body;
+	def.lowerAngle = 30 * DEGTORAD;
+	def.upperAngle = 50 * DEGTORAD;
+	def.enableLimit = true;
+	def.localAnchorB = { -0.500f,0.0f };
+	flap_down_left_fix_joint = (b2RevoluteJoint*)world->CreateJoint(&def);
+
 	
 	return true;
 }
@@ -68,6 +124,30 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
 {
 	b2BodyDef body;
 	body.type = b2_dynamicBody;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	b2Body* b = world->CreateBody(&body);
+
+	b2CircleShape shape;
+	shape.m_radius = PIXEL_TO_METERS(radius);
+	b2FixtureDef fixture;
+	fixture.shape = &shape;
+	fixture.density = 1.0f;
+
+	b->CreateFixture(&fixture);
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	b->SetUserData(pbody);
+	pbody->width = pbody->height = radius;
+
+	return pbody;
+}
+
+PhysBody* ModulePhysics::CreateStaticCircle(int x, int y, int radius)
+{
+	b2BodyDef body;
+	body.type = b2_staticBody;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
@@ -291,6 +371,22 @@ update_status ModulePhysics::PostUpdate()
 	{
 		world->DestroyJoint(mouse_joint);
 		mouse_joint = nullptr;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+
+		flap_up_right->body->ApplyForce({ 12,0 }, { 0,-10 }, false);
+		flap_down_right->body->ApplyForce({ 12,0 }, { 0,-10 }, false);
+		flap_down_left->body->ApplyForce({ 12,0 }, { 0,10 }, false);
+		flap_up_left->body->ApplyForce({ 12,0 }, { 0,10 }, false);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP || App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE) {
+
+		flap_up_right->body->ApplyForce({ -12,0 }, { 0,-10 }, false);
+		flap_down_right->body->ApplyForce({ -12,0 }, { 0,-10 }, false);
+		flap_down_left->body->ApplyForce({ -12,0 }, { 0,10 }, false);
+		flap_up_left->body->ApplyForce({ -12,0 }, { 0,10 }, false);
 	}
 
 	return UPDATE_CONTINUE;
