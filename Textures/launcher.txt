@@ -1,0 +1,26 @@
+
+int Launcher[18] = {
+		771, 491,
+		772, 736,
+		800, 736,
+		799, 469,
+		812, 468,
+		811, 746,
+		759, 746,
+		751, 468,
+		772, 470
+	};
+	App->physics->CreateChain(0, 0, Launcher, 18);
+
+if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	{
+		p2List_item<PhysBody*>* cir = circles.getFirst();
+
+		while (cir != NULL)
+		{
+			if (cir->data->Contains(778, 720) || cir->data->Contains(780, 720) || cir->data->Contains(785, 720) || cir->data->Contains(790, 720))
+			{
+				cir->data->body->ApplyForce({ 0.0f, -100.0f }, cir->data->body->GetPosition(), false);
+			}
+			cir = cir->next;
+		}
