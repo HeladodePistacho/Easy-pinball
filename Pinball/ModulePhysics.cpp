@@ -16,6 +16,7 @@ ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app,
 {
 	world = NULL;
 	mouse_joint = NULL;
+	flap_down_left_fix_joint = NULL;
 	debug = true;
 	name.create("physics");
 }
@@ -55,10 +56,8 @@ bool ModulePhysics::Start()
 
 	//Flaps joints
 	b2RevoluteJointDef def;
-	int x, y;
 
 	//Up Right
-	flap_up_right_point->GetPosition(x, y);
 	def.bodyA = flap_up_right_point->body;
 	def.bodyB = flap_up_right->body;
 	def.lowerAngle = -60 * DEGTORAD;
@@ -68,7 +67,6 @@ bool ModulePhysics::Start()
 	flap_up_right_fix_joint = (b2RevoluteJoint*)world->CreateJoint(&def);
 
 	//Down Right
-	flap_down_right_point->GetPosition(x, y);
 	def.bodyA = flap_down_right_point->body;
 	def.bodyB = flap_down_right->body;
 	def.lowerAngle = -28 * DEGTORAD;
@@ -78,21 +76,19 @@ bool ModulePhysics::Start()
 	flap_down_right_fix_joint = (b2RevoluteJoint*)world->CreateJoint(&def);
 
 	//Up Left
-	flap_up_left_point->GetPosition(x, y);
 	def.bodyA = flap_up_left_point->body;
 	def.bodyB = flap_up_left->body;
 	def.lowerAngle = -30 * DEGTORAD;
-	def.upperAngle = 0 * DEGTORAD;
+	def.upperAngle = 33 * DEGTORAD;
 	def.enableLimit = true;
 	def.localAnchorB = { -0.500f,0.0f };
 	flap_up_left_fix_joint = (b2RevoluteJoint*)world->CreateJoint(&def);
 
 	//Down Left
-	flap_down_left_point->GetPosition(x, y);
 	def.bodyA = flap_down_left_point->body;
 	def.bodyB = flap_down_left->body;
-	def.lowerAngle = 30 * DEGTORAD;
-	def.upperAngle = 50 * DEGTORAD;
+	def.lowerAngle = -45 * DEGTORAD;
+	def.upperAngle = 27 * DEGTORAD;
 	def.enableLimit = true;
 	def.localAnchorB = { -0.500f,0.0f };
 	flap_down_left_fix_joint = (b2RevoluteJoint*)world->CreateJoint(&def);
@@ -373,25 +369,25 @@ update_status ModulePhysics::PostUpdate()
 		mouse_joint = nullptr;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-
-		flap_up_right->body->ApplyForce({ 12,0 }, { 0,-10 }, false);
-		flap_down_right->body->ApplyForce({ 12,0 }, { 0,-10 }, false);
-		flap_down_left->body->ApplyForce({ 12,0 }, { 0,10 }, false);
-		flap_up_left->body->ApplyForce({ 12,0 }, { 0,10 }, false);
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP || App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE) {
-
-		flap_up_right->body->ApplyForce({ -12,0 }, { 0,-10 }, false);
-		flap_down_right->body->ApplyForce({ -12,0 }, { 0,-10 }, false);
-		flap_down_left->body->ApplyForce({ -12,0 }, { 0,10 }, false);
-		flap_up_left->body->ApplyForce({ -12,0 }, { 0,10 }, false);
-	}
-
 	return UPDATE_CONTINUE;
 }
 
+void ModulePhysics::PushUpFlaps() {
+	
+	flap_up_right->body->ApplyForce({ 12,0 }, { 0,0 }, false);
+	flap_down_right->body->ApplyForce({ 12,0 }, { 0,0 }, false);
+	flap_down_left->body->ApplyForce({ -12,0 }, { 70,0 }, false);
+	flap_up_left->body->ApplyForce({ -12,0 }, { 70,0 }, false);
+
+}
+void ModulePhysics::PushDownFlaps() {
+	
+	flap_up_right->body->ApplyForce({ -12,0 }, { 0,0 }, false);
+	flap_down_right->body->ApplyForce({ -12,0 }, { 0,0 }, false);
+	flap_down_left->body->ApplyForce({ 12,0 }, { 70,0 }, false);
+	flap_up_left->body->ApplyForce({ 12,0 }, { 70,0 }, false);
+
+}
 
 // Called before quitting
 bool ModulePhysics::CleanUp()

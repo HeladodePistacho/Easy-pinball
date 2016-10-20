@@ -35,4 +35,7 @@ public:
 
 private:
 	SDL_Texture* background;
+	SDL_Texture* left_flap;
+	SDL_Texture* right_flap;
+
 };

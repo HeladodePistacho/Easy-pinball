@@ -59,10 +59,17 @@ private:
 	b2MouseJoint* mouse_joint;
 	b2Body* ground;
 
+public:
+
 	PhysBody* flap_up_right;
 	PhysBody* flap_down_right;
 	PhysBody* flap_up_left;
 	PhysBody* flap_down_left;
+
+	void PushUpFlaps();
+	void PushDownFlaps();
+
+private:
 
 	PhysBody* flap_up_right_point;
 	PhysBody* flap_down_right_point;

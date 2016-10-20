@@ -39,6 +39,10 @@ bool ModuleSceneIntro::Start()
 
 	//Pinball background
 	background = App->textures->Load("Textures/background.png");
+	//Pinball flaps
+	left_flap = App->textures->Load("Textures/left_flap.png");
+	right_flap = App->textures->Load("Textures/right_flap.png");
+
 
 	//Pinball map walls
 	int map_walls[204] = {
@@ -215,6 +219,20 @@ bool ModuleSceneIntro::Start()
 	};
 	App->physics->CreateChain(0, 0, right_arm, 62);
 
+	//Launcher
+	int Launcher[18] = {
+		771, 491,
+		772, 736,
+		800, 736,
+		799, 469,
+		812, 468,
+		811, 746,
+		759, 746,
+		751, 468,
+		772, 470
+	};
+	App->physics->CreateChain(0, 0, Launcher, 18);
+
 	/*
 
 	*/
@@ -235,6 +253,31 @@ update_status ModuleSceneIntro::Update()
 	//Blit the clean background
 	App->renderer->Blit(background, 0, 0);
 
+	//Avtive ball launch
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	{
+		p2List_item<PhysBody*>* cir = circles.getFirst();
+
+		while (cir != NULL)
+		{
+			if (cir->data->Contains(778, 720) || cir->data->Contains(780, 720) || cir->data->Contains(785, 720) || cir->data->Contains(790, 720))
+			{
+				cir->data->body->ApplyForce({ 0.0f, -100.0f }, cir->data->body->GetPosition(), false);
+			}
+			cir = cir->next;
+		}
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+
+		App->physics->PushUpFlaps();
+
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE) {
+
+		App->physics->PushDownFlaps();
+	}
 
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
@@ -305,6 +348,19 @@ update_status ModuleSceneIntro::Update()
 	fVector normal(0.0f, 0.0f);
 
 	// All draw functions ------------------------------------------------------
+	int pos_x, pos_y; 
+	App->physics->flap_down_left->GetPosition(pos_x, pos_y);
+	App->renderer->Blit(left_flap, pos_x - 6, pos_y - 5, NULL, 1.0f, App->physics->flap_down_left->GetRotation());
+
+	App->physics->flap_down_right->GetPosition(pos_x, pos_y);
+	App->renderer->Blit(right_flap, pos_x - 6, pos_y - 5, NULL, 1.0f, App->physics->flap_down_right->GetRotation());
+
+	App->physics->flap_up_left->GetPosition(pos_x, pos_y);
+	App->renderer->Blit(left_flap, pos_x - 6, pos_y - 5, NULL, 1.0f, App->physics->flap_up_left->GetRotation());
+
+	App->physics->flap_up_right->GetPosition(pos_x, pos_y);
+	App->renderer->Blit(right_flap, pos_x - 6, pos_y - 5, NULL, 1.0f, App->physics->flap_up_right->GetRotation());
+	
 	p2List_item<PhysBody*>* c = circles.getFirst();
 
 	while(c != NULL)
