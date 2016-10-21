@@ -5,6 +5,7 @@
 #include "ModulePhysics.h"
 #include "p2Point.h"
 #include "math.h"
+#include "ModulePlayer.h"
 
 #ifdef _DEBUG
 #pragma comment( lib, "Engine/Box2D/libx86/Debug/Box2D.lib" )
@@ -374,6 +375,7 @@ update_status ModulePhysics::PostUpdate()
 
 void ModulePhysics::PushUpFlaps() {
 	
+	App->player->score += 1;
 	flap_up_right->body->ApplyForce({ 12,0 }, { 0,0 }, false);
 	flap_down_right->body->ApplyForce({ 12,0 }, { 0,0 }, false);
 	flap_down_left->body->ApplyForce({ -12,0 }, { 70,0 }, false);
