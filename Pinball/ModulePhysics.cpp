@@ -259,7 +259,7 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, collision_type type)
+PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, collision_type type, uint restitution)
 {
 	b2BodyDef body;
 	body.type = b2_staticBody;
@@ -282,7 +282,7 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, collis
 	fixture.shape = &shape;
 	fixture.filter.categoryBits = type;
 	fixture.filter.maskBits = BALL;
-
+	fixture.restitution = restitution;
 	b->CreateFixture(&fixture);
 
 	delete p;
