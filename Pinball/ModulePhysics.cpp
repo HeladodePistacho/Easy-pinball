@@ -98,7 +98,7 @@ bool ModulePhysics::Start()
 
 	//Mid
 	mid_wheel_point = App->physics->CreateStaticCircle(532, 242, 4);
-	mid_wheel = CreateCircle(532, 238, 34);
+	mid_wheel = CreateCircle(532, 238, 34, NONE);
 	def.bodyA = mid_wheel->body;
 	def.bodyB = mid_wheel_point->body;
 	def.motorSpeed = -25.0f;
@@ -110,7 +110,7 @@ bool ModulePhysics::Start()
 
 	//Left
 	left_wheel_point = App->physics->CreateStaticCircle(474, 180, 4);
-	left_wheel = CreateCircle(474, 180, 34);
+	left_wheel = CreateCircle(474, 180, 34, NONE);
 	def.bodyA = left_wheel->body;
 	def.bodyB = left_wheel_point->body;
 	def.motorSpeed = -25.0f;
@@ -122,7 +122,7 @@ bool ModulePhysics::Start()
 
 	//Right
 	right_wheel_point = App->physics->CreateStaticCircle(590, 180, 4);
-	right_wheel = CreateCircle(590, 180, 34);
+	right_wheel = CreateCircle(590, 180, 34, NONE);
 	def.bodyA = right_wheel->body;
 	def.bodyB = right_wheel_point->body;
 	def.motorSpeed = -25.0f;
@@ -155,7 +155,7 @@ update_status ModulePhysics::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
-PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
+PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, collision_type type)
 {
 	b2BodyDef body;
 	body.type = b2_dynamicBody;
@@ -165,12 +165,14 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
 
 	b2CircleShape shape;
 	shape.m_radius = PIXEL_TO_METERS(radius);
+
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
 	fixture.density = 1.0f;
+	fixture.filter.categoryBits = type;
+	fixture.filter.maskBits = LAUNCHER;
 
 	b->CreateFixture(&fixture);
-
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
 	b->SetUserData(pbody);
@@ -228,7 +230,7 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height)
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int height)
+PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int height, collision_type type)
 {
 	b2BodyDef body;
 	body.type = b2_staticBody;
@@ -243,6 +245,8 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 	fixture.shape = &box;
 	fixture.density = 1.0f;
 	fixture.isSensor = true;
+	fixture.filter.categoryBits = type;
+	fixture.filter.maskBits = BALL;
 
 	b->CreateFixture(&fixture);
 
@@ -255,7 +259,7 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
+PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, collision_type type)
 {
 	b2BodyDef body;
 	body.type = b2_staticBody;
@@ -276,6 +280,8 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
 
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
+	fixture.filter.categoryBits = type;
+	fixture.filter.maskBits = BALL;
 
 	b->CreateFixture(&fixture);
 

@@ -12,6 +12,17 @@
 #define METERS_TO_PIXELS(m) ((int) floor(PIXELS_PER_METER * m))
 #define PIXEL_TO_METERS(p)  ((float) METER_PER_PIXEL * p)
 
+enum collision_type
+{
+	NONE,
+	BALL,
+	LAUNCHER,
+	MAP,
+	DOOR_SENSOR
+};
+
+
+
 // Small class to return to other modules to track position and rotation of physics bodies
 class PhysBody
 {
@@ -43,11 +54,11 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
-	PhysBody* CreateCircle(int x, int y, int radius);
+	PhysBody* CreateCircle(int x, int y, int radius, collision_type type);
 	PhysBody* CreateStaticCircle(int x, int y, int radius);
 	PhysBody* CreateRectangle(int x, int y, int width, int height);
-	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
-	PhysBody* CreateChain(int x, int y, int* points, int size);
+	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, collision_type type);
+	PhysBody* CreateChain(int x, int y, int* points, int size, collision_type type);
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);

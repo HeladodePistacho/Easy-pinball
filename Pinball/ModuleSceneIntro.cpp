@@ -149,7 +149,7 @@ bool ModuleSceneIntro::Start()
 		428, 892,
 		423, 910
 	};
-	App->physics->CreateChain(0, 0, map_walls, 204);
+	App->physics->CreateChain(0, 0, map_walls, 204, NONE);
 
 	//Left arm
 	int left_arm[54] = {
@@ -181,7 +181,7 @@ bool ModuleSceneIntro::Start()
 		278, 599,
 		270, 600
 	};
-	App->physics->CreateChain(0, 0, left_arm, 54);
+	App->physics->CreateChain(0, 0, left_arm, 54, NONE);
 
 	//Right arm
 	int right_arm[62] = {
@@ -217,7 +217,7 @@ bool ModuleSceneIntro::Start()
 		649, 594,
 		639, 592
 	};
-	App->physics->CreateChain(0, 0, right_arm, 62);
+	App->physics->CreateChain(0, 0, right_arm, 62, NONE);
 
 	//Launcher
 	int Launcher[18] = {
@@ -231,8 +231,10 @@ bool ModuleSceneIntro::Start()
 		751, 468,
 		772, 470
 	};
-	App->physics->CreateChain(0, 0, Launcher, 18);
+	App->physics->CreateChain(0, 0, Launcher, 18, LAUNCHER);
 
+
+	App->physics->CreateRectangleSensor(500, 500, 20, 10, DOOR_SENSOR);
 	/*
 
 	*/
@@ -288,7 +290,7 @@ update_status ModuleSceneIntro::Update()
 
 	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
-		circles.add(App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 10));
+		circles.add(App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 10, BALL));
 		circles.getLast()->data->listener = this;
 	}
 
@@ -335,7 +337,7 @@ update_status ModuleSceneIntro::Update()
 			30, 62
 		};
 
-		ricks.add(App->physics->CreateChain(App->input->GetMouseX(), App->input->GetMouseY(), rick_head, 64));
+		ricks.add(App->physics->CreateChain(App->input->GetMouseX(), App->input->GetMouseY(), rick_head, 64, NONE));
 	}
 
 	// Prepare for raycast ------------------------------------------------------
@@ -427,6 +429,16 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	int x, y;
 
 	App->audio->PlayFx(bonus_fx);
+
+	
+	if (bodyB->body->GetFixtureList()->GetFilterData().categoryBits == DOOR_SENSOR && bodyA->body->GetFixtureList()->GetFilterData().categoryBits == BALL)
+	{
+		b2Filter filter = bodyA->body->GetFixtureList()->GetFilterData();
+
+		filter.maskBits = NONE;
+		bodyA->body->GetFixtureList()->SetFilterData(filter);
+	}
+
 
 	/*
 	if(bodyA)
