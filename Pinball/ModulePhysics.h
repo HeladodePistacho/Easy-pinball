@@ -14,11 +14,12 @@
 
 enum collision_type
 {
-	NONE,
-	BALL,
-	LAUNCHER,
-	MAP,
-	DOOR_SENSOR
+	NONE = 1,
+	BALL = 2,
+	
+	MAP = 4,
+	LAUNCHER = 8,
+	DOOR_SENSOR = 10,
 };
 
 

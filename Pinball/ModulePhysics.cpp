@@ -170,7 +170,7 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, collision_type t
 	fixture.shape = &shape;
 	fixture.density = 1.0f;
 	fixture.filter.categoryBits = type;
-	fixture.filter.maskBits = LAUNCHER;
+	fixture.filter.maskBits = LAUNCHER | DOOR_SENSOR;
 
 	b->CreateFixture(&fixture);
 	PhysBody* pbody = new PhysBody();
@@ -282,6 +282,7 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, collis
 	fixture.shape = &shape;
 	fixture.filter.categoryBits = type;
 	fixture.filter.maskBits = BALL;
+	
 	fixture.restitution = restitution;
 	b->CreateFixture(&fixture);
 

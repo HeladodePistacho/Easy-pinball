@@ -149,7 +149,7 @@ bool ModuleSceneIntro::Start()
 		428, 892,
 		423, 910
 	};
-	App->physics->CreateChain(0, 0, map_walls, 204, NONE);
+	App->physics->CreateChain(0, 0, map_walls, 204, MAP);
 
 	//Left arm
 	int left_arm[76] = {
@@ -192,7 +192,7 @@ bool ModuleSceneIntro::Start()
 		272, 593,
 		266, 594
 	};
-	App->physics->CreateChain(0, 0, left_arm, 76, LAUNCHER);
+	App->physics->CreateChain(0, 0, left_arm, 76, NONE);
 
 	//Right arm
 	int right_arm[74] = {
@@ -234,7 +234,7 @@ bool ModuleSceneIntro::Start()
 		653, 593,
 		644, 593
 	};
-	App->physics->CreateChain(0, 0, right_arm, 74, LAUNCHER);
+	App->physics->CreateChain(0, 0, right_arm, 74, NONE);
 
 	//Launcher
 	int launcher[98] = {
@@ -288,7 +288,7 @@ bool ModuleSceneIntro::Start()
 		673, 501,
 		661, 489
 	};
-	App->physics->CreateChain(0, 0, launcher, 98, NONE);
+	App->physics->CreateChain(0, 0, launcher, 98, LAUNCHER);
 
 	//Right lung
 	int right_lung[34] = {
@@ -310,7 +310,7 @@ bool ModuleSceneIntro::Start()
 		560, 696,
 		558, 712
 	};
-	App->physics->CreateChain(0, 0, right_lung, 34, LAUNCHER, 2);
+	App->physics->CreateChain(0, 0, right_lung, 34, NONE, 2);
 
 	//Left lung
 	int left_lung[32] = {
@@ -331,7 +331,7 @@ bool ModuleSceneIntro::Start()
 		359, 685,
 		361, 699
 	};
-	App->physics->CreateChain(0, 0, left_lung, 32, LAUNCHER, 2);
+	App->physics->CreateChain(0, 0, left_lung, 32, NONE, 2);
 
 	//Ramp a
 	int ramp_a[322] = {
@@ -769,7 +769,7 @@ bool ModuleSceneIntro::Start()
 		486, 241,
 		485, 251
 	};
-	App->physics->CreateChain(0, 0, mid_wheel_chain, 68, LAUNCHER);
+	App->physics->CreateChain(0, 0, mid_wheel_chain, 68, NONE);
 
 	//Right wheel chain
 	int right_wheel_chain[54] = {
@@ -801,7 +801,7 @@ bool ModuleSceneIntro::Start()
 		618, 204,
 		613, 213
 	};
-	App->physics->CreateChain(0, 0, right_wheel_chain, 54, LAUNCHER);
+	App->physics->CreateChain(0, 0, right_wheel_chain, 54, NONE);
 
 	// Right rocket
 	int right_rocket[10] = {
@@ -811,7 +811,7 @@ bool ModuleSceneIntro::Start()
 		656, 690,
 		655, 678
 	};
-	App->physics->CreateChain(0, 0, right_rocket, 10, LAUNCHER, 4);
+	App->physics->CreateChain(0, 0, right_rocket, 10, NONE, 4);
 
 	// Left rocket
 	int left_rocket[10] = {
@@ -821,9 +821,9 @@ bool ModuleSceneIntro::Start()
 		263, 711,
 		251, 698
 	};
-	App->physics->CreateChain(0, 0, left_rocket, 10, LAUNCHER, 4);
+	App->physics->CreateChain(0, 0, left_rocket, 10, NONE, 4);
 
-	App->physics->CreateRectangleSensor(500, 500, 20, 10, DOOR_SENSOR);
+	App->physics->CreateRectangleSensor(660, 465, 20, 20, DOOR_SENSOR);
 	/*
 
 	*/
@@ -844,6 +844,12 @@ update_status ModuleSceneIntro::Update()
 	//Blit the clean background
 	App->renderer->Blit(background, 0, 0);
 
+	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+	{
+		App->input->GetMouseX();
+		App->input->GetMouseY();
+	}
+
 	//Avtive ball launch
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
@@ -851,9 +857,9 @@ update_status ModuleSceneIntro::Update()
 
 		while (cir != NULL)
 		{
-			if (cir->data->Contains(778, 720) || cir->data->Contains(780, 720) || cir->data->Contains(785, 720) || cir->data->Contains(790, 720))
+			if (cir->data->Contains(746, 747) || cir->data->Contains(780, 720) || cir->data->Contains(785, 720) || cir->data->Contains(790, 720))
 			{
-				cir->data->body->ApplyForce({ 0.0f, -100.0f }, cir->data->body->GetPosition(), false);
+				cir->data->body->ApplyForce({ 0.0f, -200.0f }, cir->data->body->GetPosition(), false);
 			}
 			cir = cir->next;
 		}
@@ -1023,8 +1029,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	if (bodyB->body->GetFixtureList()->GetFilterData().categoryBits == DOOR_SENSOR && bodyA->body->GetFixtureList()->GetFilterData().categoryBits == BALL)
 	{
 		b2Filter filter = bodyA->body->GetFixtureList()->GetFilterData();
-
-		filter.maskBits = NONE;
+		filter.maskBits = MAP;
 		bodyA->body->GetFixtureList()->SetFilterData(filter);
 	}
 
