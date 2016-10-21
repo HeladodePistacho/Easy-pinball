@@ -420,18 +420,18 @@ update_status ModulePhysics::PostUpdate()
 void ModulePhysics::PushUpFlaps() {
 	
 	App->player->score += 1;
-	flap_up_right->body->ApplyForce({ 12,0 }, { 0,0 }, false);
-	flap_down_right->body->ApplyForce({ 12,0 }, { 0,0 }, false);
-	flap_down_left->body->ApplyForce({ -12,0 }, { 70,0 }, false);
-	flap_up_left->body->ApplyForce({ -12,0 }, { 70,0 }, false);
+	flap_up_right->body->ApplyForce({ 12,0 }, { 0,0 }, true);
+	flap_down_right->body->ApplyForce({ 12,0 }, { 0,0 }, true);
+	flap_down_left->body->ApplyForce({ -12,0 }, { 70,0 }, true);
+	flap_up_left->body->ApplyForce({ -12,0 }, { 70,0 }, true);
 
 }
 void ModulePhysics::PushDownFlaps() {
 	
-	flap_up_right->body->ApplyForce({ -12,0 }, { 0,0 }, false);
-	flap_down_right->body->ApplyForce({ -12,0 }, { 0,0 }, false);
-	flap_down_left->body->ApplyForce({ 12,0 }, { 70,0 }, false);
-	flap_up_left->body->ApplyForce({ 12,0 }, { 70,0 }, false);
+	flap_up_right->body->ApplyForce({ -12,0 }, { 0,0 }, true);
+	flap_down_right->body->ApplyForce({ -12,0 }, { 0,0 }, true);
+	flap_down_left->body->ApplyForce({ 12,0 }, { 70,0 }, true);
+	flap_up_left->body->ApplyForce({ 12,0 }, { 70,0 }, true);
 
 }
 

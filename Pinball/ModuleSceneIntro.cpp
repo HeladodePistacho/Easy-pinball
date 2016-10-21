@@ -803,7 +803,25 @@ bool ModuleSceneIntro::Start()
 	};
 	App->physics->CreateChain(0, 0, right_wheel_chain, 54, LAUNCHER);
 
+	// Right rocket
+	int right_rocket[10] = {
+		653, 673,
+		676, 673,
+		673, 690,
+		656, 690,
+		655, 678
+	};
+	App->physics->CreateChain(0, 0, right_rocket, 10, LAUNCHER, 4);
 
+	// Left rocket
+	int left_rocket[10] = {
+		249, 690,
+		266, 691,
+		266, 700,
+		263, 711,
+		251, 698
+	};
+	App->physics->CreateChain(0, 0, left_rocket, 10, LAUNCHER, 4);
 
 	App->physics->CreateRectangleSensor(500, 500, 20, 10, DOOR_SENSOR);
 	/*
