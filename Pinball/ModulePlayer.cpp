@@ -23,9 +23,6 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 
-	//score_font
-    //score_font = App->fonts->Load("Game/Pinball/Textures/score_font.png", "0123456789", 1);
-
 	return true;
 }
 

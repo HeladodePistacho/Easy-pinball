@@ -361,6 +361,15 @@ update_status ModuleSceneIntro::Update()
 	App->physics->flap_up_right->GetPosition(pos_x, pos_y);
 	App->renderer->Blit(right_flap, pos_x - 6, pos_y - 5, NULL, 1.0f, App->physics->flap_up_right->GetRotation());
 	
+	App->physics->mid_wheel->GetPosition(pos_x, pos_y);
+	App->renderer->Blit(circle, pos_x, pos_y, NULL, 1.0f, App->physics->mid_wheel->GetRotation());
+
+	App->physics->left_wheel->GetPosition(pos_x, pos_y);
+	App->renderer->Blit(circle, pos_x, pos_y, NULL, 1.0f, App->physics->left_wheel->GetRotation());
+
+	App->physics->right_wheel->GetPosition(pos_x, pos_y);
+	App->renderer->Blit(circle, pos_x, pos_y, NULL, 1.0f, App->physics->right_wheel->GetRotation());
+
 	p2List_item<PhysBody*>* c = circles.getFirst();
 
 	while(c != NULL)

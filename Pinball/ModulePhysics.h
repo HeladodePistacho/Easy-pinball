@@ -66,6 +66,10 @@ public:
 	PhysBody* flap_up_left;
 	PhysBody* flap_down_left;
 
+	PhysBody* left_wheel;
+	PhysBody* mid_wheel;
+	PhysBody* right_wheel;
+
 	void PushUpFlaps();
 	void PushDownFlaps();
 
@@ -80,4 +84,12 @@ private:
 	b2RevoluteJoint* flap_down_right_fix_joint;
 	b2RevoluteJoint* flap_up_left_fix_joint;
 	b2RevoluteJoint* flap_down_left_fix_joint;
+
+	PhysBody* mid_wheel_point;
+	PhysBody* left_wheel_point;
+	PhysBody* right_wheel_point;
+
+	b2RevoluteJoint* mid_wheel_engine;
+	b2RevoluteJoint* left_wheel_engine;
+	b2RevoluteJoint* right_wheel_engine;
 };

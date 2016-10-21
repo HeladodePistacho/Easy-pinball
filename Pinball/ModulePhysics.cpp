@@ -94,7 +94,45 @@ bool ModulePhysics::Start()
 	def.localAnchorB = { -0.500f,0.0f };
 	flap_down_left_fix_joint = (b2RevoluteJoint*)world->CreateJoint(&def);
 
-	
+	//Wheels
+
+	//Mid
+	mid_wheel_point = App->physics->CreateStaticCircle(532, 242, 4);
+	mid_wheel = CreateCircle(532, 238, 34);
+	def.bodyA = mid_wheel->body;
+	def.bodyB = mid_wheel_point->body;
+	def.motorSpeed = -25.0f;
+	def.maxMotorTorque = 80.0f;
+	def.localAnchorB = { 0.0f , 0.0f };
+	def.enableMotor = true;
+	def.enableLimit = false;
+	mid_wheel_engine = (b2RevoluteJoint*)world->CreateJoint(&def);
+
+	//Left
+	left_wheel_point = App->physics->CreateStaticCircle(474, 180, 4);
+	left_wheel = CreateCircle(474, 180, 34);
+	def.bodyA = left_wheel->body;
+	def.bodyB = left_wheel_point->body;
+	def.motorSpeed = -25.0f;
+	def.maxMotorTorque = 80.0f;
+	def.localAnchorB = { 0.0f , 0.0f };
+	def.enableMotor = true;
+	def.enableLimit = false;
+	left_wheel_engine = (b2RevoluteJoint*)world->CreateJoint(&def);
+
+	//Right
+	right_wheel_point = App->physics->CreateStaticCircle(590, 180, 4);
+	right_wheel = CreateCircle(590, 180, 34);
+	def.bodyA = right_wheel->body;
+	def.bodyB = right_wheel_point->body;
+	def.motorSpeed = -25.0f;
+	def.maxMotorTorque = 80.0f;
+	def.localAnchorB = { 0.0f , 0.0f };
+	def.enableMotor = true;
+	def.enableLimit = false;
+	mid_wheel_engine = (b2RevoluteJoint*)world->CreateJoint(&def);
+
+
 	return true;
 }
 
