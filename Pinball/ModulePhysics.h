@@ -57,7 +57,7 @@ public:
 
 	PhysBody* CreateCircle(int x, int y, int radius, collision_type type);
 	PhysBody* CreateStaticCircle(int x, int y, int radius);
-	PhysBody* CreateRectangle(int x, int y, int width, int height);
+	PhysBody* CreateRectangle(int x, int y, int width, int height, collision_type type);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, collision_type type);
 	PhysBody* CreateChain(int x, int y, int* points, int size, collision_type type, uint restitution = 0);
 

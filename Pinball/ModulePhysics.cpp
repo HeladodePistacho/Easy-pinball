@@ -44,10 +44,10 @@ bool ModulePhysics::Start()
 	ground = world->CreateBody(&bd);
 
 	//Flaps
-	flap_down_right = App->physics->CreateRectangle(535, 784, 70, 12);
-	flap_down_left = App->physics->CreateRectangle(388, 783, 70, 12);
-	flap_up_left = App->physics->CreateRectangle(300, 309, 70, 12);
-	flap_up_right = App->physics->CreateRectangle(630, 375, 70, 12);
+	flap_down_right = App->physics->CreateRectangle(535, 784, 70, 12, MAP);
+	flap_down_left = App->physics->CreateRectangle(388, 783, 70, 12, MAP);
+	flap_up_left = App->physics->CreateRectangle(300, 309, 70, 12, MAP);
+	flap_up_right = App->physics->CreateRectangle(630, 375, 70, 12, MAP);
 
 	//Flaps points
 	flap_down_right_point = App->physics->CreateStaticCircle(535, 784, 4);
@@ -205,7 +205,7 @@ PhysBody* ModulePhysics::CreateStaticCircle(int x, int y, int radius)
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height)
+PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, collision_type type)
 {
 	b2BodyDef body;
 	body.type = b2_dynamicBody;
@@ -218,6 +218,7 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height)
 	b2FixtureDef fixture;
 	fixture.shape = &box;
 	fixture.density = 1.0f;
+	fixture.filter.categoryBits = type;
 
 	b->CreateFixture(&fixture);
 

@@ -200,7 +200,7 @@ bool ModuleSceneIntro::Start()
 		272, 593,
 		266, 594
 	};
-	App->physics->CreateChain(0, 0, left_arm, 76, NONE);
+	App->physics->CreateChain(0, 0, left_arm, 76, MAP);
 
 	//Right arm
 	int right_arm[74] = {
@@ -242,7 +242,7 @@ bool ModuleSceneIntro::Start()
 		653, 593,
 		644, 593
 	};
-	App->physics->CreateChain(0, 0, right_arm, 74, NONE);
+	App->physics->CreateChain(0, 0, right_arm, 74, MAP);
 
 	//Launcher
 	int launcher[98] = {
@@ -318,7 +318,7 @@ bool ModuleSceneIntro::Start()
 		560, 696,
 		558, 712
 	};
-	App->physics->CreateChain(0, 0, right_lung, 34, NONE, 2);
+	App->physics->CreateChain(0, 0, right_lung, 34, MAP, 1);
 
 	//Left lung
 	int left_lung[32] = {
@@ -339,7 +339,7 @@ bool ModuleSceneIntro::Start()
 		359, 685,
 		361, 699
 	};
-	App->physics->CreateChain(0, 0, left_lung, 32, NONE, 2);
+	App->physics->CreateChain(0, 0, left_lung, 32, MAP, 2);
 
 	//Ramp a
 	int ramp_a[322] = {
@@ -831,7 +831,7 @@ bool ModuleSceneIntro::Start()
 	};
 	App->physics->CreateChain(0, 0, left_rocket, 10, NONE, 4);
 
-	App->physics->CreateRectangleSensor(660, 465, 20, 20, DOOR_SENSOR);
+	App->physics->CreateRectangleSensor(570, 400, 20, 20, DOOR_SENSOR);
 	/*
 
 	*/
@@ -903,51 +903,8 @@ update_status ModuleSceneIntro::Update()
 		circles.getLast()->data->listener = this;
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-	{
-		boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50));
-	}
+	
 
-	if(App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-	{
-		// Pivot 0, 0
-		int rick_head[64] = {
-			14, 36,
-			42, 40,
-			40, 0,
-			75, 30,
-			88, 4,
-			94, 39,
-			111, 36,
-			104, 58,
-			107, 62,
-			117, 67,
-			109, 73,
-			110, 85,
-			106, 91,
-			109, 99,
-			103, 104,
-			100, 115,
-			106, 121,
-			103, 125,
-			98, 126,
-			95, 137,
-			83, 147,
-			67, 147,
-			53, 140,
-			46, 132,
-			34, 136,
-			38, 126,
-			23, 123,
-			30, 114,
-			10, 102,
-			29, 90,
-			0, 75,
-			30, 62
-		};
-
-		ricks.add(App->physics->CreateChain(App->input->GetMouseX(), App->input->GetMouseY(), rick_head, 64, NONE));
-	}
 
 	// Prepare for raycast ------------------------------------------------------
 	
