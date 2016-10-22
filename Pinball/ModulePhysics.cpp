@@ -6,6 +6,8 @@
 #include "p2Point.h"
 #include "math.h"
 #include "ModulePlayer.h"
+#include "ModuleAudio.h"
+#include "ModuleSceneIntro.h"
 
 #ifdef _DEBUG
 #pragma comment( lib, "Engine/Box2D/libx86/Debug/Box2D.lib" )

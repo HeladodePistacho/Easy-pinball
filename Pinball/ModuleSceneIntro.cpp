@@ -9,7 +9,6 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	circle = box = rick = NULL;
 	ray_on = false;
 	sensed = false;
 	name.create("scene");
@@ -30,12 +29,16 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
+	App->audio->PlayMusic("Audio/pinball_theme.wav");
+
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
-	circle = App->textures->Load("Textures/ball.png"); 
-	box = App->textures->Load("Textures/crate.png");
-	rick = App->textures->Load("Textures/rick_head.png");
-	bonus_fx = App->audio->LoadFx("Audio/bonus.wav");
+	ball = App->textures->Load("Textures/ball.png"); 
+	
+	flap_up_fx = App->audio->LoadFx("Audio/flap_up_fx.wav");
+	flap_down_fx = App->audio->LoadFx("Audio/flap_down_fx.wav");
+	launcher_fx = App->audio->LoadFx("Audio/launcher_fx.wav");
+	ramp_a_fx = App->audio->LoadFx("Audio/ramp_a_fx.wav");
 
 	circles.add(App->physics->CreateCircle(752, 725, 10, BALL));
 	circles.getLast()->data->listener = this;
@@ -890,17 +893,29 @@ update_status ModuleSceneIntro::Update()
 		{
 			if (cir->data->Contains(752, 735))
 			{
-				cir->data->body->ApplyForce({ 0.0f, -145.0f }, cir->data->body->GetPosition(), false);
+				cir->data->body->ApplyForce({ 0.0f, -145.0f }, cir->data->body->GetPosition(), true);
+				App->audio->PlayFx(launcher_fx);
 			}
 			
 			cir = cir->next;
 		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN){ 
 
+		App->audio->PlayFx(flap_up_fx);
 		App->physics->PushUpFlaps();
 
+	}
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+
+		App->physics->PushUpFlaps();
+	
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
+
+		App->audio->PlayFx(flap_down_fx);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE) {
@@ -933,62 +948,13 @@ update_status ModuleSceneIntro::Update()
 
 	fVector normal(0.0f, 0.0f);
 
-	// All draw functions ------------------------------------------------------
-	int pos_x, pos_y; 
-	App->physics->flap_down_left->GetPosition(pos_x, pos_y);
-	App->renderer->Blit(left_flap, pos_x - 6, pos_y - 5, NULL, 1.0f, App->physics->flap_down_left->GetRotation());
-
-	App->physics->flap_down_right->GetPosition(pos_x, pos_y);
-	App->renderer->Blit(right_flap, pos_x - 6, pos_y - 5, NULL, 1.0f, App->physics->flap_down_right->GetRotation());
-
-	App->physics->flap_up_left->GetPosition(pos_x, pos_y);
-	App->renderer->Blit(left_flap, pos_x - 6, pos_y - 5, NULL, 1.0f, App->physics->flap_up_left->GetRotation());
-
-	App->physics->flap_up_right->GetPosition(pos_x, pos_y);
-	App->renderer->Blit(right_flap, pos_x - 6, pos_y - 5, NULL, 1.0f, App->physics->flap_up_right->GetRotation());
-	
-	App->physics->mid_wheel->GetPosition(pos_x, pos_y);
-	App->renderer->Blit(wheel, pos_x - 6, pos_y - 7, NULL, 1.0f, App->physics->mid_wheel->GetRotation());
-
-	App->physics->left_wheel->GetPosition(pos_x, pos_y);
-	App->renderer->Blit(wheel, pos_x - 6, pos_y - 7, NULL, 1.0f, App->physics->left_wheel->GetRotation());
-
-	App->physics->right_wheel->GetPosition(pos_x, pos_y);
-	App->renderer->Blit(wheel, pos_x - 6, pos_y - 7, NULL, 1.0f, App->physics->right_wheel->GetRotation());
-
 	p2List_item<PhysBody*>* c = circles.getFirst();
 
 	while(c != NULL)
 	{
 		int x, y;
 		c->data->GetPosition(x, y);
-		App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
-		c = c->next;
-	}
-
-	c = boxes.getFirst();
-
-	while(c != NULL)
-	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		App->renderer->Blit(box, x, y, NULL, 1.0f, c->data->GetRotation());
-		if(ray_on)
-		{
-			int hit = c->data->RayCast(ray.x, ray.y, mouse.x, mouse.y, normal.x, normal.y);
-			if(hit >= 0)
-				ray_hit = hit;
-		}
-		c = c->next;
-	}
-
-	c = ricks.getFirst();
-
-	while(c != NULL)
-	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		App->renderer->Blit(rick, x, y, NULL, 1.0f, c->data->GetRotation());
+		App->renderer->Blit(ball, x, y, NULL, 1.0f, c->data->GetRotation());
 		c = c->next;
 	}
 
@@ -1005,7 +971,16 @@ update_status ModuleSceneIntro::Update()
 			App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
 	}
 
-	//All superior Renders
+	// All draw functions ------------------------------------------------------
+	int pos_x, pos_y;
+	App->physics->mid_wheel->GetPosition(pos_x, pos_y);
+	App->renderer->Blit(wheel, pos_x - 6, pos_y - 7, NULL, 1.0f, App->physics->mid_wheel->GetRotation());
+
+	App->physics->left_wheel->GetPosition(pos_x, pos_y);
+	App->renderer->Blit(wheel, pos_x - 6, pos_y - 7, NULL, 1.0f, App->physics->left_wheel->GetRotation());
+
+	App->physics->right_wheel->GetPosition(pos_x, pos_y);
+	App->renderer->Blit(wheel, pos_x - 6, pos_y - 7, NULL, 1.0f, App->physics->right_wheel->GetRotation());
 
 	//All superior Renders
 
@@ -1043,6 +1018,17 @@ update_status ModuleSceneIntro::Update()
 	App->renderer->Blit(up_light_2, 521, 79);
 	App->renderer->Blit(up_light_3, 548, 84);
 
+	App->physics->flap_down_left->GetPosition(pos_x, pos_y);
+	App->renderer->Blit(left_flap, pos_x - 6, pos_y - 5, NULL, 1.0f, App->physics->flap_down_left->GetRotation());
+
+	App->physics->flap_down_right->GetPosition(pos_x, pos_y);
+	App->renderer->Blit(right_flap, pos_x - 6, pos_y - 5, NULL, 1.0f, App->physics->flap_down_right->GetRotation());
+
+	App->physics->flap_up_left->GetPosition(pos_x, pos_y);
+	App->renderer->Blit(left_flap, pos_x - 6, pos_y - 5, NULL, 1.0f, App->physics->flap_up_left->GetRotation());
+
+	App->physics->flap_up_right->GetPosition(pos_x, pos_y);
+	App->renderer->Blit(right_flap, pos_x - 6, pos_y - 5, NULL, 1.0f, App->physics->flap_up_right->GetRotation());
 
 	return UPDATE_CONTINUE;
 }

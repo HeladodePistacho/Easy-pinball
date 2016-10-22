@@ -28,10 +28,7 @@ public:
 	PhysBody* sensor;
 	bool sensed;
 
-	SDL_Texture* circle;
-	SDL_Texture* box;
-	SDL_Texture* rick;
-	
+	SDL_Texture* ball;
 	
 	SDL_Texture* launcher;
 	SDL_Texture* scape_1;
@@ -64,6 +61,11 @@ public:
 	SDL_Texture* right_lung;
 
 	uint bonus_fx;
+	uint flap_up_fx;
+	uint flap_down_fx;
+	uint launcher_fx;
+	uint ramp_a_fx;
+
 	p2Point<int> ray;
 	bool ray_on;
 
