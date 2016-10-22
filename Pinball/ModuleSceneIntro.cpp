@@ -245,58 +245,43 @@ bool ModuleSceneIntro::Start()
 	App->physics->CreateChain(0, 0, right_arm, 74, MAP);
 
 	//Launcher
-	int launcher[98] = {
-		666, 483,
-		676, 493,
-		692, 513,
-		707, 536,
-		715, 551,
-		722, 569,
-		727, 585,
-		731, 603,
-		735, 629,
-		736, 652,
-		737, 673,
-		737, 692,
-		737, 713,
-		734, 729,
-		733, 746,
-		731, 757,
-		762, 761,
-		766, 727,
-		769, 700,
-		769, 678,
-		769, 663,
-		768, 636,
-		765, 610,
-		762, 590,
-		756, 569,
-		750, 546,
-		740, 526,
-		729, 504,
-		715, 486,
-		698, 467,
-		686, 456,
-		691, 449,
-		721, 481,
-		745, 517,
-		759, 554,
-		769, 589,
-		774, 631,
-		777, 674,
-		773, 716,
-		771, 750,
-		768, 768,
+	
+	int launcher[66] = {
+		732, 745,
+		762, 748,
+		765, 720,
+		769, 688,
+		769, 655,
+		766, 617,
+		758, 576,
+		748, 543,
+		736, 513,
+		716, 488,
+		701, 472,
+		678, 452,
+		666, 441,
+		676, 434,
+		760, 534,
+		787, 662,
+		772, 762,
 		721, 760,
-		728, 705,
-		730, 653,
-		724, 607,
-		715, 569,
-		698, 536,
-		673, 501,
-		661, 489
+		719, 659,
+		714, 595,
+		684, 532,
+		657, 479,
+		671, 488,
+		685, 503,
+		701, 526,
+		708, 544,
+		720, 572,
+		728, 602,
+		734, 630,
+		735, 657,
+		735, 680,
+		736, 707,
+		733, 730
 	};
-	App->physics->CreateChain(0, 0, launcher, 98, LAUNCHER);
+	App->physics->CreateChain(0, 0, launcher, 66, LAUNCHER);
 
 	//Right lung
 	int right_lung[34] = {
@@ -871,9 +856,9 @@ update_status ModuleSceneIntro::Update()
 
 		while (cir != NULL)
 		{
-			if (cir->data->Contains(746, 747) || cir->data->Contains(780, 720) || cir->data->Contains(785, 720) || cir->data->Contains(790, 720))
+			if (cir->data->Contains(752, 735) || cir->data->Contains(780, 720) || cir->data->Contains(785, 720) || cir->data->Contains(790, 720))
 			{
-				cir->data->body->ApplyForce({ 0.0f, -200.0f }, cir->data->body->GetPosition(), false);
+				cir->data->body->ApplyForce({ 0.0f, -145.0f }, cir->data->body->GetPosition(), false);
 			}
 			cir = cir->next;
 		}
