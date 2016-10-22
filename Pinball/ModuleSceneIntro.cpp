@@ -822,6 +822,9 @@ bool ModuleSceneIntro::Start()
 	//sensors
 	//door sensor
 	App->physics->CreateRectangleSensor(570, 400, 20, 20, DOOR_SENSOR);
+	App->physics->CreateRectangleSensor(615, 627, 20, 10, FINAL_RAMP_SENSOR);
+	App->physics->CreateRectangleSensor(293, 616, 20, 10, FINAL_RAMP_SENSOR);
+
 	App->physics->CreateRectangleSensor(193, 217, 20, 20, SENSOR_RAMP_C);
 	App->physics->CreateRectangleSensor(668, 367, 20, 20, SENSOR_RAMP_B);
 	App->physics->CreateRectangleSensor(241, 357, 20, 20, SENSOR_RAMP_A);
@@ -1006,38 +1009,9 @@ update_status ModuleSceneIntro::PostUpdate()
 
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	int x, y;
-
-	App->audio->PlayFx(bonus_fx);
-
 	
-	if (bodyB->body->GetFixtureList()->GetFilterData().categoryBits == DOOR_SENSOR && bodyA->body->GetFixtureList()->GetFilterData().categoryBits == BALL)
-	{
-		b2Filter filter = bodyA->body->GetFixtureList()->GetFilterData();
-		filter.maskBits = MAP | SENSOR_RAMP_C | SENSOR_RAMP_B | SENSOR_RAMP_A;
-		bodyA->body->GetFixtureList()->SetFilterData(filter);
-	}
+	App->physics->If_Sensor_contact(bodyA, bodyB);
 
-	if (bodyB->body->GetFixtureList()->GetFilterData().categoryBits == SENSOR_RAMP_C && bodyA->body->GetFixtureList()->GetFilterData().categoryBits == BALL)
-	{
-		b2Filter filter = bodyA->body->GetFixtureList()->GetFilterData();
-		filter.maskBits = RAMP_C;
-		bodyA->body->GetFixtureList()->SetFilterData(filter);
-	}
-	
-	if (bodyB->body->GetFixtureList()->GetFilterData().categoryBits == SENSOR_RAMP_B && bodyA->body->GetFixtureList()->GetFilterData().categoryBits == BALL)
-	{
-		b2Filter filter = bodyA->body->GetFixtureList()->GetFilterData();
-		filter.maskBits = RAMP_B;
-		bodyA->body->GetFixtureList()->SetFilterData(filter);
-	}
-
-	if (bodyB->body->GetFixtureList()->GetFilterData().categoryBits == SENSOR_RAMP_A && bodyA->body->GetFixtureList()->GetFilterData().categoryBits == BALL)
-	{
-		b2Filter filter = bodyA->body->GetFixtureList()->GetFilterData();
-		filter.maskBits = RAMP_A;
-		bodyA->body->GetFixtureList()->SetFilterData(filter);
-	}
 
 	
 

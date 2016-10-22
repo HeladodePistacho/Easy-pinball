@@ -521,3 +521,40 @@ void ModulePhysics::BeginContact(b2Contact* contact)
 	if(physB && physB->listener != NULL)
 		physB->listener->OnCollision(physB, physA);
 }
+
+void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
+{
+
+	b2Filter filter = bodyA->body->GetFixtureList()->GetFilterData();
+
+	switch (bodyB->body->GetFixtureList()->GetFilterData().categoryBits)
+	{
+		case DOOR_SENSOR:
+			filter.maskBits = MAP | SENSOR_RAMP_C | SENSOR_RAMP_B | SENSOR_RAMP_A;
+			bodyA->body->GetFixtureList()->SetFilterData(filter);
+			break;
+		
+		case SENSOR_RAMP_A:
+			filter.maskBits = RAMP_A | FINAL_RAMP_SENSOR;
+			bodyA->body->GetFixtureList()->SetFilterData(filter);
+			break;
+
+		case SENSOR_RAMP_B:
+			filter.maskBits = RAMP_B | FINAL_RAMP_SENSOR;
+			bodyA->body->GetFixtureList()->SetFilterData(filter);
+			break;
+
+		case SENSOR_RAMP_C:
+			filter.maskBits = RAMP_C | FINAL_RAMP_SENSOR;
+			bodyA->body->GetFixtureList()->SetFilterData(filter);
+			break;
+
+		case FINAL_RAMP_SENSOR:
+			bodyA->body->SetLinearVelocity({ 0.0f, 0.0f });
+			filter.maskBits = MAP | SENSOR_RAMP_C | SENSOR_RAMP_B | SENSOR_RAMP_A;
+			bodyA->body->GetFixtureList()->SetFilterData(filter);
+			break;
+	}
+
+
+}

@@ -24,7 +24,8 @@ enum collision_type
 	DOOR_SENSOR = 128,
 	SENSOR_RAMP_C = 256,
 	SENSOR_RAMP_B = 512,
-	SENSOR_RAMP_A = 1024
+	SENSOR_RAMP_A = 1024,
+	FINAL_RAMP_SENSOR = 2048
 };
 
 
@@ -40,6 +41,7 @@ public:
 	float GetRotation() const;
 	bool Contains(int x, int y) const;
 	int RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& normal_y) const;
+	
 
 public:
 	int width, height;
@@ -68,6 +70,7 @@ public:
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
+	void If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB);
 
 private:
 
