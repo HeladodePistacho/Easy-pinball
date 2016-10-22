@@ -14,7 +14,9 @@ public:
 
 	bool Awake(pugi::xml_node&);
 	bool Start();
+	update_status PreUpdate();
 	update_status Update();
+	update_status PostUpdate();
 	bool CleanUp();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 
@@ -29,6 +31,18 @@ public:
 	SDL_Texture* circle;
 	SDL_Texture* box;
 	SDL_Texture* rick;
+	
+	
+	SDL_Texture* launcher;
+	SDL_Texture* scape_1;
+	SDL_Texture* scape_2;
+
+
+	SDL_Texture* wheel;
+	SDL_Texture* wheel_flames_1;
+	SDL_Texture* wheel_flames_2;
+	SDL_Texture* wheel_flames_3;
+
 	uint bonus_fx;
 	p2Point<int> ray;
 	bool ray_on;

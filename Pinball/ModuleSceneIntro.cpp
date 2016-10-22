@@ -43,6 +43,14 @@ bool ModuleSceneIntro::Start()
 	left_flap = App->textures->Load("Textures/left_flap.png");
 	right_flap = App->textures->Load("Textures/right_flap.png");
 
+	wheel = App->textures->Load("Textures/wheel.png");
+	wheel_flames_1 = App->textures->Load("Textures/wheels_flames_1.png");
+	wheel_flames_2 = App->textures->Load("Textures/wheels_flames_2.png");
+	wheel_flames_3 = App->textures->Load("Textures/wheels_flames_3.png");
+	
+	launcher = App->textures->Load("Textures/launcher.png");
+	scape_1 = App->textures->Load("Textures/scape_1.png");
+	scape_2 = App->textures->Load("Textures/scape_2.png");
 
 	//Pinball map walls
 	int map_walls[204] = {
@@ -838,19 +846,25 @@ bool ModuleSceneIntro::CleanUp()
 	return true;
 }
 
+update_status ModuleSceneIntro::PreUpdate()
+{
+	App->renderer->Blit(background, 0, 0);
+	
+	return UPDATE_CONTINUE;
+}
+
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
-	//Blit the clean background
-	App->renderer->Blit(background, 0, 0);
-
+	
+	
 	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
 		App->input->GetMouseX();
 		App->input->GetMouseY();
 	}
 
-	//Avtive ball launch
+	//Active ball launch
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
 		p2List_item<PhysBody*>* cir = circles.getFirst();
@@ -959,13 +973,13 @@ update_status ModuleSceneIntro::Update()
 	App->renderer->Blit(right_flap, pos_x - 6, pos_y - 5, NULL, 1.0f, App->physics->flap_up_right->GetRotation());
 	
 	App->physics->mid_wheel->GetPosition(pos_x, pos_y);
-	App->renderer->Blit(circle, pos_x, pos_y, NULL, 1.0f, App->physics->mid_wheel->GetRotation());
+	App->renderer->Blit(wheel, pos_x - 6, pos_y - 7, NULL, 1.0f, App->physics->mid_wheel->GetRotation());
 
 	App->physics->left_wheel->GetPosition(pos_x, pos_y);
-	App->renderer->Blit(circle, pos_x, pos_y, NULL, 1.0f, App->physics->left_wheel->GetRotation());
+	App->renderer->Blit(wheel, pos_x - 6, pos_y - 7, NULL, 1.0f, App->physics->left_wheel->GetRotation());
 
 	App->physics->right_wheel->GetPosition(pos_x, pos_y);
-	App->renderer->Blit(circle, pos_x, pos_y, NULL, 1.0f, App->physics->right_wheel->GetRotation());
+	App->renderer->Blit(wheel, pos_x - 6, pos_y - 7, NULL, 1.0f, App->physics->right_wheel->GetRotation());
 
 	p2List_item<PhysBody*>* c = circles.getFirst();
 
@@ -1015,6 +1029,27 @@ update_status ModuleSceneIntro::Update()
 		if(normal.x != 0.0f)
 			App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
 	}
+
+	//All superior Renders
+
+	//Blit the launcher
+	App->renderer->Blit(launcher, 655, 450);
+	App->renderer->Blit(scape_1, 158, 91);
+	App->renderer->Blit(scape_2, 121, 16);
+
+
+	//Blit the wheel flames
+	App->renderer->Blit(wheel_flames_1, 425, 54);
+	App->renderer->Blit(wheel_flames_2, 585, 95);
+	App->renderer->Blit(wheel_flames_3, 474, 228);
+
+	return UPDATE_CONTINUE;
+}
+
+
+update_status ModuleSceneIntro::PostUpdate()
+{
+	
 
 	return UPDATE_CONTINUE;
 }

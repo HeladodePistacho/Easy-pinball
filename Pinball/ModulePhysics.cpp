@@ -101,7 +101,7 @@ bool ModulePhysics::Start()
 	mid_wheel = CreateCircle(532, 238, 34, NONE);
 	def.bodyA = mid_wheel->body;
 	def.bodyB = mid_wheel_point->body;
-	def.motorSpeed = -25.0f;
+	def.motorSpeed = -8.0f;
 	def.maxMotorTorque = 80.0f;
 	def.localAnchorB = { 0.0f , 0.0f };
 	def.enableMotor = true;
@@ -113,7 +113,7 @@ bool ModulePhysics::Start()
 	left_wheel = CreateCircle(474, 180, 34, NONE);
 	def.bodyA = left_wheel->body;
 	def.bodyB = left_wheel_point->body;
-	def.motorSpeed = -25.0f;
+	def.motorSpeed = -8.0f;
 	def.maxMotorTorque = 80.0f;
 	def.localAnchorB = { 0.0f , 0.0f };
 	def.enableMotor = true;
@@ -125,7 +125,7 @@ bool ModulePhysics::Start()
 	right_wheel = CreateCircle(590, 180, 34, NONE);
 	def.bodyA = right_wheel->body;
 	def.bodyB = right_wheel_point->body;
-	def.motorSpeed = -25.0f;
+	def.motorSpeed = -8.0f;
 	def.maxMotorTorque = 80.0f;
 	def.localAnchorB = { 0.0f , 0.0f };
 	def.enableMotor = true;
