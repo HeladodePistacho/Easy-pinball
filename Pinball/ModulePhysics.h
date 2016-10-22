@@ -16,10 +16,15 @@ enum collision_type
 {
 	NONE = 1,
 	BALL = 2,
-	
-	MAP = 4,
-	LAUNCHER = 8,
-	DOOR_SENSOR = 10,
+	RAMP_C = 4,
+	RAMP_B = 8,
+	RAMP_A = 16,
+	MAP = 32,
+	LAUNCHER = 64,
+	DOOR_SENSOR = 128,
+	SENSOR_RAMP_C = 256,
+	SENSOR_RAMP_B = 512,
+	SENSOR_RAMP_A = 1024
 };
 
 

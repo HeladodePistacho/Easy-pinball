@@ -493,7 +493,7 @@ bool ModuleSceneIntro::Start()
 		225, 374,
 		230, 385
 	};
-	App->physics->CreateChain(0, 0, ramp_a, 322, NONE);
+	App->physics->CreateChain(0, 0, ramp_a, 322, RAMP_A);
 
 	//Ramp b
 	int ramp_b[256] = {
@@ -626,7 +626,7 @@ bool ModuleSceneIntro::Start()
 		687, 385,
 		673, 405
 	};
-	App->physics->CreateChain(0, 0, ramp_b, 256, NONE);
+	App->physics->CreateChain(0, 0, ramp_b, 256, RAMP_B);
 
 	//Ramp c
 	int ramp_c[190] = {
@@ -726,7 +726,7 @@ bool ModuleSceneIntro::Start()
 		204, 249,
 		214, 258
 	};
-	App->physics->CreateChain(0, 0, ramp_c, 190, NONE);
+	App->physics->CreateChain(0, 0, ramp_c, 190, RAMP_C);
 
 	//Mid wheel chain
 	int mid_wheel_chain[68] = {
@@ -765,7 +765,7 @@ bool ModuleSceneIntro::Start()
 		486, 241,
 		485, 251
 	};
-	App->physics->CreateChain(0, 0, mid_wheel_chain, 68, NONE);
+	App->physics->CreateChain(0, 0, mid_wheel_chain, 68, MAP);
 
 	//Right wheel chain
 	int right_wheel_chain[54] = {
@@ -797,7 +797,7 @@ bool ModuleSceneIntro::Start()
 		618, 204,
 		613, 213
 	};
-	App->physics->CreateChain(0, 0, right_wheel_chain, 54, NONE);
+	App->physics->CreateChain(0, 0, right_wheel_chain, 54, MAP);
 
 	// Right rocket
 	int right_rocket[10] = {
@@ -819,10 +819,14 @@ bool ModuleSceneIntro::Start()
 	};
 	App->physics->CreateChain(0, 0, left_rocket, 10, NONE, 4);
 
+	//sensors
+	//door sensor
 	App->physics->CreateRectangleSensor(570, 400, 20, 20, DOOR_SENSOR);
-	/*
+	App->physics->CreateRectangleSensor(193, 217, 20, 20, SENSOR_RAMP_C);
+	App->physics->CreateRectangleSensor(668, 367, 20, 20, SENSOR_RAMP_B);
+	App->physics->CreateRectangleSensor(241, 357, 20, 20, SENSOR_RAMP_A);
 
-	*/
+	
 	return ret;
 }
 
@@ -1010,10 +1014,32 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	if (bodyB->body->GetFixtureList()->GetFilterData().categoryBits == DOOR_SENSOR && bodyA->body->GetFixtureList()->GetFilterData().categoryBits == BALL)
 	{
 		b2Filter filter = bodyA->body->GetFixtureList()->GetFilterData();
-		filter.maskBits = MAP;
+		filter.maskBits = MAP | SENSOR_RAMP_C | SENSOR_RAMP_B | SENSOR_RAMP_A;
 		bodyA->body->GetFixtureList()->SetFilterData(filter);
 	}
 
+	if (bodyB->body->GetFixtureList()->GetFilterData().categoryBits == SENSOR_RAMP_C && bodyA->body->GetFixtureList()->GetFilterData().categoryBits == BALL)
+	{
+		b2Filter filter = bodyA->body->GetFixtureList()->GetFilterData();
+		filter.maskBits = RAMP_C;
+		bodyA->body->GetFixtureList()->SetFilterData(filter);
+	}
+	
+	if (bodyB->body->GetFixtureList()->GetFilterData().categoryBits == SENSOR_RAMP_B && bodyA->body->GetFixtureList()->GetFilterData().categoryBits == BALL)
+	{
+		b2Filter filter = bodyA->body->GetFixtureList()->GetFilterData();
+		filter.maskBits = RAMP_B;
+		bodyA->body->GetFixtureList()->SetFilterData(filter);
+	}
+
+	if (bodyB->body->GetFixtureList()->GetFilterData().categoryBits == SENSOR_RAMP_A && bodyA->body->GetFixtureList()->GetFilterData().categoryBits == BALL)
+	{
+		b2Filter filter = bodyA->body->GetFixtureList()->GetFilterData();
+		filter.maskBits = RAMP_A;
+		bodyA->body->GetFixtureList()->SetFilterData(filter);
+	}
+
+	
 
 	/*
 	if(bodyA)
