@@ -37,6 +37,9 @@ bool ModuleSceneIntro::Start()
 	rick = App->textures->Load("Textures/rick_head.png");
 	bonus_fx = App->audio->LoadFx("Audio/bonus.wav");
 
+	circles.add(App->physics->CreateCircle(752, 725, 10, BALL));
+	circles.getLast()->data->listener = this;
+
 	//Pinball background
 	background = App->textures->Load("Textures/background.png");
 	//Pinball flaps
@@ -856,10 +859,11 @@ update_status ModuleSceneIntro::Update()
 
 		while (cir != NULL)
 		{
-			if (cir->data->Contains(752, 735) || cir->data->Contains(780, 720) || cir->data->Contains(785, 720) || cir->data->Contains(790, 720))
+			if (cir->data->Contains(752, 735))
 			{
 				cir->data->body->ApplyForce({ 0.0f, -145.0f }, cir->data->body->GetPosition(), false);
 			}
+			
 			cir = cir->next;
 		}
 	}

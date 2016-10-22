@@ -300,6 +300,8 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, collis
 // 
 update_status ModulePhysics::PostUpdate()
 {
+	
+
 	if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 
