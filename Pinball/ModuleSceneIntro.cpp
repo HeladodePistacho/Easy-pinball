@@ -50,10 +50,32 @@ bool ModuleSceneIntro::Start()
 	wheel_flames_1 = App->textures->Load("Textures/wheels_flames_1.png");
 	wheel_flames_2 = App->textures->Load("Textures/wheels_flames_2.png");
 	wheel_flames_3 = App->textures->Load("Textures/wheels_flames_3.png");
-	
+
 	launcher = App->textures->Load("Textures/launcher.png");
 	scape_1 = App->textures->Load("Textures/scape_1.png");
 	scape_2 = App->textures->Load("Textures/scape_2.png");
+
+	scape_light_1 = App->textures->Load("Textures/scape_light_1.png");
+	scape_light_2 = App->textures->Load("Textures/scape_light_2.png");
+	scape_light_3 = App->textures->Load("Textures/scape_light_3.png");
+	scape_light_4 = App->textures->Load("Textures/scape_light_4.png");
+	scape_light_5 = App->textures->Load("Textures/scape_light_5.png");
+
+	down_red_light = App->textures->Load("Textures/red_light.png");
+	down_yellow_light = App->textures->Load("Textures/yellow_light.png");
+	down_orange_light = App->textures->Load("Textures/orange_light.png");
+
+	mid_red_light = App->textures->Load("Textures/mid_red_light.png");
+	mid_orange_light = App->textures->Load("Textures/mid_orange_light.png");
+	mid_yellow_light = App->textures->Load("Textures/mid_yellow_light.png");
+
+	up_light_1 = App->textures->Load("Textures/up_light_1.png");
+	up_light_2 = App->textures->Load("Textures/up_light_2.png");
+	up_light_3 = App->textures->Load("Textures/up_light_3.png");
+
+	left_lung = App->textures->Load("Textures/left_lung.png");
+	right_lung = App->textures->Load("Textures/right_lung.png");
+
 
 	//Pinball map walls
 	int map_walls[204] = {
@@ -985,16 +1007,42 @@ update_status ModuleSceneIntro::Update()
 
 	//All superior Renders
 
-	//Blit the launcher
-	App->renderer->Blit(launcher, 655, 450);
-	App->renderer->Blit(scape_1, 158, 91);
-	App->renderer->Blit(scape_2, 121, 16);
-
+	//All superior Renders
 
 	//Blit the wheel flames
 	App->renderer->Blit(wheel_flames_1, 425, 54);
 	App->renderer->Blit(wheel_flames_2, 585, 95);
 	App->renderer->Blit(wheel_flames_3, 474, 228);
+
+
+	//All superior Renders
+	App->renderer->Blit(scape_light_1, 620, 354);
+	App->renderer->Blit(scape_light_4, 182, 318);
+	App->renderer->Blit(scape_light_5, 110, 193);
+
+	App->renderer->Blit(left_lung, 286, 588);
+	App->renderer->Blit(right_lung, 530, 582);
+
+	//Blit the launcher
+	App->renderer->Blit(launcher, 655, 450);
+	App->renderer->Blit(scape_1, 158, 91);
+	App->renderer->Blit(scape_2, 121, 16);
+
+	App->renderer->Blit(scape_light_2, 412, 12);
+	App->renderer->Blit(scape_light_3, 148, 70);
+
+	App->renderer->Blit(down_yellow_light, 352, 363);
+	App->renderer->Blit(down_orange_light, 335, 400);
+	App->renderer->Blit(down_red_light, 324, 436);
+
+	App->renderer->Blit(mid_red_light, 308, 252);
+	App->renderer->Blit(mid_orange_light, 333, 212);
+	App->renderer->Blit(mid_yellow_light, 357, 178);
+
+	App->renderer->Blit(up_light_1, 496, 77);
+	App->renderer->Blit(up_light_2, 521, 79);
+	App->renderer->Blit(up_light_3, 548, 84);
+
 
 	return UPDATE_CONTINUE;
 }

@@ -37,11 +37,31 @@ public:
 	SDL_Texture* scape_1;
 	SDL_Texture* scape_2;
 
+	SDL_Texture* scape_light_1;
+	SDL_Texture* scape_light_2;
+	SDL_Texture* scape_light_3;
+	SDL_Texture* scape_light_4;
+	SDL_Texture* scape_light_5;
 
 	SDL_Texture* wheel;
 	SDL_Texture* wheel_flames_1;
 	SDL_Texture* wheel_flames_2;
 	SDL_Texture* wheel_flames_3;
+
+	SDL_Texture* down_red_light;
+	SDL_Texture* down_orange_light;
+	SDL_Texture* down_yellow_light;
+
+	SDL_Texture* mid_red_light;
+	SDL_Texture* mid_orange_light;
+	SDL_Texture* mid_yellow_light;
+
+	SDL_Texture* up_light_1;
+	SDL_Texture* up_light_2;
+	SDL_Texture* up_light_3;
+
+	SDL_Texture* left_lung;
+	SDL_Texture* right_lung;
 
 	uint bonus_fx;
 	p2Point<int> ray;
