@@ -555,7 +555,7 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 
 		case FINAL_RAMP_SENSOR:
 
-			for (int i = 0; i < 20000000; i++)
+			for (int i = 0; i < 200000; i++)
 			{
 				bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
 			}
