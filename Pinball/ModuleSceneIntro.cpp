@@ -816,7 +816,7 @@ bool ModuleSceneIntro::Start()
 		656, 690,
 		655, 678
 	};
-	App->physics->CreateChain(0, 0, right_rocket, 10, NONE, 4);
+	App->physics->CreateChain(0, 0, right_rocket, 10, MAP, 4);
 
 	// Left rocket
 	int left_rocket[10] = {
@@ -826,7 +826,7 @@ bool ModuleSceneIntro::Start()
 		263, 711,
 		251, 698
 	};
-	App->physics->CreateChain(0, 0, left_rocket, 10, NONE, 4);
+	App->physics->CreateChain(0, 0, left_rocket, 10, MAP, 4);
 
 	//sensors
 	//door sensor
