@@ -21,6 +21,33 @@ public:
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 
 public:
+
+	//Score
+	char score_text[10];
+	int score_font = -1;
+
+	//Ball Speed
+	char speed_text[10];
+	int speed_font = -1;
+
+	//Debug
+	char debug_text[100];
+	int debug_font = -1;
+	char temp_text[17];
+
+	//timing
+	char time_count_text[14];
+	char time_text[6];
+	int initial_time = 0;
+	int crone_time = 0;
+	int ratio = 1000;
+	int seconds = 0;
+	int decimes = 0;
+	int minutes = 0;
+
+
+
+public:
 	p2List<PhysBody*> circles;
 	p2List<PhysBody*> boxes;
 	p2List<PhysBody*> ricks;
@@ -91,6 +118,7 @@ public:
 	bool ray_on;
 
 private:
+
 	SDL_Texture* background;
 	SDL_Texture* left_flap;
 	SDL_Texture* right_flap;

@@ -6,6 +6,8 @@
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
+#include "ModulePlayer.h"
+
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -27,9 +29,16 @@ bool ModuleSceneIntro::Awake(pugi::xml_node& config)
 bool ModuleSceneIntro::Start()
 {
 	LOG("Loading Intro assets");
+	
 	bool ret = true;
 
-	App->audio->PlayMusic("Audio/pinball_theme.wav");
+	score_font = App->textures->LoadFont("Textures/numbers_font.png", ".0123456789", 1);
+
+	debug_font = App->textures->LoadFont("Textures/debug_font.png", "!*#$%&`()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[[]|`", 1);
+
+
+
+	App->audio->PlayMusic("Audio/pinball_theme.ogg");
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
@@ -881,7 +890,7 @@ bool ModuleSceneIntro::Start()
 bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
-
+	App->textures->UnLoadFont(score_font);
 	return true;
 }
 
@@ -895,8 +904,90 @@ update_status ModuleSceneIntro::PreUpdate()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
+	{
+		int crone_time = GetTickCount();
+
+		if (crone_time >= (initial_time + ratio))
+		{
+			seconds++;
+
+			if (seconds > 9)
+			{
+				seconds = 0;
+				++decimes;
+			}
+
+			if (decimes > 5)
+			{
+				decimes = 0;
+				++minutes;
+			}
+
+
+			initial_time = crone_time;
+		}
+	}
+
+	//DEBUG------------------------------------------------------
+	
+	//time title
+	sprintf_s(time_text, 6, "%s", "TIME");
+	App->textures->BlitFont(36, 45, debug_font, time_text);
+	
+	//time number
+	sprintf_s(time_count_text, 14, "%i:%i%i", minutes, decimes, seconds);
+	App->textures->BlitFont(100, 45, debug_font, time_count_text);
+	
+	//rotations
 	
 	
+	/*char* flap_up_right_rotation = "Up Right ->";
+	char* flap_down_right_rotation = "Down Right ->";
+	char* flap_up_left_rotation = "Up Left ->";
+	char* flap_down_left_rotation = "Down Left ->";
+	*/
+
+	float rotation = 0;
+
+	sprintf_s(temp_text, 17, "%s", "FLAPS.ROTATION");
+	App->textures->BlitFont(80, 60, debug_font, temp_text);
+
+	sprintf_s(temp_text, 10, "%s", "UP.LEFT:");
+	App->textures->BlitFont(53, 75, debug_font, temp_text);
+
+	rotation = App->physics->flap_up_left->body->GetAngle() * RADTODEG;
+	sprintf_s(debug_text, 100, "%f", rotation);
+	App->textures->BlitFont(170, 75, debug_font, debug_text);
+
+	sprintf_s(temp_text, 12, "%s", "DOWN.LEFT:");
+	App->textures->BlitFont(61, 90, debug_font, temp_text);
+
+	rotation = App->physics->flap_down_left->body->GetAngle() * RADTODEG;
+	sprintf_s(debug_text, 100, "%f", rotation);
+	App->textures->BlitFont(170, 90, debug_font, debug_text);
+
+	sprintf_s(temp_text, 11, "%s", "UP.RIGHT:");
+	App->textures->BlitFont(56, 105, debug_font, temp_text);
+
+	rotation = App->physics->flap_up_right->body->GetAngle() * RADTODEG;
+	sprintf_s(debug_text, 100, "%f", rotation);
+	App->textures->BlitFont(170, 105, debug_font, debug_text);
+
+	sprintf_s(temp_text, 13, "%s", "DOWN.RIGHT:");
+	App->textures->BlitFont(65, 120, debug_font, temp_text);
+
+	rotation = App->physics->flap_down_right->body->GetAngle() * RADTODEG;
+	sprintf_s(debug_text, 100, "%f", rotation);
+	App->textures->BlitFont(170, 120, debug_font, debug_text);
+
+	
+	
+	//score
+	sprintf_s(score_text, 10, "%i", App->player->score);
+	App->textures->BlitFont(890, 170, score_font, score_text);
+
+	
+
 	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
 		App->input->GetMouseX();
@@ -924,7 +1015,7 @@ update_status ModuleSceneIntro::Update()
 
 		App->audio->PlayFx(flap_up_fx);
 		App->physics->PushUpLeftFlaps();
-
+		App->player->score += 100;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 

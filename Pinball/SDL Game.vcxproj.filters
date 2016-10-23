@@ -74,9 +74,6 @@
     <ClInclude Include="pugixml.hpp">
       <Filter>Pugi_XML</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleFonts.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -117,9 +114,6 @@
     </ClCompile>
     <ClCompile Include="pugixml.cpp">
       <Filter>Pugi_XML</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleFonts.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
