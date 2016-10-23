@@ -92,8 +92,11 @@ public:
 	PhysBody* mid_wheel;
 	PhysBody* right_wheel;
 
-	void PushUpFlaps();
-	void PushDownFlaps();
+	void PushUpLeftFlaps();
+	void PushUpRightFlaps();
+	void PushDownLeftFlaps();
+	void PushDownRightFlaps();
+
 
 private:
 

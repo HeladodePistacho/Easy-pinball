@@ -66,6 +66,19 @@ public:
 	uint launcher_fx;
 	uint ramp_a_fx;
 
+	uint drift_1_fx;
+	uint drift_2_fx;
+	uint special_ramp_fx;
+	uint ping_fx;
+	uint crash_1_fx;
+	uint crash_2_fx;
+	uint lung_boom_fx;
+	uint ding_ding_fx;
+	uint jackpot_fx;
+	uint points_fx;
+	uint wheels_1_fx;
+	uint wheels_2_fx;
+
 	p2Point<int> ray;
 	bool ray_on;
 

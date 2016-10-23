@@ -63,8 +63,8 @@ bool ModulePhysics::Start()
 	//Up Right
 	def.bodyA = flap_up_right_point->body;
 	def.bodyB = flap_up_right->body;
-	def.lowerAngle = -60 * DEGTORAD;
-	def.upperAngle = 0 * DEGTORAD;
+	def.lowerAngle = -55 * DEGTORAD;
+	def.upperAngle = -20 * DEGTORAD;
 	def.enableLimit = true;
 	def.localAnchorB = { 0.500f,0.0f };
 	flap_up_right_fix_joint = (b2RevoluteJoint*)world->CreateJoint(&def);
@@ -72,8 +72,8 @@ bool ModulePhysics::Start()
 	//Down Right
 	def.bodyA = flap_down_right_point->body;
 	def.bodyB = flap_down_right->body;
-	def.lowerAngle = -28 * DEGTORAD;
-	def.upperAngle = 50 * DEGTORAD;
+	def.lowerAngle = -22 * DEGTORAD;
+	def.upperAngle = 30 * DEGTORAD;
 	def.enableLimit = true;
 	def.localAnchorB = { 0.500f,0.0f };
 	flap_down_right_fix_joint = (b2RevoluteJoint*)world->CreateJoint(&def);
@@ -81,8 +81,8 @@ bool ModulePhysics::Start()
 	//Up Left
 	def.bodyA = flap_up_left_point->body;
 	def.bodyB = flap_up_left->body;
-	def.lowerAngle = -30 * DEGTORAD;
-	def.upperAngle = 33 * DEGTORAD;
+	def.lowerAngle = -10 * DEGTORAD;
+	def.upperAngle = 35 * DEGTORAD;
 	def.enableLimit = true;
 	def.localAnchorB = { -0.500f,0.0f };
 	flap_up_left_fix_joint = (b2RevoluteJoint*)world->CreateJoint(&def);
@@ -90,8 +90,8 @@ bool ModulePhysics::Start()
 	//Down Left
 	def.bodyA = flap_down_left_point->body;
 	def.bodyB = flap_down_left->body;
-	def.lowerAngle = -45 * DEGTORAD;
-	def.upperAngle = 27 * DEGTORAD;
+	def.lowerAngle = -26 * DEGTORAD;
+	def.upperAngle = 24 * DEGTORAD;
 	def.enableLimit = true;
 	def.localAnchorB = { -0.500f,0.0f };
 	flap_down_left_fix_joint = (b2RevoluteJoint*)world->CreateJoint(&def);
@@ -425,23 +425,33 @@ update_status ModulePhysics::PostUpdate()
 	return UPDATE_CONTINUE;
 }
 
-void ModulePhysics::PushUpFlaps() {
-	
-	App->player->score += 1;
-	flap_up_right->body->ApplyForce({ 12,0 }, { 0,0 }, true);
-	flap_down_right->body->ApplyForce({ 12,0 }, { 0,0 }, true);
+void ModulePhysics::PushUpLeftFlaps() {
+
 	flap_down_left->body->ApplyForce({ -12,0 }, { 70,0 }, true);
 	flap_up_left->body->ApplyForce({ -12,0 }, { 70,0 }, true);
 
 }
-void ModulePhysics::PushDownFlaps() {
-	
-	flap_up_right->body->ApplyForce({ -12,0 }, { 0,0 }, true);
-	flap_down_right->body->ApplyForce({ -12,0 }, { 0,0 }, true);
+
+void ModulePhysics::PushUpRightFlaps() {
+
+	flap_up_right->body->ApplyForce({ 12,0 }, { 0,0 }, true);
+	flap_down_right->body->ApplyForce({ 12,0 }, { 0,0 }, true);
+
+}
+void ModulePhysics::PushDownLeftFlaps() {
+
 	flap_down_left->body->ApplyForce({ 12,0 }, { 70,0 }, true);
 	flap_up_left->body->ApplyForce({ 12,0 }, { 70,0 }, true);
 
 }
+
+void ModulePhysics::PushDownRightFlaps() {
+
+	flap_up_right->body->ApplyForce({ -12,0 }, { 0,0 }, true);
+	flap_down_right->body->ApplyForce({ -12,0 }, { 0,0 }, true);
+
+}
+
 
 // Called before quitting
 bool ModulePhysics::CleanUp()
@@ -543,18 +553,21 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 			
 			filter.maskBits = RAMP_A | FINAL_RAMP_SENSOR | TURBO_SENSOR_UP;
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
+			App->audio->PlayFx(App->scene_intro->drift_1_fx);
 			break;
 
 		case SENSOR_RAMP_B:
 			
 			filter.maskBits = RAMP_B | FINAL_RAMP_SENSOR | TURBO_SENSOR_UP;
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
+			App->audio->PlayFx(App->scene_intro->special_ramp_fx);
 			break;
 
 		case SENSOR_RAMP_C:
 			bodyA->body->ApplyForce({ -50.0f, 0.0f }, bodyA->body->GetPosition(), true);
 			filter.maskBits = RAMP_C | FINAL_RAMP_SENSOR;
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
+			App->audio->PlayFx(App->scene_intro->drift_1_fx);
 			break;
 
 		case FINAL_RAMP_SENSOR:

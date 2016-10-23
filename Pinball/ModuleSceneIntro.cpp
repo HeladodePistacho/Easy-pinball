@@ -40,6 +40,29 @@ bool ModuleSceneIntro::Start()
 	launcher_fx = App->audio->LoadFx("Audio/launcher_fx.wav");
 	ramp_a_fx = App->audio->LoadFx("Audio/ramp_a_fx.wav");
 
+	flap_up_fx = App->audio->LoadFx("Audio/flap_up_fx.wav");
+	flap_down_fx = App->audio->LoadFx("Audio/flap_down_fx.wav");
+	launcher_fx = App->audio->LoadFx("Audio/launcher_fx.wav");
+	
+	ramp_a_fx = App->audio->LoadFx("Audio/ramp_a_fx.wav");
+	drift_1_fx = App->audio->LoadFx("Audio/drift_1.wav");
+	drift_2_fx = App->audio->LoadFx("Audio/drift_2.wav");
+	special_ramp_fx = App->audio->LoadFx("Audio/special_ramp_fx.wav");
+
+	ping_fx = App->audio->LoadFx("Audio/ping_fx.wav");
+	ding_ding_fx = App->audio->LoadFx("Audio/ding_ding_fx.wav");
+	jackpot_fx = App->audio->LoadFx("Audio/jackpot_fx.wav");
+	points_fx = App->audio->LoadFx("Audio/points_fx.wav");
+
+	crash_1_fx = App->audio->LoadFx("Audio/crash_1.wav");
+	crash_2_fx = App->audio->LoadFx("Audio/crash_2.wav");
+
+	lung_boom_fx = App->audio->LoadFx("Audio/lung_boom_fx.wav");
+	
+	wheels_1_fx = App->audio->LoadFx("Audio/wheel_fx.wav");
+	wheels_2_fx = App->audio->LoadFx("Audio/wheel_fx_2.wav");
+
+
 	circles.add(App->physics->CreateCircle(752, 725, 10, BALL));
 	circles.getLast()->data->listener = this;
 
@@ -890,16 +913,16 @@ update_status ModuleSceneIntro::Update()
 		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN){ 
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) {
 
 		App->audio->PlayFx(flap_up_fx);
-		App->physics->PushUpFlaps();
+		App->physics->PushUpLeftFlaps();
 
 	}
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 
-		App->physics->PushUpFlaps();
-	
+		App->physics->PushUpLeftFlaps();
+
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
@@ -909,8 +932,31 @@ update_status ModuleSceneIntro::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE) {
 
-		App->physics->PushDownFlaps();
+		App->physics->PushDownLeftFlaps();
 	}
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN) {
+
+		App->audio->PlayFx(flap_up_fx);
+		App->physics->PushUpRightFlaps();
+
+	}
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+
+		App->physics->PushUpRightFlaps();
+
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
+
+		App->audio->PlayFx(flap_down_fx);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE) {
+
+		App->physics->PushDownRightFlaps();
+	}
+
 
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
