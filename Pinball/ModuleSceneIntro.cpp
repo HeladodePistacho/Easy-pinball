@@ -866,7 +866,14 @@ bool ModuleSceneIntro::Start()
 	App->physics->CreateRectangleSensor(668, 367, 20, 20, TURBO_SENSOR_UP);
 	App->physics->CreateRectangleSensor(295, 146, 20, 20, TURBO_SENSOR_DOWN);
 
-	
+	App->physics->CreateRectangleSensor(365, 372, 10, 10, YELLOW_LIGHT);
+	App->physics->CreateRectangleSensor(360, 390, 10, 10, YELLOW_LIGHT);
+
+	App->physics->CreateRectangleSensor(353, 406, 10, 10, ORANGE_LIGHT);
+	App->physics->CreateRectangleSensor(348, 424, 10, 10, ORANGE_LIGHT);
+
+	App->physics->CreateRectangleSensor(340, 439, 10, 10, RED_LIGHT);
+	App->physics->CreateRectangleSensor(335, 457, 10, 10, RED_LIGHT);
 	return ret;
 }
 
@@ -1034,6 +1041,7 @@ update_status ModuleSceneIntro::Update()
 	App->renderer->Blit(right_lung, 530, 582);
 
 	//Blit the launcher
+	/*
 	App->renderer->Blit(launcher, 655, 450);
 	App->renderer->Blit(scape_1, 158, 91);
 	App->renderer->Blit(scape_2, 121, 16);
@@ -1052,6 +1060,14 @@ update_status ModuleSceneIntro::Update()
 	App->renderer->Blit(up_light_1, 496, 77);
 	App->renderer->Blit(up_light_2, 521, 79);
 	App->renderer->Blit(up_light_3, 548, 84);
+	*/
+	if(down_yellow_light_on)
+		App->renderer->Blit(down_yellow_light, 352, 363);
+	if (down_orange_light_on)
+		App->renderer->Blit(down_orange_light, 335, 400);
+	if (down_red_light_on)
+		App->renderer->Blit(down_red_light, 324, 436);
+
 
 	App->physics->flap_down_left->GetPosition(pos_x, pos_y);
 	App->renderer->Blit(left_flap, pos_x - 6, pos_y - 5, NULL, 1.0f, App->physics->flap_down_left->GetRotation());

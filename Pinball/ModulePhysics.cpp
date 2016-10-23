@@ -100,7 +100,7 @@ bool ModulePhysics::Start()
 
 	//Mid
 	mid_wheel_point = App->physics->CreateStaticCircle(532, 242, 4);
-	mid_wheel = CreateCircle(532, 238, 34, NONE);
+	mid_wheel = CreateCircle(532, 238, 34, MAP);
 	def.bodyA = mid_wheel->body;
 	def.bodyB = mid_wheel_point->body;
 	def.motorSpeed = -8.0f;
@@ -112,7 +112,7 @@ bool ModulePhysics::Start()
 
 	//Left
 	left_wheel_point = App->physics->CreateStaticCircle(474, 180, 4);
-	left_wheel = CreateCircle(474, 180, 34, NONE);
+	left_wheel = CreateCircle(474, 180, 34, MAP);
 	def.bodyA = left_wheel->body;
 	def.bodyB = left_wheel_point->body;
 	def.motorSpeed = -8.0f;
@@ -124,7 +124,7 @@ bool ModulePhysics::Start()
 
 	//Right
 	right_wheel_point = App->physics->CreateStaticCircle(590, 180, 4);
-	right_wheel = CreateCircle(590, 180, 34, NONE);
+	right_wheel = CreateCircle(590, 180, 34, MAP);
 	def.bodyA = right_wheel->body;
 	def.bodyB = right_wheel_point->body;
 	def.motorSpeed = -8.0f;
@@ -544,9 +544,8 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 	switch (bodyB->body->GetFixtureList()->GetFilterData().categoryBits)
 	{
 		case DOOR_SENSOR:
-			filter.maskBits = MAP | SENSOR_RAMP_C | SENSOR_RAMP_B | SENSOR_RAMP_A | TURBO_SENSOR_UP | TURBO_SENSOR_DOWN;
+			filter.maskBits = MAP | SENSOR_RAMP_C | SENSOR_RAMP_B | SENSOR_RAMP_A | TURBO_SENSOR_UP | TURBO_SENSOR_DOWN | YELLOW_LIGHT | ORANGE_LIGHT | RED_LIGHT;
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
-			bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
 			break;
 		
 		case SENSOR_RAMP_A:
@@ -577,6 +576,15 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 				bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
 			}
 			filter.maskBits = MAP | SENSOR_RAMP_C | SENSOR_RAMP_B | SENSOR_RAMP_A | TURBO_SENSOR_UP | TURBO_SENSOR_DOWN;
+
+			if (!App->scene_intro->down_yellow_light_on)
+				filter.maskBits = filter.maskBits | YELLOW_LIGHT;
+			if (!App->scene_intro->down_orange_light_on)
+				filter.maskBits = filter.maskBits | ORANGE_LIGHT;
+			if (!App->scene_intro->down_red_light_on)
+				filter.maskBits = filter.maskBits | RED_LIGHT;
+
+
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
 			break;
 
@@ -587,6 +595,25 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 		case TURBO_SENSOR_DOWN:
 			bodyA->body->ApplyForce({ 0.0f, 50.0f }, bodyA->body->GetPosition(), true);
 			break;
+
+		case YELLOW_LIGHT:
+			bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
+			filter.maskBits = MAP | SENSOR_RAMP_C | SENSOR_RAMP_B | SENSOR_RAMP_A | TURBO_SENSOR_UP | TURBO_SENSOR_DOWN;
+			App->scene_intro->down_yellow_light_on = true;
+			break;
+
+		case ORANGE_LIGHT:
+			bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
+			filter.maskBits = MAP | SENSOR_RAMP_C | SENSOR_RAMP_B | SENSOR_RAMP_A | TURBO_SENSOR_UP | TURBO_SENSOR_DOWN;
+			App->scene_intro->down_orange_light_on = true;
+			break;
+
+		case RED_LIGHT:
+			bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
+			filter.maskBits = MAP | SENSOR_RAMP_C | SENSOR_RAMP_B | SENSOR_RAMP_A | TURBO_SENSOR_UP | TURBO_SENSOR_DOWN;
+			App->scene_intro->down_red_light_on = true;
+			break;
+
 	}
 
 
