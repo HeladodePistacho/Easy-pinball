@@ -154,6 +154,8 @@ update_status ModulePhysics::PreUpdate()
 		}
 	}
 
+
+
 	return UPDATE_CONTINUE;
 }
 
@@ -552,7 +554,11 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 			break;
 
 		case FINAL_RAMP_SENSOR:
-			bodyA->body->SetLinearVelocity({ 0.0f, 0.0f });
+
+			for (int i = 0; i < 20000000; i++)
+			{
+				bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
+			}
 			filter.maskBits = MAP | SENSOR_RAMP_C | SENSOR_RAMP_B | SENSOR_RAMP_A;
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
 			break;

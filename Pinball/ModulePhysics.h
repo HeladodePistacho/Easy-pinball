@@ -95,6 +95,7 @@ public:
 
 private:
 
+
 	PhysBody* flap_up_right_point;
 	PhysBody* flap_down_right_point;
 	PhysBody* flap_up_left_point;
