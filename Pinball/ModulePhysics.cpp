@@ -534,21 +534,25 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 	switch (bodyB->body->GetFixtureList()->GetFilterData().categoryBits)
 	{
 		case DOOR_SENSOR:
-			filter.maskBits = MAP | SENSOR_RAMP_C | SENSOR_RAMP_B | SENSOR_RAMP_A;
+			filter.maskBits = MAP | SENSOR_RAMP_C | SENSOR_RAMP_B | SENSOR_RAMP_A | TURBO_SENSOR_UP | TURBO_SENSOR_DOWN;
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
+			bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
 			break;
 		
 		case SENSOR_RAMP_A:
-			filter.maskBits = RAMP_A | FINAL_RAMP_SENSOR;
+			
+			filter.maskBits = RAMP_A | FINAL_RAMP_SENSOR | TURBO_SENSOR_UP;
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
 			break;
 
 		case SENSOR_RAMP_B:
-			filter.maskBits = RAMP_B | FINAL_RAMP_SENSOR;
+			
+			filter.maskBits = RAMP_B | FINAL_RAMP_SENSOR | TURBO_SENSOR_UP;
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
 			break;
 
 		case SENSOR_RAMP_C:
+			bodyA->body->ApplyForce({ -50.0f, 0.0f }, bodyA->body->GetPosition(), true);
 			filter.maskBits = RAMP_C | FINAL_RAMP_SENSOR;
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
 			break;
@@ -559,8 +563,16 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 			{
 				bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
 			}
-			filter.maskBits = MAP | SENSOR_RAMP_C | SENSOR_RAMP_B | SENSOR_RAMP_A;
+			filter.maskBits = MAP | SENSOR_RAMP_C | SENSOR_RAMP_B | SENSOR_RAMP_A | TURBO_SENSOR_UP | TURBO_SENSOR_DOWN;
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
+			break;
+
+		case TURBO_SENSOR_UP:
+			bodyA->body->ApplyForce({ 0.0f, -200.0f }, bodyA->body->GetPosition(), true);
+			break;
+
+		case TURBO_SENSOR_DOWN:
+			bodyA->body->ApplyForce({ 0.0f, 50.0f }, bodyA->body->GetPosition(), true);
 			break;
 	}
 

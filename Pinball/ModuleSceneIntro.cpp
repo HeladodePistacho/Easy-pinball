@@ -136,8 +136,8 @@ bool ModuleSceneIntro::Start()
 	262, 140,
 	285, 159,
 	302, 174,
-	327, 189,
-	343, 207,
+	327, 190,
+	343, 209,
 	327, 226,
 	307, 250,
 	282, 238,
@@ -835,8 +835,13 @@ bool ModuleSceneIntro::Start()
 	App->physics->CreateRectangleSensor(293, 616, 20, 10, FINAL_RAMP_SENSOR);
 
 	App->physics->CreateRectangleSensor(193, 217, 20, 20, SENSOR_RAMP_C);
-	App->physics->CreateRectangleSensor(668, 367, 20, 20, SENSOR_RAMP_B);
-	App->physics->CreateRectangleSensor(241, 357, 20, 20, SENSOR_RAMP_A);
+	App->physics->CreateRectangleSensor(648, 389, 10, 10, SENSOR_RAMP_B);
+	App->physics->CreateRectangleSensor(241, 357, 10, 10, SENSOR_RAMP_A);
+
+	App->physics->CreateRectangleSensor(410, 143, 20, 20, TURBO_SENSOR_UP);
+	App->physics->CreateRectangleSensor(241, 357, 10, 10, TURBO_SENSOR_UP);
+	App->physics->CreateRectangleSensor(668, 367, 20, 20, TURBO_SENSOR_UP);
+	App->physics->CreateRectangleSensor(295, 146, 20, 20, TURBO_SENSOR_DOWN);
 
 	
 	return ret;
