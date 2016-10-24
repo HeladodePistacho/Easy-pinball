@@ -7,7 +7,7 @@
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
 #include "ModulePlayer.h"
-
+#include <cmath>
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -35,6 +35,10 @@ bool ModuleSceneIntro::Start()
 	score_font = App->textures->LoadFont("Textures/numbers_font.png", ".0123456789", 1);
 
 	debug_font = App->textures->LoadFont("Textures/debug_font.png", "!*#$%&`()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[[]|`", 1);
+
+	speed_font = App->textures->LoadFont("Textures/orange_numbers.png", "1234567890", 1);
+
+	balls_font = speed_font;
 
 
 
@@ -977,8 +981,26 @@ update_status ModuleSceneIntro::Update()
 	
 	//score
 	sprintf_s(score_text, 10, "%i", App->player->score);
-	App->textures->BlitFont(890, 170, score_font, score_text);
+	App->textures->BlitFont(890, 170, score_font, score_text,CENTER);
 
+	if (ball_body != circles.getLast()->data)ball_body = circles.getLast()->data;
+
+	//mph
+	if (ball_body != nullptr) {
+		float velocity_x = ball_body->body->GetLinearVelocity().x;
+		float velocity_y = ball_body->body->GetLinearVelocity().y;
+		int velocity = sqrt((velocity_x*velocity_x) + (velocity_y* velocity_y));
+		sprintf_s(speed_text, 100, "%i", velocity);
+	}
+	else {
+		sprintf_s(speed_text, 10, "%i", 0);
+	}
+	App->textures->BlitFont(965, 260, speed_font, speed_text);
+
+	//balls
+	
+	sprintf_s(balls_text, 10, "%i", circles.count());
+	App->textures->BlitFont(825, 260, balls_font, balls_text);
 	
 
 	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
@@ -1008,7 +1030,6 @@ update_status ModuleSceneIntro::Update()
 
 		App->audio->PlayFx(flap_up_fx);
 		App->physics->PushUpLeftFlaps();
-		App->player->score += 100;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 

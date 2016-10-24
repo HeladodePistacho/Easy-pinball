@@ -15,6 +15,14 @@ struct Font {
 	uint rows, lenght, char_w, char_h, row_chars;
 };
 
+enum BLIT_POINT {
+
+	CENTER,
+	LEFT,
+	RIGHT
+
+};
+
 class ModuleTextures : public Module
 {
 public:
@@ -35,7 +43,7 @@ public:
 	//Unload
 	void UnLoadFont(int font_id);
 	//Create texture from data
-	void BlitFont(int x, int y, int bmp_font_id, const char* text)const;
+	void BlitFont(int x, int y, int bmp_font_id, const char* text, BLIT_POINT blit_point = RIGHT)const;
 
 
 public:

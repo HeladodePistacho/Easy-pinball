@@ -604,25 +604,31 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 		case YELLOW_LIGHT:
 			bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
 			filter.maskBits = MAP | SENSOR_RAMP_C | SENSOR_RAMP_B | SENSOR_RAMP_A | TURBO_SENSOR_UP | TURBO_SENSOR_DOWN;
-			App->scene_intro->down_yellow_light_on = true;
-			App->audio->PlayFx(App->scene_intro->jackpot_fx);
-			App->player->score += 250;
+			if (App->scene_intro->down_yellow_light_on == false) {
+				App->scene_intro->down_yellow_light_on = true;
+				App->audio->PlayFx(App->scene_intro->jackpot_fx);
+				App->player->score += 250;
+			}
 			break;
 
 		case ORANGE_LIGHT:
 			bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
 			filter.maskBits = MAP | SENSOR_RAMP_C | SENSOR_RAMP_B | SENSOR_RAMP_A | TURBO_SENSOR_UP | TURBO_SENSOR_DOWN;
-			App->scene_intro->down_orange_light_on = true;
-			App->audio->PlayFx(App->scene_intro->jackpot_fx);
-			App->player->score += 250;
+			if (App->scene_intro->down_orange_light_on == false) {
+				App->scene_intro->down_orange_light_on = true;
+				App->audio->PlayFx(App->scene_intro->jackpot_fx);
+				App->player->score += 250;
+			}
 			break;
 
 		case RED_LIGHT:
 			bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
 			filter.maskBits = MAP | SENSOR_RAMP_C | SENSOR_RAMP_B | SENSOR_RAMP_A | TURBO_SENSOR_UP | TURBO_SENSOR_DOWN;
-			App->scene_intro->down_red_light_on = true;
-			App->audio->PlayFx(App->scene_intro->jackpot_fx);
-			App->player->score += 250;
+			if (App->scene_intro->down_red_light_on == false) {
+				App->scene_intro->down_red_light_on = true;
+				App->audio->PlayFx(App->scene_intro->jackpot_fx);
+				App->player->score += 250;
+			}
 			break;
 
 	}

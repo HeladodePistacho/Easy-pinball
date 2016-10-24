@@ -7,6 +7,7 @@
 #include "Engine/SDL_image/include/SDL_image.h"
 #pragma comment( lib, "Engine/SDL_image/libx86/SDL2_image.lib" )
 
+
 ModuleTextures::ModuleTextures(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	name.create("textures");
@@ -115,7 +116,7 @@ void ModuleTextures::UnLoadFont(int font_id) {
 	}
 }
 
-void ModuleTextures::BlitFont(int x, int y, int font_id, const char* text) const
+void ModuleTextures::BlitFont(int x, int y, int font_id, const char* text, BLIT_POINT blit_point) const
 {
 	if (text == nullptr || font_id < 0 || font_id >= MAX_FONTS || fonts[font_id].graphic == nullptr)
 	{
@@ -140,7 +141,11 @@ void ModuleTextures::BlitFont(int x, int y, int font_id, const char* text) const
 			}
 		}
 	}
-	x -= rect.w*digits/2;
+
+	if(blit_point == CENTER)x -= rect.w*digits/2;
+	else if (blit_point == RIGHT) x -= rect.w*digits;
+	else if (blit_point == LEFT) x += rect.w*digits;
+
 	for (uint i = 0; i < len; ++i)
 	{
 		// we could use strchr instead ?

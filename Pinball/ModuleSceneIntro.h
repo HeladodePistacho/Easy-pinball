@@ -27,8 +27,12 @@ public:
 	int score_font = -1;
 
 	//Ball Speed
-	char speed_text[10];
+	char speed_text[100];
 	int speed_font = -1;
+
+	//Number of Balls
+	char balls_text[10];
+	int balls_font = -1;
 
 	//Debug
 	char debug_text[100];
@@ -56,7 +60,8 @@ public:
 	bool sensed;
 
 	SDL_Texture* ball;
-	
+	PhysBody* ball_body;
+
 	SDL_Texture* launcher;
 	SDL_Texture* scape_1;
 	SDL_Texture* scape_2;

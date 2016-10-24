@@ -20,4 +20,8 @@ public:
 
 	uint score = 0;
 
+	uint lives = 3;
+
+	uint total_score = 0;
+
 };
