@@ -32,7 +32,16 @@ enum collision_type
 	ORANGE_LIGHT = 32768
 };
 
+enum BODY_TYPE {
 
+	NONE,
+	TURBO_UP,
+	TURBO_DOWN,
+
+
+
+
+};
 
 // Small class to return to other modules to track position and rotation of physics bodies
 class PhysBody
@@ -51,6 +60,7 @@ public:
 	int width, height;
 	b2Body* body;
 	Module* listener;
+	BODY_TYPE collide_type;
 };
 
 // Module --------------------------------------

@@ -939,13 +939,6 @@ update_status ModuleSceneIntro::Update()
 	App->textures->BlitFont(100, 45, debug_font, time_count_text);
 	
 	//rotations
-	
-	
-	/*char* flap_up_right_rotation = "Up Right ->";
-	char* flap_down_right_rotation = "Down Right ->";
-	char* flap_up_left_rotation = "Up Left ->";
-	char* flap_down_left_rotation = "Down Left ->";
-	*/
 
 	float rotation = 0;
 

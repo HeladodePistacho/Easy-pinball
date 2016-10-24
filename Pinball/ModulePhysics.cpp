@@ -553,6 +553,8 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 			filter.maskBits = RAMP_A | FINAL_RAMP_SENSOR | TURBO_SENSOR_UP;
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
 			App->audio->PlayFx(App->scene_intro->drift_1_fx);
+			App->audio->PlayFx(App->scene_intro->points_fx);
+			App->player->score += 35000;
 			break;
 
 		case SENSOR_RAMP_B:
@@ -560,6 +562,8 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 			filter.maskBits = RAMP_B | FINAL_RAMP_SENSOR | TURBO_SENSOR_UP;
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
 			App->audio->PlayFx(App->scene_intro->special_ramp_fx);
+			App->audio->PlayFx(App->scene_intro->points_fx);
+			App->player->score += 25000;
 			break;
 
 		case SENSOR_RAMP_C:
@@ -567,17 +571,18 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 			filter.maskBits = RAMP_C | FINAL_RAMP_SENSOR;
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
 			App->audio->PlayFx(App->scene_intro->drift_1_fx);
+			App->audio->PlayFx(App->scene_intro->points_fx);
+			App->player->score += 9000;
 			break;
 
 		case FINAL_RAMP_SENSOR:
 
-			for (int i = 0; i < 200000; i++)
-			{
-				bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
-			}
+
+			bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
+
 			filter.maskBits = MAP | SENSOR_RAMP_C | SENSOR_RAMP_B | SENSOR_RAMP_A | TURBO_SENSOR_UP | TURBO_SENSOR_DOWN;
 
-			if (!App->scene_intro->down_yellow_light_on)
+			if (!App->scene_intro->down_yellow_light_on) 
 				filter.maskBits = filter.maskBits | YELLOW_LIGHT;
 			if (!App->scene_intro->down_orange_light_on)
 				filter.maskBits = filter.maskBits | ORANGE_LIGHT;
@@ -600,18 +605,24 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 			bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
 			filter.maskBits = MAP | SENSOR_RAMP_C | SENSOR_RAMP_B | SENSOR_RAMP_A | TURBO_SENSOR_UP | TURBO_SENSOR_DOWN;
 			App->scene_intro->down_yellow_light_on = true;
+			App->audio->PlayFx(App->scene_intro->jackpot_fx);
+			App->player->score += 250;
 			break;
 
 		case ORANGE_LIGHT:
 			bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
 			filter.maskBits = MAP | SENSOR_RAMP_C | SENSOR_RAMP_B | SENSOR_RAMP_A | TURBO_SENSOR_UP | TURBO_SENSOR_DOWN;
 			App->scene_intro->down_orange_light_on = true;
+			App->audio->PlayFx(App->scene_intro->jackpot_fx);
+			App->player->score += 250;
 			break;
 
 		case RED_LIGHT:
 			bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
 			filter.maskBits = MAP | SENSOR_RAMP_C | SENSOR_RAMP_B | SENSOR_RAMP_A | TURBO_SENSOR_UP | TURBO_SENSOR_DOWN;
 			App->scene_intro->down_red_light_on = true;
+			App->audio->PlayFx(App->scene_intro->jackpot_fx);
+			App->player->score += 250;
 			break;
 
 	}
