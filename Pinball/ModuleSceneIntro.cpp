@@ -7,6 +7,7 @@
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
 #include "ModulePlayer.h"
+#include "ModuleInput.h"
 #include <cmath>
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -33,6 +34,60 @@ bool ModuleSceneIntro::Start()
 	bool ret = true;
 
 	game_state = START;
+	
+	SDL_Texture* on = App->textures->Load("Textures/new_game_on.png");
+	SDL_Texture* off = App->textures->Load("Textures/new_game_off.png");
+
+	SDL_Rect temp;
+	temp.x = 943;
+	temp.y = 717;
+	temp.h = temp.w = 50;
+
+	new_game_button.on_texture = on;
+	new_game_button.off_texture = off;
+	new_game_button.active_area = temp;
+	new_game_button.current_texture = on;
+
+	on = App->textures->Load("Textures/volume_on.png");
+	off = App->textures->Load("Textures/volume_off.png");
+
+	temp.x = 832;
+	temp.y = 525;
+	temp.h = temp.w = 50;
+
+	volume_button.on_texture = on;
+	volume_button.off_texture = off;
+	volume_button.active_area = temp;
+	volume_button.current_texture = on;
+
+	on = App->textures->Load("Textures/launch_on.png");
+	off = App->textures->Load("Textures/launch_off.png");
+
+	temp.x = 846;
+	temp.y = 716;
+	temp.h = temp.w = 50;
+
+	launch_button.on_texture = on;
+	launch_button.off_texture = off;
+	launch_button.active_area = temp;
+	launch_button.current_texture = on;
+	
+
+
+
+	pause_rect.x = 945;
+	pause_rect.y = 536;
+	pause_rect.h = pause_rect.w = 50;
+
+	unpause_rect.x = 486;
+	unpause_rect.y = 621;
+	unpause_rect.h = 31;
+	unpause_rect.w = 140;
+
+
+
+	
+
 
 	score_font = App->textures->LoadFont("Textures/test_source.png", ".0123456789", 1);
 
@@ -90,13 +145,6 @@ bool ModuleSceneIntro::Start()
 
 	pause = App->textures->Load("Textures/pause_sprite.png");
 	instructions = App->textures->Load("Textures/instructions.png");
-	launch_on = App->textures->Load("Textures/launch_on.png");
-	launch_off = App->textures->Load("Textures/launch_off.png");
-	volume_on = App->textures->Load("Textures/volume_on.png");
-	volume_off = App->textures->Load("Textures/volume_off.png");
-	new_game_on = App->textures->Load("Textures/new_game_on.png");
-	new_game_off = App->textures->Load("Textures/new_game_off.png");
-
 
 	wheel = App->textures->Load("Textures/wheel.png");
 	wheel_off = App->textures->Load("Textures/wheel_off.png");
@@ -1109,11 +1157,57 @@ update_status ModuleSceneIntro::Update()
 		App->physics->PushDownRightFlaps();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN) {
 		
-		if (game_state == PAUSE)game_state = IN_GAME;
-		else game_state = PAUSE;
+		if (game_state == PAUSE)game_state = last_game_state;
+	
+		else {
 
+			last_game_state = game_state;
+			game_state = PAUSE;
+
+		}
+
+	}
+
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
+		SDL_Point temp;
+		temp.x = App->input->GetMouseX();
+		temp.y = App->input->GetMouseY();
+
+		if (SDL_PointInRect(&temp, &launch_button.active_area)) {
+			p2List_item<PhysBody*>* cir = circles.getFirst();
+
+			while (cir != NULL)
+			{
+				if (cir->data->Contains(752, 735))
+				{
+					cir->data->body->ApplyForce({ 0.0f, -150.0f }, cir->data->body->GetPosition(), true);
+					App->audio->PlayFx(launcher_fx);
+				}
+
+				cir = cir->next;
+			}
+
+			launch_button.ChangeState();
+		}
+		
+		if (SDL_PointInRect(&temp, &new_game_button.active_area)) {
+
+			new_game_button.ChangeState();
+
+		}
+		if (SDL_PointInRect(&temp, &volume_button.active_area)) {
+			volume_button.ChangeState();
+		}
+		if (SDL_PointInRect(&temp, &pause_rect) && game_state != PAUSE) {
+			last_game_state = game_state;
+			game_state = PAUSE;
+
+		}
+		if (SDL_PointInRect(&temp, &unpause_rect) && game_state == PAUSE) {
+			game_state = last_game_state;
+		}
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
@@ -1215,12 +1309,10 @@ update_status ModuleSceneIntro::Update()
 
 	//App->renderer->Blit(pause, 0, 0);
 	App->renderer->Blit(scape_light_6, 215, 6);
-	App->renderer->Blit(launch_off, 846, 716);
-	App->renderer->Blit(launch_on, 846, 716);
-	App->renderer->Blit(new_game_off, 943, 717);
-	App->renderer->Blit(new_game_on, 943, 717);
-	App->renderer->Blit(volume_off, 832, 525);
-	App->renderer->Blit(volume_on, 832, 525);
+
+	App->renderer->Blit(launch_button.current_texture, 846, 716);
+	App->renderer->Blit(new_game_button.current_texture, 943, 717);
+	App->renderer->Blit(volume_button.current_texture, 832, 525);
 	//App->renderer->Blit(instructions, 382, 460);
 
 	if(down_yellow_light_on)
@@ -1258,6 +1350,10 @@ update_status ModuleSceneIntro::Update()
 
 	if (game_state == PAUSE) {
 		App->renderer->Blit(pause, 0, 0);
+	}
+
+	if (game_state == START) {
+		App->renderer->Blit(instructions, 382, 460);
 	}
 
 	return UPDATE_CONTINUE;

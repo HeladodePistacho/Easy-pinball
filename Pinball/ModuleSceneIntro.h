@@ -15,6 +15,30 @@ enum GAME_STATE {
 
 };
 
+class Button {
+public:
+
+	Button(SDL_Texture* on_texture, SDL_Texture* off_texture, SDL_Rect* active_area, uint fx = 0, bool start_state = false ):on_texture(on_texture),off_texture(off_texture),active_area(*active_area),fx(fx){
+
+		if (start_state)current_texture = on_texture;
+		else current_texture = off_texture;
+
+	};
+	Button() {};
+	~Button() {};
+
+	SDL_Texture* current_texture;
+	SDL_Texture* on_texture;
+	SDL_Texture* off_texture;
+	uint fx;
+	SDL_Rect active_area;
+
+	void ChangeState() {
+		if (current_texture == on_texture)current_texture = off_texture;
+		else current_texture = on_texture;
+	};
+};
+
 class ModuleSceneIntro : public Module
 {
 public:
@@ -32,6 +56,14 @@ public:
 public:
 
 	GAME_STATE game_state;
+	GAME_STATE last_game_state;
+
+	Button new_game_button;
+	Button launch_button;
+	Button volume_button;
+
+	SDL_Rect pause_rect;
+	SDL_Rect unpause_rect;
 
 	//Score
 	char score_text[10];
@@ -75,12 +107,6 @@ public:
 
 	SDL_Texture* pause;
 	SDL_Texture* instructions;
-	SDL_Texture* launch_on;
-	SDL_Texture* launch_off;
-	SDL_Texture* volume_on;
-	SDL_Texture* volume_off;
-	SDL_Texture* new_game_on;
-	SDL_Texture* new_game_off;
 
 
 	SDL_Texture* launcher;
