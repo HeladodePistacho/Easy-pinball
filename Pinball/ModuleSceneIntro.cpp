@@ -32,6 +32,8 @@ bool ModuleSceneIntro::Start()
 	
 	bool ret = true;
 
+	game_state = START;
+
 	score_font = App->textures->LoadFont("Textures/test_source.png", ".0123456789", 1);
 
 	debug_font = App->textures->LoadFont("Textures/debug_font.png", "!*#$%&`()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[[]|`", 1);
@@ -86,6 +88,7 @@ bool ModuleSceneIntro::Start()
 	left_flap = App->textures->Load("Textures/left_flap.png");
 	right_flap = App->textures->Load("Textures/right_flap.png");
 
+	pause = App->textures->Load("Textures/pause_sprite.png");
 	instructions = App->textures->Load("Textures/instructions.png");
 	launch_on = App->textures->Load("Textures/launch_on.png");
 	launch_off = App->textures->Load("Textures/launch_off.png");
@@ -942,7 +945,7 @@ update_status ModuleSceneIntro::PreUpdate()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
-	{
+	if (game_state != PAUSE) {
 		int crone_time = GetTickCount();
 
 		if (crone_time >= (initial_time + ratio))
@@ -965,6 +968,7 @@ update_status ModuleSceneIntro::Update()
 			initial_time = crone_time;
 		}
 	}
+
 
 	//DEBUG------------------------------------------------------
 	
@@ -1105,6 +1109,12 @@ update_status ModuleSceneIntro::Update()
 		App->physics->PushDownRightFlaps();
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
+		
+		if (game_state == PAUSE)game_state = IN_GAME;
+		else game_state = PAUSE;
+
+	}
 
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
@@ -1203,6 +1213,7 @@ update_status ModuleSceneIntro::Update()
 	App->renderer->Blit(up_light_3, 548, 84);
 	*/
 
+	//App->renderer->Blit(pause, 0, 0);
 	App->renderer->Blit(scape_light_6, 215, 6);
 	App->renderer->Blit(launch_off, 846, 716);
 	App->renderer->Blit(launch_on, 846, 716);
@@ -1210,7 +1221,7 @@ update_status ModuleSceneIntro::Update()
 	App->renderer->Blit(new_game_on, 943, 717);
 	App->renderer->Blit(volume_off, 832, 525);
 	App->renderer->Blit(volume_on, 832, 525);
-	App->renderer->Blit(instructions, 382, 460);
+	//App->renderer->Blit(instructions, 382, 460);
 
 	if(down_yellow_light_on)
 		App->renderer->Blit(down_yellow_light, 352, 363);
@@ -1244,6 +1255,10 @@ update_status ModuleSceneIntro::Update()
 
 	App->physics->flap_up_right->GetPosition(pos_x, pos_y);
 	App->renderer->Blit(right_flap, pos_x - 6, pos_y - 5, NULL, 1.0f, App->physics->flap_up_right->GetRotation());
+
+	if (game_state == PAUSE) {
+		App->renderer->Blit(pause, 0, 0);
+	}
 
 	return UPDATE_CONTINUE;
 }

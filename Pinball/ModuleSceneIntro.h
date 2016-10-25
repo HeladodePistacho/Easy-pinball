@@ -6,6 +6,15 @@
 
 class PhysBody;
 
+enum GAME_STATE {
+
+	START,
+	IN_GAME,
+	END_GAME,
+	PAUSE
+
+};
+
 class ModuleSceneIntro : public Module
 {
 public:
@@ -22,7 +31,7 @@ public:
 
 public:
 
-
+	GAME_STATE game_state;
 
 	//Score
 	char score_text[10];
@@ -64,6 +73,7 @@ public:
 	SDL_Texture* ball;
 	PhysBody* ball_body;
 
+	SDL_Texture* pause;
 	SDL_Texture* instructions;
 	SDL_Texture* launch_on;
 	SDL_Texture* launch_off;

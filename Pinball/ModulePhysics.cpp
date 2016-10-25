@@ -141,6 +141,8 @@ bool ModulePhysics::Start()
 // 
 update_status ModulePhysics::PreUpdate()
 {
+	if (App->scene_intro->game_state == PAUSE) return UPDATE_CONTINUE;
+
 	world->Step(1.0f / 60.0f, 6, 2);
 
 	for(b2Contact* c = world->GetContactList(); c; c = c->GetNext())
@@ -306,6 +308,7 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, collis
 update_status ModulePhysics::PostUpdate()
 {
 	
+	if (App->scene_intro->game_state == PAUSE) return UPDATE_CONTINUE;
 
 	if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
@@ -314,6 +317,7 @@ update_status ModulePhysics::PostUpdate()
 		return UPDATE_CONTINUE;
 
 	bool body_clicked = false;
+	
 	b2Body* click_body = nullptr;
 
 	for(b2Body* b = world->GetBodyList(); b; b = b->GetNext())
@@ -397,6 +401,7 @@ update_status ModulePhysics::PostUpdate()
 		}
 	}
 
+	
 	b2MouseJointDef def;
 
 	if (body_clicked)
@@ -439,6 +444,7 @@ void ModulePhysics::PushUpRightFlaps() {
 	flap_down_right->body->ApplyForce({ 12,0 }, { 0,0 }, true);
 
 }
+
 void ModulePhysics::PushDownLeftFlaps() {
 
 	flap_down_left->body->ApplyForce({ 12,0 }, { 70,0 }, true);
