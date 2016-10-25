@@ -611,15 +611,15 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 			break;
 
 		case WHEEL_LIGHT_LEFT:
-			App->scene_intro->up_light_1_on = true;
+			App->scene_intro->up_lights[0] = true;
 			break;
 
 		case WHEEL_LIGHT_MID:
-			App->scene_intro->up_light_2_on = true;
+			App->scene_intro->up_lights[1] = true;
 			break;
 
 		case WHEEL_LIGHT_RIGHT:
-			App->scene_intro->up_light_3_on = true;
+			App->scene_intro->up_lights[2] = true;
 			break;
 	}
 

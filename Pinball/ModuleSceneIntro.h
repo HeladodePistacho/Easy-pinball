@@ -22,6 +22,8 @@ public:
 
 public:
 
+
+
 	//Score
 	char score_text[10];
 	int score_font = -1;
@@ -109,9 +111,7 @@ public:
 	SDL_Texture* up_light_2;
 	SDL_Texture* up_light_3;
 
-	bool up_light_1_on = false;
-	bool up_light_2_on = false;
-	bool up_light_3_on = false;
+	bool up_lights[3] = { false, false, false };
 
 	SDL_Texture* left_lung;
 	SDL_Texture* right_lung;
@@ -143,5 +143,8 @@ private:
 	SDL_Texture* background;
 	SDL_Texture* left_flap;
 	SDL_Texture* right_flap;
+	void switch_up_lights();
+
+	
 
 };

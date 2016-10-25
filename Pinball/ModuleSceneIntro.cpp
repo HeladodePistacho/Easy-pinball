@@ -1062,6 +1062,7 @@ update_status ModuleSceneIntro::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) {
 
+		switch_up_lights();
 		App->audio->PlayFx(flap_up_fx);
 		App->physics->PushUpLeftFlaps();
 	}
@@ -1082,11 +1083,12 @@ update_status ModuleSceneIntro::Update()
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN) {
-
+		switch_up_lights();
 		App->audio->PlayFx(flap_up_fx);
 		App->physics->PushUpRightFlaps();
 
 	}
+
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 
 		App->physics->PushUpRightFlaps();
@@ -1222,12 +1224,14 @@ update_status ModuleSceneIntro::Update()
 		App->renderer->Blit(mid_orange_light, 333, 212);
 	if (up_red_light_on)
 		App->renderer->Blit(mid_red_light, 308, 252);
-	if(up_light_1_on)
+	
+	if (up_lights[0])
 		App->renderer->Blit(up_light_1, 496, 77);
-	if (up_light_2_on)
+	if (up_lights[1])
 		App->renderer->Blit(up_light_2, 521, 79);
-	if (up_light_3_on)
+	if (up_lights[2])
 		App->renderer->Blit(up_light_3, 548, 84);
+
 
 	App->physics->flap_down_left->GetPosition(pos_x, pos_y);
 	App->renderer->Blit(left_flap, pos_x - 6, pos_y - 5, NULL, 1.0f, App->physics->flap_down_left->GetRotation());
@@ -1272,4 +1276,14 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		bodyB->GetPosition(x, y);
 		App->renderer->DrawCircle(x, y, 50, 100, 100, 100);
 	}*/
+}
+
+void ModuleSceneIntro::switch_up_lights()
+{
+	bool temp = up_lights[2];
+
+	for (int i = 2; i > 0; i--)
+		up_lights[i] = up_lights[i - 1];
+
+	up_lights[0] = temp;
 }
