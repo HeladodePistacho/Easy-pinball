@@ -428,6 +428,14 @@ update_status ModulePhysics::PostUpdate()
 		mouse_joint = nullptr;
 	}
 
+	if (delete_object)
+	{
+		App->scene_intro->circles.clear();
+		App->scene_intro->circles.add(CreateCircle(752, 725, 10, BALL));
+		App->scene_intro->circles.getLast()->data->listener = App->scene_intro;
+		delete_object = false;
+	}
+
 	return UPDATE_CONTINUE;
 }
 
@@ -557,7 +565,7 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 		
 		case SENSOR_RAMP_A:
 			
-			filter.maskBits = RAMP_A | SENSOR;
+			filter.maskBits = RAMP_A | FINAL_RAMP | SENSOR;
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
 			App->audio->PlayFx(App->scene_intro->drift_1_fx);
 			App->audio->PlayFx(App->scene_intro->points_fx);
@@ -566,7 +574,7 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 
 		case SENSOR_RAMP_B:
 			
-			filter.maskBits = RAMP_B | SENSOR;
+			filter.maskBits = RAMP_B | FINAL_RAMP | SENSOR;
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
 			App->audio->PlayFx(App->scene_intro->special_ramp_fx);
 			App->audio->PlayFx(App->scene_intro->points_fx);
@@ -575,7 +583,7 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 
 		case SENSOR_RAMP_C:
 			bodyA->body->ApplyForce({ -50.0f, 0.0f }, bodyA->body->GetPosition(), true);
-			filter.maskBits = RAMP_C | SENSOR;
+			filter.maskBits = RAMP_C | FINAL_RAMP | SENSOR;
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
 			App->audio->PlayFx(App->scene_intro->drift_1_fx);
 			App->audio->PlayFx(App->scene_intro->points_fx);
@@ -610,6 +618,9 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 			App->scene_intro->ball_into_jackpot = true;
 			App->scene_intro->first_time = true;
 			break;
+
+		case END:
+			delete_object = true;
 
 	}
 

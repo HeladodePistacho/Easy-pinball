@@ -135,4 +135,6 @@ private:
 	b2RevoluteJoint* mid_wheel_engine;
 	b2RevoluteJoint* left_wheel_engine;
 	b2RevoluteJoint* right_wheel_engine;
+
+	bool delete_object = false;
 };
