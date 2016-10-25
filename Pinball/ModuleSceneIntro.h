@@ -62,6 +62,15 @@ public:
 	SDL_Texture* ball;
 	PhysBody* ball_body;
 
+	SDL_Texture* instructions;
+	SDL_Texture* launch_on;
+	SDL_Texture* launch_off;
+	SDL_Texture* volume_on;
+	SDL_Texture* volume_off;
+	SDL_Texture* new_game_on;
+	SDL_Texture* new_game_off;
+
+
 	SDL_Texture* launcher;
 	SDL_Texture* scape_1;
 	SDL_Texture* scape_2;
@@ -71,8 +80,11 @@ public:
 	SDL_Texture* scape_light_3;
 	SDL_Texture* scape_light_4;
 	SDL_Texture* scape_light_5;
+	SDL_Texture* scape_light_6;
 
 	SDL_Texture* wheel;
+	SDL_Texture* wheel_off;
+
 	SDL_Texture* wheel_flames_1;
 	SDL_Texture* wheel_flames_2;
 	SDL_Texture* wheel_flames_3;

@@ -32,7 +32,7 @@ bool ModuleSceneIntro::Start()
 	
 	bool ret = true;
 
-	score_font = App->textures->LoadFont("Textures/numbers_font.png", ".0123456789", 1);
+	score_font = App->textures->LoadFont("Textures/test_source.png", ".0123456789", 1);
 
 	debug_font = App->textures->LoadFont("Textures/debug_font.png", "!*#$%&`()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[[]|`", 1);
 
@@ -80,12 +80,23 @@ bool ModuleSceneIntro::Start()
 	circles.getLast()->data->listener = this;
 
 	//Pinball background
-	background = App->textures->Load("Textures/background.png");
+	background = App->textures->Load("Textures/background_clean.png");
+	
 	//Pinball flaps
 	left_flap = App->textures->Load("Textures/left_flap.png");
 	right_flap = App->textures->Load("Textures/right_flap.png");
 
+	instructions = App->textures->Load("Textures/instructions.png");
+	launch_on = App->textures->Load("Textures/launch_on.png");
+	launch_off = App->textures->Load("Textures/launch_off.png");
+	volume_on = App->textures->Load("Textures/volume_on.png");
+	volume_off = App->textures->Load("Textures/volume_off.png");
+	new_game_on = App->textures->Load("Textures/new_game_on.png");
+	new_game_off = App->textures->Load("Textures/new_game_off.png");
+
+
 	wheel = App->textures->Load("Textures/wheel.png");
+	wheel_off = App->textures->Load("Textures/wheel_off.png");
 	wheel_flames_1 = App->textures->Load("Textures/wheels_flames_1.png");
 	wheel_flames_2 = App->textures->Load("Textures/wheels_flames_2.png");
 	wheel_flames_3 = App->textures->Load("Textures/wheels_flames_3.png");
@@ -1189,6 +1200,16 @@ update_status ModuleSceneIntro::Update()
 	App->renderer->Blit(up_light_2, 521, 79);
 	App->renderer->Blit(up_light_3, 548, 84);
 	*/
+
+	App->renderer->Blit(scape_light_6, 215, 6);
+	App->renderer->Blit(launch_off, 846, 716);
+	App->renderer->Blit(launch_on, 846, 716);
+	App->renderer->Blit(new_game_off, 943, 717);
+	App->renderer->Blit(new_game_on, 943, 717);
+	App->renderer->Blit(volume_off, 832, 525);
+	App->renderer->Blit(volume_on, 832, 525);
+	App->renderer->Blit(instructions, 382, 460);
+
 	if(down_yellow_light_on)
 		App->renderer->Blit(down_yellow_light, 352, 363);
 	if (down_orange_light_on)
