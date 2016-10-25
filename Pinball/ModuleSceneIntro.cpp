@@ -931,8 +931,8 @@ bool ModuleSceneIntro::Start()
 	App->physics->CreateRectangleSensor(570, 400, 20, 20, SENSOR, DOOR);
 
 	//final ramp sensor
-	App->physics->CreateRectangleSensor(615, 627, 20, 10, SENSOR, FINAL_RAMP);
-	App->physics->CreateRectangleSensor(293, 616, 20, 10, SENSOR, FINAL_RAMP);
+	App->physics->CreateRectangleSensor(615, 627, 20, 10, FINAL_RAMP);
+	App->physics->CreateRectangleSensor(293, 616, 20, 10, FINAL_RAMP);
 
 	//sensor to enter each ramp
 	App->physics->CreateRectangleSensor(218, 230, 10, 10, SENSOR, SENSOR_RAMP_C);
@@ -970,6 +970,10 @@ bool ModuleSceneIntro::Start()
 	App->physics->CreateRectangleSensor(505, 100, 20, 20, SENSOR, WHEEL_LIGHT_LEFT);
 	App->physics->CreateRectangleSensor(535, 100, 20, 20, SENSOR, WHEEL_LIGHT_MID);
 	App->physics->CreateRectangleSensor(565, 100, 20, 20, SENSOR, WHEEL_LIGHT_RIGHT);
+
+	//Jackpot Sensor
+	App->physics->CreateRectangleSensor(555, 315, 20, 20, SENSOR, JACKPOT);
+
 	
 
 	return ret;
@@ -1111,6 +1115,26 @@ update_status ModuleSceneIntro::Update()
 			cir = cir->next;
 		}
 	}
+
+	//Check if ball is into jackpot and stop it for 2 seconds
+	int current_time = SDL_GetTicks();
+
+	if (ball_into_jackpot && first_time)
+	{
+		stop_ball = current_time;
+		first_time = false;
+	}
+
+	if (current_time <= stop_ball + 2000 && ball_into_jackpot)
+	{
+		ball_body->body->SetTransform({ PIXEL_TO_METERS(556), PIXEL_TO_METERS(313) }, 0);
+		ball_body->body->SetLinearVelocity({ -3.0f, 3.0f });
+	}
+	else
+	{
+		ball_into_jackpot = false;
+	}
+
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) {
 

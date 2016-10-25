@@ -582,28 +582,6 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 			App->player->score += 9000;
 			break;
 
-		case FINAL_RAMP:
-
-			bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
-			filter.maskBits = MAP | SENSOR;
-
-			if (!App->scene_intro->down_yellow_light_on) 
-				filter.maskBits = filter.maskBits | YELLOW_LIGHT;
-			if (!App->scene_intro->down_orange_light_on)
-				filter.maskBits = filter.maskBits | ORANGE_LIGHT;
-			if (!App->scene_intro->down_red_light_on)
-				filter.maskBits = filter.maskBits | RED_LIGHT;
-			if (!App->scene_intro->up_yellow_light_on)
-				filter.maskBits = filter.maskBits | YELLOW_LIGHT_UP;
-			if (!App->scene_intro->up_orange_light_on)
-				filter.maskBits = filter.maskBits | ORANGE_LIGHT_UP;
-			if (!App->scene_intro->up_red_light_on)
-				filter.maskBits = filter.maskBits | RED_LIGHT_UP;
-
-
-			bodyA->body->GetFixtureList()->SetFilterData(filter);
-			break;
-
 		case TURBO_UP:
 			bodyA->body->ApplyForce({ 0.0f, -200.0f }, bodyA->body->GetPosition(), true);
 			break;
@@ -627,10 +605,39 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 		case WHEEL_LIGHT_RIGHT:
 			App->scene_intro->up_lights[2] = true;
 			break;
+
+		case JACKPOT:
+			App->scene_intro->ball_into_jackpot = true;
+			App->scene_intro->first_time = true;
+			break;
+
 	}
 
 	switch (bodyB->body->GetFixtureList()->GetFilterData().categoryBits)
 		{
+
+	case FINAL_RAMP:
+
+		bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
+		filter.maskBits = MAP | SENSOR;
+
+		if (!App->scene_intro->down_yellow_light_on)
+			filter.maskBits = filter.maskBits | YELLOW_LIGHT;
+		if (!App->scene_intro->down_orange_light_on)
+			filter.maskBits = filter.maskBits | ORANGE_LIGHT;
+		if (!App->scene_intro->down_red_light_on)
+			filter.maskBits = filter.maskBits | RED_LIGHT;
+		if (!App->scene_intro->up_yellow_light_on)
+			filter.maskBits = filter.maskBits | YELLOW_LIGHT_UP;
+		if (!App->scene_intro->up_orange_light_on)
+			filter.maskBits = filter.maskBits | ORANGE_LIGHT_UP;
+		if (!App->scene_intro->up_red_light_on)
+			filter.maskBits = filter.maskBits | RED_LIGHT_UP;
+
+
+		bodyA->body->GetFixtureList()->SetFilterData(filter);
+		break;
+
 		case YELLOW_LIGHT:
 			bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
 			filter.maskBits = MAP | SENSOR;

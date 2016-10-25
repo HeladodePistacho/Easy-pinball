@@ -104,6 +104,9 @@ public:
 
 	SDL_Texture* ball;
 	PhysBody* ball_body;
+	bool ball_into_jackpot = false;
+	bool first_time = false;
+	int stop_ball = 0;
 
 	SDL_Texture* pause;
 	SDL_Texture* instructions;
