@@ -152,7 +152,7 @@ bool ModuleSceneIntro::Start()
 	492, 74,
 	495, 85,
 	495, 108,
-	501, 136,
+	497, 136,
 	495, 155,
 	470, 154,
 	443, 170,
@@ -184,7 +184,7 @@ bool ModuleSceneIntro::Start()
 	147, 200,
 	146, 220,
 	210, 251,
-	264, 274,
+	264, 278,
 	233, 291,
 	215, 312,
 	197, 343,
@@ -866,19 +866,25 @@ bool ModuleSceneIntro::Start()
 
 	//sensors
 	//door sensor
-	App->physics->CreateRectangleSensor(570, 400, 20, 20, DOOR_SENSOR);
-	App->physics->CreateRectangleSensor(615, 627, 20, 10, FINAL_RAMP_SENSOR);
-	App->physics->CreateRectangleSensor(293, 616, 20, 10, FINAL_RAMP_SENSOR);
+	App->physics->CreateRectangleSensor(570, 400, 20, 20, SENSOR, DOOR);
 
-	App->physics->CreateRectangleSensor(193, 217, 20, 20, SENSOR_RAMP_C);
-	App->physics->CreateRectangleSensor(648, 389, 10, 10, SENSOR_RAMP_B);
-	App->physics->CreateRectangleSensor(241, 357, 10, 10, SENSOR_RAMP_A);
+	//final ramp sensor
+	App->physics->CreateRectangleSensor(615, 627, 20, 10, SENSOR, FINAL_RAMP);
+	App->physics->CreateRectangleSensor(293, 616, 20, 10, SENSOR, FINAL_RAMP);
 
-	App->physics->CreateRectangleSensor(410, 143, 20, 20, TURBO_SENSOR_UP);
-	App->physics->CreateRectangleSensor(241, 357, 10, 10, TURBO_SENSOR_UP);
-	App->physics->CreateRectangleSensor(668, 367, 20, 20, TURBO_SENSOR_UP);
-	App->physics->CreateRectangleSensor(295, 146, 20, 20, TURBO_SENSOR_DOWN);
+	//sensor to enter each ramp
+	App->physics->CreateRectangleSensor(218, 230, 10, 10, SENSOR, SENSOR_RAMP_C);
+	App->physics->CreateRectangleSensor(648, 389, 10, 10, SENSOR, SENSOR_RAMP_B);
+	App->physics->CreateRectangleSensor(241, 357, 10, 10, SENSOR, SENSOR_RAMP_A);
 
+	//sensors that apply a force to the ball
+	App->physics->CreateRectangleSensor(410, 143, 20, 20, SENSOR, TURBO_UP);
+	App->physics->CreateRectangleSensor(241, 357, 10, 10, SENSOR, TURBO_UP);
+	App->physics->CreateRectangleSensor(668, 367, 20, 20, SENSOR, TURBO_UP);
+	App->physics->CreateRectangleSensor(295, 146, 20, 20, SENSOR, TURBO_DOWN);
+	App->physics->CreateRectangleSensor(300, 283, 10, 10, SENSOR, TURBO_UP_LEFT);
+
+	//3 lights under the top left flap
 	App->physics->CreateRectangleSensor(365, 372, 10, 10, YELLOW_LIGHT);
 	App->physics->CreateRectangleSensor(360, 390, 10, 10, YELLOW_LIGHT);
 
@@ -887,6 +893,23 @@ bool ModuleSceneIntro::Start()
 
 	App->physics->CreateRectangleSensor(340, 439, 10, 10, RED_LIGHT);
 	App->physics->CreateRectangleSensor(335, 457, 10, 10, RED_LIGHT);
+
+	//3 light under the car
+	App->physics->CreateRectangleSensor(376, 195, 10, 10, YELLOW_LIGHT_UP);
+	App->physics->CreateRectangleSensor(367, 208, 10, 10, YELLOW_LIGHT_UP);
+
+	App->physics->CreateRectangleSensor(355, 228, 10, 10, ORANGE_LIGHT_UP);
+	App->physics->CreateRectangleSensor(347, 242, 10, 10, ORANGE_LIGHT_UP);
+
+	App->physics->CreateRectangleSensor(333, 256, 10, 10, RED_LIGHT_UP);
+	App->physics->CreateRectangleSensor(323, 266, 10, 10, RED_LIGHT_UP);
+
+	//Lights over the wheels
+	App->physics->CreateRectangleSensor(505, 100, 20, 20, SENSOR, WHEEL_LIGHT_LEFT);
+	App->physics->CreateRectangleSensor(535, 100, 20, 20, SENSOR, WHEEL_LIGHT_MID);
+	App->physics->CreateRectangleSensor(565, 100, 20, 20, SENSOR, WHEEL_LIGHT_RIGHT);
+	
+
 	return ret;
 }
 
@@ -1002,7 +1025,7 @@ update_status ModuleSceneIntro::Update()
 	sprintf_s(balls_text, 10, "%i", circles.count());
 	App->textures->BlitFont(825, 260, balls_font, balls_text);
 	
-
+	//debug tool
 	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
 		App->input->GetMouseX();
@@ -1018,7 +1041,7 @@ update_status ModuleSceneIntro::Update()
 		{
 			if (cir->data->Contains(752, 735))
 			{
-				cir->data->body->ApplyForce({ 0.0f, -160.0f }, cir->data->body->GetPosition(), true);
+				cir->data->body->ApplyForce({ 0.0f, -150.0f }, cir->data->body->GetPosition(), true);
 				App->audio->PlayFx(launcher_fx);
 			}
 			
@@ -1172,7 +1195,18 @@ update_status ModuleSceneIntro::Update()
 		App->renderer->Blit(down_orange_light, 335, 400);
 	if (down_red_light_on)
 		App->renderer->Blit(down_red_light, 324, 436);
-
+	if (up_yellow_light_on)
+		App->renderer->Blit(mid_yellow_light, 357, 178);
+	if (up_orange_light_on)
+		App->renderer->Blit(mid_orange_light, 333, 212);
+	if (up_red_light_on)
+		App->renderer->Blit(mid_red_light, 308, 252);
+	if(up_light_1_on)
+		App->renderer->Blit(up_light_1, 496, 77);
+	if (up_light_2_on)
+		App->renderer->Blit(up_light_2, 521, 79);
+	if (up_light_3_on)
+		App->renderer->Blit(up_light_3, 548, 84);
 
 	App->physics->flap_down_left->GetPosition(pos_x, pos_y);
 	App->renderer->Blit(left_flap, pos_x - 6, pos_y - 5, NULL, 1.0f, App->physics->flap_down_left->GetRotation());

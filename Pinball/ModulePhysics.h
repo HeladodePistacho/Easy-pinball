@@ -15,32 +15,36 @@
 enum collision_type
 {
 	BALL = 1,
-	RAMP_C = 2,
+	RAMP_A = 2,
 	RAMP_B = 4,
-	RAMP_A = 8,
+	RAMP_C = 8,
 	MAP = 16,
 	LAUNCHER = 32,
-	DOOR_SENSOR = 64,
-	SENSOR_RAMP_C = 128,
-	SENSOR_RAMP_B = 256,
-	SENSOR_RAMP_A = 512,
-	FINAL_RAMP_SENSOR = 1024,
-	TURBO_SENSOR_UP = 2048,
-	TURBO_SENSOR_DOWN = 4096,
-	YELLOW_LIGHT = 8192,
-	RED_LIGHT = 16384,
-	ORANGE_LIGHT = 32768
+	SENSOR = 64,
+	YELLOW_LIGHT = 128,
+	ORANGE_LIGHT = 256,
+	RED_LIGHT = 512,
+	YELLOW_LIGHT_UP = 1024,
+	ORANGE_LIGHT_UP = 2048,
+	RED_LIGHT_UP = 4096,
+	
 };
 
-enum BODY_TYPE {
-
+enum BODY_TYPE 
+{
 	NONE,
+	SENSOR_RAMP_A,
+	SENSOR_RAMP_B,
+	SENSOR_RAMP_C,
 	TURBO_UP,
+	TURBO_UP_LEFT,
 	TURBO_DOWN,
-
-
-
-
+	FINAL_RAMP,
+	WHEEL_LIGHT_LEFT,
+	WHEEL_LIGHT_MID,
+	WHEEL_LIGHT_RIGHT,
+	END,
+	DOOR
 };
 
 // Small class to return to other modules to track position and rotation of physics bodies
@@ -79,7 +83,7 @@ public:
 	PhysBody* CreateCircle(int x, int y, int radius, collision_type type);
 	PhysBody* CreateStaticCircle(int x, int y, int radius);
 	PhysBody* CreateRectangle(int x, int y, int width, int height, collision_type type);
-	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, collision_type type);
+	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, collision_type type, BODY_TYPE b_type = NONE);
 	PhysBody* CreateChain(int x, int y, int* points, int size, collision_type type, uint restitution = 0);
 
 	// b2ContactListener ---

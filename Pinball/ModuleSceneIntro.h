@@ -89,13 +89,17 @@ public:
 	bool down_orange_light_on = false;
 	bool down_red_light_on = false;
 
-	bool mid_yellow_light_on = false;
-	bool mid_orange_light_on = false;
-	bool mid_red_light_on = false;
+	bool up_yellow_light_on = false;
+	bool up_orange_light_on = false;
+	bool up_red_light_on = false;
 
 	SDL_Texture* up_light_1;
 	SDL_Texture* up_light_2;
 	SDL_Texture* up_light_3;
+
+	bool up_light_1_on = false;
+	bool up_light_2_on = false;
+	bool up_light_3_on = false;
 
 	SDL_Texture* left_lung;
 	SDL_Texture* right_lung;
