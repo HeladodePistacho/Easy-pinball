@@ -1294,9 +1294,9 @@ update_status ModuleSceneIntro::Update()
 
 
 	//All superior Renders
-	App->renderer->Blit(scape_light_1, 620, 354);
-	App->renderer->Blit(scape_light_4, 182, 318);
-	App->renderer->Blit(scape_light_5, 110, 193);
+	
+	//App->renderer->Blit(scape_light_4, 182, 318);
+	//App->renderer->Blit(scape_light_5, 110, 193);
 
 	App->renderer->Blit(left_lung, 286, 588);
 	App->renderer->Blit(right_lung, 530, 582);
@@ -1324,12 +1324,26 @@ update_status ModuleSceneIntro::Update()
 	*/
 
 	//App->renderer->Blit(pause, 0, 0);
-	App->renderer->Blit(scape_light_6, 215, 6);
+	//App->renderer->Blit(scape_light_6, 215, 6);
 
 	App->renderer->Blit(launch_button.current_texture, 846, 716);
 	App->renderer->Blit(new_game_button.current_texture, 943, 717);
 	App->renderer->Blit(volume_button.current_texture, 832, 525);
 	//App->renderer->Blit(instructions, 382, 460);
+
+
+	if(scape_light_1_on)
+		App->renderer->Blit(scape_light_1, 620, 354);
+	if (scape_light_2_on)
+		App->renderer->Blit(scape_light_2, 412, 12);
+	if (scape_light_3_on)
+		App->renderer->Blit(scape_light_3, 148, 70);
+	if (scape_light_4_on)
+		App->renderer->Blit(scape_light_4, 182, 318);
+	if (scape_light_5_on)
+		App->renderer->Blit(scape_light_5, 110, 193);
+	if (scape_light_6_on)
+		App->renderer->Blit(scape_light_6, 215, 6);
 
 	if(down_yellow_light_on)
 		App->renderer->Blit(down_yellow_light, 352, 363);

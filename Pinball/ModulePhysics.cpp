@@ -307,8 +307,27 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, collis
 // 
 update_status ModulePhysics::PostUpdate()
 {
+
+
 	
 	if (App->scene_intro->game_state == PAUSE) return UPDATE_CONTINUE;
+
+	if (delete_object)
+	{
+
+		for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
+		{
+			if (b == App->scene_intro->ball_body->body)
+			{
+				b->DestroyFixture(App->scene_intro->ball_body->body->GetFixtureList());
+			}
+		}
+		App->scene_intro->circles.clear();
+		App->scene_intro->circles.add(CreateCircle(752, 725, 10, BALL));
+		App->scene_intro->Balls_count++;
+		App->scene_intro->circles.getLast()->data->listener = App->scene_intro;
+		delete_object = false;
+	}
 
 	if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
@@ -428,22 +447,7 @@ update_status ModulePhysics::PostUpdate()
 		mouse_joint = nullptr;
 	}
 
-	if (delete_object)
-	{
-		
-		for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
-		{
-			if (b == App->scene_intro->ball_body->body)
-			{
-				b->DestroyFixture(App->scene_intro->ball_body->body->GetFixtureList());	
-			}		
-		}
-		App->scene_intro->circles.clear();
-		App->scene_intro->circles.add(CreateCircle(752, 725, 10, BALL));
-		App->scene_intro->Balls_count++;
-		App->scene_intro->circles.getLast()->data->listener = App->scene_intro;
-		delete_object = false;
-	}
+	
 
 	return UPDATE_CONTINUE;
 }
@@ -682,6 +686,12 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 		if (!App->scene_intro->up_red_light_on)
 			filter.maskBits = filter.maskBits | RED_LIGHT_UP;
 
+		if (App->scene_intro->App->scene_intro->scape_light_3_on)
+			App->scene_intro->scape_light_3_on = false;
+		if (App->scene_intro->App->scene_intro->scape_light_2_on)
+			App->scene_intro->scape_light_2_on = false;
+		if (App->scene_intro->App->scene_intro->scape_light_5_on)
+			App->scene_intro->scape_light_5_on = false;
 
 		bodyA->body->GetFixtureList()->SetFilterData(filter);
 		break;
