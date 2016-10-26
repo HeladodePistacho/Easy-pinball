@@ -1184,7 +1184,7 @@ update_status ModuleSceneIntro::Update()
 		App->physics->PushDownRightFlaps();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
 		
 		if (game_state == PAUSE)game_state = last_game_state;
 	
