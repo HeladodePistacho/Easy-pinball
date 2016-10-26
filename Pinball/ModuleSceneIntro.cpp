@@ -975,7 +975,7 @@ bool ModuleSceneIntro::Start()
 	App->physics->CreateRectangleSensor(555, 315, 20, 20, SENSOR, JACKPOT);
 
 	//The loser sensor
-	App->physics->CreateRectangleSensor(422, 372, 20, 20, SENSOR, END);
+	App->physics->CreateRectangleSensor(460, 881, 70, 10, SENSOR, END);
 
 	
 
