@@ -123,6 +123,13 @@ public:
 	SDL_Texture* scape_light_4;
 	SDL_Texture* scape_light_5;
 	SDL_Texture* scape_light_6;
+	
+	bool scape_light_1_on = false;
+	bool scape_light_2_on = false;
+	bool scape_light_3_on = false;
+	bool scape_light_4_on = false;
+	bool scape_light_5_on = false;
+	bool scape_light_6_on = false;
 
 	SDL_Texture* wheel;
 	SDL_Texture* wheel_off;

@@ -1006,7 +1006,6 @@ update_status ModuleSceneIntro::Update()
 		if (crone_time >= (initial_time + ratio))
 		{
 			seconds++;
-
 			if (seconds > 9)
 			{
 				seconds = 0;
@@ -1018,8 +1017,6 @@ update_status ModuleSceneIntro::Update()
 				decimes = 0;
 				++minutes;
 			}
-
-
 			initial_time = crone_time;
 		}
 	}
@@ -1262,15 +1259,7 @@ update_status ModuleSceneIntro::Update()
 
 	fVector normal(0.0f, 0.0f);
 
-	p2List_item<PhysBody*>* c = circles.getFirst();
-
-	while(c != NULL)
-	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		App->renderer->Blit(ball, x, y, NULL, 1.0f, c->data->GetRotation());
-		c = c->next;
-	}
+	
 
 	// ray -----------------
 	if(ray_on == true)
@@ -1374,6 +1363,16 @@ update_status ModuleSceneIntro::Update()
 
 	App->physics->flap_up_right->GetPosition(pos_x, pos_y);
 	App->renderer->Blit(right_flap, pos_x - 6, pos_y - 5, NULL, 1.0f, App->physics->flap_up_right->GetRotation());
+
+	p2List_item<PhysBody*>* c = circles.getFirst();
+
+	while (c != NULL)
+	{
+		int x, y;
+		c->data->GetPosition(x, y);
+		App->renderer->Blit(ball, x, y, NULL, 1.0f, c->data->GetRotation());
+		c = c->next;
+	}
 
 	if (game_state == PAUSE) {
 		App->renderer->Blit(pause, 0, 0);

@@ -435,8 +435,7 @@ update_status ModulePhysics::PostUpdate()
 		{
 			if (b == App->scene_intro->ball_body->body)
 			{
-				b->DestroyFixture(App->scene_intro->ball_body->body->GetFixtureList());
-				
+				b->DestroyFixture(App->scene_intro->ball_body->body->GetFixtureList());	
 			}		
 		}
 		App->scene_intro->circles.clear();
@@ -579,6 +578,7 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
 			App->audio->PlayFx(App->scene_intro->drift_1_fx);
 			App->audio->PlayFx(App->scene_intro->points_fx);
+			App->scene_intro->scape_light_3_on = true;
 			App->player->score += 35000;
 			break;
 
@@ -588,6 +588,7 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
 			App->audio->PlayFx(App->scene_intro->special_ramp_fx);
 			App->audio->PlayFx(App->scene_intro->points_fx);
+			App->scene_intro->scape_light_2_on = true;
 			App->player->score += 25000;
 			break;
 
@@ -597,6 +598,7 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
 			App->audio->PlayFx(App->scene_intro->drift_1_fx);
 			App->audio->PlayFx(App->scene_intro->points_fx);
+			App->scene_intro->scape_light_5_on = true;
 			App->player->score += 9000;
 			break;
 
@@ -629,8 +631,33 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 			App->scene_intro->first_time = true;
 			break;
 
+		case RAMP_LIGHT_LEFT:
+			App->scene_intro->scape_light_4_on = true;
+			break;
+
+		case RAMP_LIGHT_RIGHT:
+			App->scene_intro->scape_light_1_on = true;
+			break;
+
+		case RAMP_LIGHT_UP:
+			App->scene_intro->scape_light_6_on = true;
+			break;
+
+		case RAMP_LIGHT_A:
+			App->scene_intro->scape_light_3_on = true;
+			break;
+
+		case RAMP_LIGHT_B:
+			App->scene_intro->scape_light_2_on = true;
+			break;
+
+		case RAMP_LIGHT_C:
+			App->scene_intro->scape_light_5_on = true;
+			break;
+
 		case END:
 			delete_object = true;
+			break;
 
 	}
 
