@@ -1092,7 +1092,7 @@ update_status ModuleSceneIntro::Update()
 
 	//balls
 	
-	sprintf_s(balls_text, 10, "%i", circles.count());
+	sprintf_s(balls_text, 10, "%i", Balls_count);
 	App->textures->BlitFont(825, 260, balls_font, balls_text);
 	
 	//debug tool

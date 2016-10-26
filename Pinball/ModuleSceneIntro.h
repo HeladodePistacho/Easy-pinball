@@ -76,6 +76,7 @@ public:
 	//Number of Balls
 	char balls_text[10];
 	int balls_font = -1;
+	int Balls_count = 1;
 
 	//Debug
 	char debug_text[100];
