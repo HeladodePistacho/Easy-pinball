@@ -697,7 +697,7 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 		break;
 
 		case YELLOW_LIGHT:
-			bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
+			bodyA->body->SetLinearVelocity({ -bodyA->body->GetLinearVelocity().x * 1.1f ,bodyA->body->GetLinearVelocity().y * 0.5f });
 			filter.maskBits = MAP | SENSOR;
 			{
 				App->scene_intro->down_yellow_light_on = true;
@@ -707,7 +707,7 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 		break;
 
 		case ORANGE_LIGHT:
-			bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
+			bodyA->body->SetLinearVelocity({ -bodyA->body->GetLinearVelocity().x * 1.1f ,bodyA->body->GetLinearVelocity().y * 0.5f });
 			filter.maskBits = MAP | SENSOR;
 			if (App->scene_intro->down_orange_light_on == false)
 			{
@@ -718,7 +718,7 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 		break;
 
 		case RED_LIGHT:
-			bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
+			bodyA->body->SetLinearVelocity({ -bodyA->body->GetLinearVelocity().x * 1.1f ,bodyA->body->GetLinearVelocity().y * 0.5f });
 			filter.maskBits = MAP | SENSOR;
 			if (App->scene_intro->down_red_light_on == false) 
 			{
@@ -729,7 +729,7 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 		break;
 
 		case YELLOW_LIGHT_UP:
-			bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
+			bodyA->body->SetLinearVelocity({ -bodyA->body->GetLinearVelocity().x * 1.1f,bodyA->body->GetLinearVelocity().y * 0.5f });
 			filter.maskBits = MAP | SENSOR;
 			if (App->scene_intro->up_yellow_light_on == false) 
 			{
@@ -740,7 +740,7 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 		break;
 
 		case ORANGE_LIGHT_UP:
-			bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
+			bodyA->body->SetLinearVelocity({ -bodyA->body->GetLinearVelocity().x * 1.1f,bodyA->body->GetLinearVelocity().y * 0.5f });
 			filter.maskBits = MAP | SENSOR;
 			if (App->scene_intro->up_orange_light_on == false)
 			{
@@ -751,7 +751,7 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 		break;
 
 		case RED_LIGHT_UP:
-			bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
+			bodyA->body->SetLinearVelocity({ -bodyA->body->GetLinearVelocity().x * 1.1f,bodyA->body->GetLinearVelocity().y * 0.5f });
 			filter.maskBits = MAP | SENSOR;
 			if (App->scene_intro->up_red_light_on == false) 
 			{
