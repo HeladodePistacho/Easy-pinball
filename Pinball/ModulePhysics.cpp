@@ -635,12 +635,18 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 			App->scene_intro->first_time = true;
 			break;
 
-		case RAMP_LIGHT_LEFT:
-			App->scene_intro->scape_light_4_on = true;
-			break;
-
 		case RAMP_LIGHT_RIGHT:
+			App->scene_intro->scape_light_4_on = true;
+			bodyA->body->ApplyForce({ 20.0f, -50.0f }, bodyA->body->GetPosition(), true);
+			filter.maskBits = STOP_SENSOR | MAP;
+			bodyA->body->GetFixtureList()->SetFilterData(filter);
+			break;
+			
+		case RAMP_LIGHT_LEFT:
 			App->scene_intro->scape_light_1_on = true;
+			bodyA->body->ApplyForce({ -20.0f, -50.0f }, bodyA->body->GetPosition(), true);
+			filter.maskBits = STOP_SENSOR | MAP;
+			bodyA->body->GetFixtureList()->SetFilterData(filter);
 			break;
 
 		case RAMP_LIGHT_UP:
@@ -760,6 +766,33 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 				App->player->score += 250;
 			}
 		break;
+
+		case STOP_SENSOR:
+			bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
+			filter.maskBits = MAP | SENSOR;
+
+			//set mask bits depending on if the lights are on or not
+			if (!App->scene_intro->down_yellow_light_on)
+				filter.maskBits = filter.maskBits | YELLOW_LIGHT;
+			if (!App->scene_intro->down_orange_light_on)
+				filter.maskBits = filter.maskBits | ORANGE_LIGHT;
+			if (!App->scene_intro->down_red_light_on)
+				filter.maskBits = filter.maskBits | RED_LIGHT;
+			if (!App->scene_intro->up_yellow_light_on)
+				filter.maskBits = filter.maskBits | YELLOW_LIGHT_UP;
+			if (!App->scene_intro->up_orange_light_on)
+				filter.maskBits = filter.maskBits | ORANGE_LIGHT_UP;
+			if (!App->scene_intro->up_red_light_on)
+				filter.maskBits = filter.maskBits | RED_LIGHT_UP;
+
+			//turn the light off
+			if (App->scene_intro->scape_light_4_on)
+				App->scene_intro->scape_light_4_on = false;
+			if (App->scene_intro->scape_light_1_on)
+				App->scene_intro->scape_light_1_on = false;
+
+			bodyA->body->GetFixtureList()->SetFilterData(filter);
+			break;
 	}
 
 

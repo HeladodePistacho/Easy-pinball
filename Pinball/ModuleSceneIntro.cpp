@@ -974,6 +974,12 @@ bool ModuleSceneIntro::Start()
 	//Jackpot Sensor
 	App->physics->CreateRectangleSensor(555, 315, 20, 20, SENSOR, JACKPOT);
 
+	//left and right ramps sensors
+	App->physics->CreateRectangleSensor(685, 408, 20, 20, SENSOR, RAMP_LIGHT_LEFT);
+	App->physics->CreateRectangleSensor(216, 404, 20, 20, SENSOR, RAMP_LIGHT_RIGHT);
+	App->physics->CreateRectangleSensor(600, 320, 20, 20, STOP_SENSOR);
+	App->physics->CreateRectangleSensor(328, 293, 10, 40, STOP_SENSOR);
+
 	//The loser sensor
 	App->physics->CreateRectangleSensor(460, 881, 70, 10, SENSOR, END);
 
