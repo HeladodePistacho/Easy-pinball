@@ -20,7 +20,7 @@ ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app,
 	world = NULL;
 	mouse_joint = NULL;
 	flap_down_left_fix_joint = NULL;
-	debug = true;
+	debug = false;
 	name.create("physics");
 }
 
@@ -323,9 +323,16 @@ update_status ModulePhysics::PostUpdate()
 			}
 		}
 		App->scene_intro->circles.clear();
-		App->scene_intro->circles.add(CreateCircle(752, 725, 10, BALL));
-		App->scene_intro->Balls_count++;
-		App->scene_intro->circles.getLast()->data->listener = App->scene_intro;
+		
+		if (App->scene_intro->Balls_count <= App->player->stand_lives) {
+			App->scene_intro->ball_body = CreateCircle(752, 725, 10, BALL);
+			App->scene_intro->circles.add(App->scene_intro->ball_body);
+			App->scene_intro->Balls_count++;
+			App->scene_intro->circles.getLast()->data->listener = App->scene_intro;
+		}
+		else App->scene_intro->ball_body = nullptr;
+
+		
 		delete_object = false;
 	}
 

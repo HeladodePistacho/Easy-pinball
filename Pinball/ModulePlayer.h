@@ -20,8 +20,11 @@ public:
 
 	uint score = 0;
 
-	uint lives = 3;
+	uint stand_lives = 1;
 
 	uint total_score = 0;
+
+	uint extra_balls = 0;
+
 
 };

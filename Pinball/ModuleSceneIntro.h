@@ -8,6 +8,7 @@ class PhysBody;
 
 enum GAME_STATE {
 
+	NO_GAME,
 	START,
 	IN_GAME,
 	END_GAME,
@@ -61,6 +62,7 @@ public:
 	Button new_game_button;
 	Button launch_button;
 	Button volume_button;
+	uint max_volume;
 
 	SDL_Rect pause_rect;
 	SDL_Rect unpause_rect;

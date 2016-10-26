@@ -33,7 +33,10 @@ bool ModuleSceneIntro::Start()
 	
 	bool ret = true;
 
-	game_state = START;
+	App->player->stand_lives = 0;
+
+	game_state = NO_GAME;
+
 	
 	SDL_Texture* on = App->textures->Load("Textures/new_game_on.png");
 	SDL_Texture* off = App->textures->Load("Textures/new_game_off.png");
@@ -131,10 +134,6 @@ bool ModuleSceneIntro::Start()
 	
 	wheels_1_fx = App->audio->LoadFx("Audio/wheel_fx.wav");
 	wheels_2_fx = App->audio->LoadFx("Audio/wheel_fx_2.wav");
-
-
-	circles.add(App->physics->CreateCircle(752, 725, 10, BALL));
-	circles.getLast()->data->listener = this;
 
 	//Pinball background
 	background = App->textures->Load("Textures/background_clean.png");
@@ -1027,6 +1026,22 @@ update_status ModuleSceneIntro::Update()
 		}
 	}
 
+	p2List_item<PhysBody*>* cir = circles.getFirst();
+	bool active = false;
+	while (cir != NULL)
+	{
+
+		if (cir->data->Contains(752, 735))
+		{
+			if (launch_button.current_texture != launch_button.on_texture)launch_button.current_texture = launch_button.on_texture;
+			active = true;
+		}
+
+		cir = cir->next;
+	}
+
+	if (active == false)launch_button.current_texture = launch_button.off_texture;
+
 
 	//DEBUG------------------------------------------------------
 	
@@ -1074,23 +1089,27 @@ update_status ModuleSceneIntro::Update()
 	App->textures->BlitFont(170, 120, debug_font, debug_text);
 
 	
+	if (ball_body != nullptr) {
 	
 	//score
 	sprintf_s(score_text, 10, "%i", App->player->score);
 	App->textures->BlitFont(890, 170, score_font, score_text,CENTER);
 
-	if (ball_body != circles.getLast()->data)ball_body = circles.getLast()->data;
+	if (circles.count() > 0 && ball_body != circles.getLast()->data)ball_body = circles.getLast()->data;
 
 	//mph
-	if (ball_body != nullptr) {
 		float velocity_x = ball_body->body->GetLinearVelocity().x;
 		float velocity_y = ball_body->body->GetLinearVelocity().y;
 		int velocity = sqrt((velocity_x*velocity_x) + (velocity_y* velocity_y));
 		sprintf_s(speed_text, 100, "%i", velocity);
+
 	}
 	else {
+
 		sprintf_s(speed_text, 10, "%i", 0);
+
 	}
+
 	App->textures->BlitFont(965, 260, speed_font, speed_text);
 
 	//balls
@@ -1142,55 +1161,71 @@ update_status ModuleSceneIntro::Update()
 	}
 
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN) {
 
 		switch_up_lights();
 		App->audio->PlayFx(flap_up_fx);
 		App->physics->PushUpLeftFlaps();
 	}
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
 
 		App->physics->PushUpLeftFlaps();
 
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP) {
 
 		App->audio->PlayFx(flap_down_fx);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE) {
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_IDLE) {
 
 		App->physics->PushDownLeftFlaps();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN) {
 		switch_up_lights();
 		App->audio->PlayFx(flap_up_fx);
 		App->physics->PushUpRightFlaps();
 
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
 
 		App->physics->PushUpRightFlaps();
 
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP) {
 
 		App->audio->PlayFx(flap_down_fx);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE) {
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_IDLE) {
 
 		App->physics->PushDownRightFlaps();
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN && game_state != NO_GAME && game_state != END_GAME) {
+		if (ball_body != nullptr) {
+
+			if (ball_body->Contains(752, 735)) {
+
+				ball_body->body->ApplyForce({ 0.0f, -150.0f }, ball_body->body->GetPosition(), true);
+				App->audio->PlayFx(launcher_fx);
+
+			}
+
+			if (game_state == START)game_state = IN_GAME;
+
+		}
+
+	}
+
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
-		
+
 		if (game_state == PAUSE)game_state = last_game_state;
-	
+
 		else {
 
 			last_game_state = game_state;
@@ -1201,44 +1236,75 @@ update_status ModuleSceneIntro::Update()
 	}
 
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
+
 		SDL_Point temp;
+
 		temp.x = App->input->GetMouseX();
 		temp.y = App->input->GetMouseY();
 
-		if (SDL_PointInRect(&temp, &launch_button.active_area)) {
+		if (SDL_PointInRect(&temp, &launch_button.active_area) && game_state != PAUSE) {
 			p2List_item<PhysBody*>* cir = circles.getFirst();
 
 			while (cir != NULL)
 			{
 				if (cir->data->Contains(752, 735))
 				{
+					launch_button.ChangeState();
 					cir->data->body->ApplyForce({ 0.0f, -150.0f }, cir->data->body->GetPosition(), true);
 					App->audio->PlayFx(launcher_fx);
+
+					if (game_state == START)game_state = IN_GAME;
 				}
 
 				cir = cir->next;
 			}
 
-			launch_button.ChangeState();
+
 		}
-		
-		if (SDL_PointInRect(&temp, &new_game_button.active_area)) {
+
+		if ((SDL_PointInRect(&temp, &new_game_button.active_area) && game_state == NO_GAME) || (SDL_PointInRect(&temp, &new_game_button.active_area) && game_state == END_GAME)) {
 
 			new_game_button.ChangeState();
+			game_state = START;
+
+			ball_body = App->physics->CreateCircle(752, 725, 10, BALL);
+			circles.add(ball_body);
+			circles.getLast()->data->listener = this;
+
+			Balls_count = 1;
+			App->player->stand_lives = 1;
+		}
+
+		if (SDL_PointInRect(&temp, &volume_button.active_area) && game_state != PAUSE) {
+
+			volume_button.ChangeState();
+			if (volume_button.current_texture == volume_button.off_texture) {
+
+				max_volume = Mix_VolumeMusic(0);
+				Mix_Volume(-1, 0);
+
+			}
+			else {
+
+				Mix_Volume(-1, max_volume);
+				Mix_VolumeMusic(max_volume);
+
+			}
 
 		}
-		if (SDL_PointInRect(&temp, &volume_button.active_area)) {
-			volume_button.ChangeState();
-		}
+
 		if (SDL_PointInRect(&temp, &pause_rect) && game_state != PAUSE) {
 			last_game_state = game_state;
 			game_state = PAUSE;
 
 		}
+
 		if (SDL_PointInRect(&temp, &unpause_rect) && game_state == PAUSE) {
 			game_state = last_game_state;
 		}
+
 	}
+
 
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
@@ -1400,6 +1466,19 @@ update_status ModuleSceneIntro::Update()
 
 	if (game_state == START) {
 		App->renderer->Blit(instructions, 382, 460);
+	}
+
+	if (game_state == NO_GAME || game_state == END_GAME) {
+
+		new_game_button.current_texture = new_game_button.on_texture;
+
+	}
+	else new_game_button.current_texture = new_game_button.off_texture;
+
+	if (Balls_count > App->player->stand_lives) {
+		game_state = END_GAME;
+		Balls_count = 0;
+		App->player->extra_balls = 0;
 	}
 
 	return UPDATE_CONTINUE;
