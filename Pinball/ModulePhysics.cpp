@@ -430,8 +430,18 @@ update_status ModulePhysics::PostUpdate()
 
 	if (delete_object)
 	{
+		
+		for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
+		{
+			if (b == App->scene_intro->ball_body->body)
+			{
+				b->DestroyFixture(App->scene_intro->ball_body->body->GetFixtureList());
+				
+			}		
+		}
 		App->scene_intro->circles.clear();
 		App->scene_intro->circles.add(CreateCircle(752, 725, 10, BALL));
+		App->scene_intro->Balls_count++;
 		App->scene_intro->circles.getLast()->data->listener = App->scene_intro;
 		delete_object = false;
 	}
