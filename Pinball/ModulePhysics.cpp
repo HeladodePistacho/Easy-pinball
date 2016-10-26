@@ -52,10 +52,11 @@ bool ModulePhysics::Start()
 	flap_up_right = App->physics->CreateRectangle(630, 375, 70, 12, MAP);
 
 	//Flaps points
-	flap_down_right_point = App->physics->CreateStaticCircle(535, 784, 4);
-	flap_down_left_point = App->physics->CreateStaticCircle(388, 783, 4);
-	flap_up_left_point = App->physics->CreateStaticCircle(300, 309, 4);
-	flap_up_right_point = App->physics->CreateStaticCircle(630, 375, 4);
+	flap_down_right_point = App->physics->CreateStaticCircle(535, 784, 4, MAP);
+	flap_down_left_point = App->physics->CreateStaticCircle(388, 783, 4, MAP);
+	flap_up_left_point = App->physics->CreateStaticCircle(300, 309, 4, MAP);
+	flap_up_right_point = App->physics->CreateStaticCircle(630, 375, 4, MAP);
+
 
 	//Flaps joints
 	b2RevoluteJointDef def;
@@ -99,40 +100,47 @@ bool ModulePhysics::Start()
 	//Wheels
 
 	//Mid
-	mid_wheel_point = App->physics->CreateStaticCircle(532, 242, 4);
-	mid_wheel = CreateCircle(532, 238, 34, MAP);
+	mid_wheel_point = App->physics->CreateStaticCircle(532, 242, 4, MAP);
+	mid_wheel = CreateCircle(532, 238, 25, MAP);
 	def.bodyA = mid_wheel->body;
 	def.bodyB = mid_wheel_point->body;
 	def.motorSpeed = -8.0f;
 	def.maxMotorTorque = 80.0f;
 	def.localAnchorB = { 0.0f , 0.0f };
-	def.enableMotor = true;
+	def.enableMotor = false;
 	def.enableLimit = false;
 	mid_wheel_engine = (b2RevoluteJoint*)world->CreateJoint(&def);
+	mid_wheel->joint = mid_wheel_engine;
 
-	//Left
-	left_wheel_point = App->physics->CreateStaticCircle(474, 180, 4);
-	left_wheel = CreateCircle(474, 180, 34, MAP);
+
+	//LEFT
+	left_wheel_point = App->physics->CreateStaticCircle(474, 180, 4, MAP);
+	left_wheel = CreateCircle(474, 180, 25, MAP);
 	def.bodyA = left_wheel->body;
 	def.bodyB = left_wheel_point->body;
 	def.motorSpeed = -8.0f;
 	def.maxMotorTorque = 80.0f;
 	def.localAnchorB = { 0.0f , 0.0f };
 	def.enableMotor = true;
+	def.enableMotor = false;
 	def.enableLimit = false;
 	left_wheel_engine = (b2RevoluteJoint*)world->CreateJoint(&def);
+	left_wheel->joint = left_wheel_engine;
 
-	//Right
-	right_wheel_point = App->physics->CreateStaticCircle(590, 180, 4);
-	right_wheel = CreateCircle(590, 180, 34, MAP);
+	//RIGHT
+	right_wheel_point = App->physics->CreateStaticCircle(590, 180, 4, MAP);
+	right_wheel = CreateCircle(590, 180, 25, MAP);
 	def.bodyA = right_wheel->body;
 	def.bodyB = right_wheel_point->body;
 	def.motorSpeed = -8.0f;
 	def.maxMotorTorque = 80.0f;
 	def.localAnchorB = { 0.0f , 0.0f };
 	def.enableMotor = true;
+	def.enableMotor = false;
 	def.enableLimit = false;
-	mid_wheel_engine = (b2RevoluteJoint*)world->CreateJoint(&def);
+	right_wheel_engine = (b2RevoluteJoint*)world->CreateJoint(&def);
+	right_wheel->joint = right_wheel_engine;
+
 
 
 	return true;
@@ -176,7 +184,15 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, collision_type t
 	fixture.shape = &shape;
 	fixture.density = 1.0f;
 	fixture.filter.categoryBits = type;
-	fixture.filter.maskBits = LAUNCHER | SENSOR;
+
+	if (type == BALL)
+		fixture.filter.maskBits = LAUNCHER | SENSOR;
+	if (type == MAP)
+	{
+		fixture.filter.maskBits = BALL;
+		fixture.restitution = 1.0f;
+
+	}
 
 	b->CreateFixture(&fixture);
 	PhysBody* pbody = new PhysBody();
@@ -187,7 +203,7 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, collision_type t
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateStaticCircle(int x, int y, int radius)
+PhysBody* ModulePhysics::CreateStaticCircle(int x, int y, int radius, collision_type type)
 {
 	b2BodyDef body;
 	body.type = b2_staticBody;
@@ -640,20 +656,23 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 		case JACKPOT:
 			App->scene_intro->ball_into_jackpot = true;
 			App->scene_intro->first_time = true;
+			//FX
 			break;
+
 
 		case RAMP_LIGHT_RIGHT:
 			App->scene_intro->scape_light_4_on = true;
 			bodyA->body->ApplyForce({ 20.0f, -50.0f }, bodyA->body->GetPosition(), true);
 			filter.maskBits = STOP_SENSOR | MAP;
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
+			//FX RAMPES PETITES
 			break;
-			
+
 		case RAMP_LIGHT_LEFT:
-			App->scene_intro->scape_light_1_on = true;
 			bodyA->body->ApplyForce({ -20.0f, -50.0f }, bodyA->body->GetPosition(), true);
 			filter.maskBits = STOP_SENSOR | MAP;
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
+			//FX RAMPES PETITES
 			break;
 
 		case RAMP_LIGHT_UP:
@@ -674,7 +693,9 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 
 		case END:
 			delete_object = true;
+			//FX DESTROY TRISTE SENSOR
 			break;
+
 
 	}
 
@@ -803,4 +824,30 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 	}
 
 
+}
+
+void ModulePhysics::If_wheel_contact(PhysBody* bodyA, PhysBody* bodyB)
+{
+	if (bodyB->body == left_wheel->body)
+	{
+		App->scene_intro->collide_wheel = true;
+		App->scene_intro->wheels_on[1] = true;
+		left_wheel_engine->EnableMotor(true);
+		App->audio->PlayFx(App->scene_intro->wheels_1_fx);
+
+	}
+	if (bodyB->body == mid_wheel->body)
+	{
+		App->scene_intro->collide_wheel = true;
+		App->scene_intro->wheels_on[0] = true;
+		mid_wheel_engine->EnableMotor(true);
+		App->audio->PlayFx(App->scene_intro->wheels_2_fx);
+	}
+	if (bodyB->body == right_wheel->body)
+	{
+		App->scene_intro->collide_wheel = true;
+		App->scene_intro->wheels_on[2] = true;
+		right_wheel_engine->EnableMotor(true);
+		App->audio->PlayFx(App->scene_intro->wheels_1_fx);
+	}
 }

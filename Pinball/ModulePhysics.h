@@ -73,6 +73,7 @@ public:
 	b2Body* body;
 	Module* listener;
 	BODY_TYPE collide_type;
+	b2RevoluteJoint* joint = nullptr;
 };
 
 // Module --------------------------------------
@@ -89,14 +90,17 @@ public:
 	bool CleanUp();
 
 	PhysBody* CreateCircle(int x, int y, int radius, collision_type type);
-	PhysBody* CreateStaticCircle(int x, int y, int radius);
+	PhysBody* CreateStaticCircle(int x, int y, int radius, collision_type type);
 	PhysBody* CreateRectangle(int x, int y, int width, int height, collision_type type);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, collision_type type, BODY_TYPE b_type = NONE);
 	PhysBody* CreateChain(int x, int y, int* points, int size, collision_type type, uint restitution = 0);
+	
+	
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
 	void If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB);
+	void If_wheel_contact(PhysBody* bodyA, PhysBody* bodyB);
 
 private:
 

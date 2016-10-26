@@ -1347,15 +1347,57 @@ update_status ModuleSceneIntro::Update()
 	}
 
 	// All draw functions ------------------------------------------------------
+	//wheeels
 	int pos_x, pos_y;
+	int wheel_time = SDL_GetTicks();
+
+	if (collide_wheel)
+	{
+		time_spinning = wheel_time;
+		collide_wheel = false;
+	}
+	if (wheel_time > time_spinning + 500)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			wheels_on[i] = false;
+		}
+	}
+
+
 	App->physics->mid_wheel->GetPosition(pos_x, pos_y);
-	App->renderer->Blit(wheel, pos_x - 6, pos_y - 7, NULL, 1.0f, App->physics->mid_wheel->GetRotation());
+	if (wheels_on[0])
+		App->renderer->Blit(wheel, pos_x - 15, pos_y - 15, NULL, 1.0f, App->physics->mid_wheel->GetRotation());
+	else
+	{
+		App->renderer->Blit(wheel_off, pos_x - 15, pos_y - 15, NULL, 1.0f, App->physics->mid_wheel->GetRotation());
+		App->physics->mid_wheel->joint->EnableMotor(false);
+		App->physics->mid_wheel->body->SetAngularVelocity(0.0f);
+	}
 
 	App->physics->left_wheel->GetPosition(pos_x, pos_y);
-	App->renderer->Blit(wheel, pos_x - 6, pos_y - 7, NULL, 1.0f, App->physics->left_wheel->GetRotation());
+	if (wheels_on[1])
+		App->renderer->Blit(wheel, pos_x - 15, pos_y - 15, NULL, 1.0f, App->physics->left_wheel->GetRotation());
+	else
+	{
+		App->renderer->Blit(wheel_off, pos_x - 15, pos_y - 15, NULL, 1.0f, App->physics->left_wheel->GetRotation());
+		App->physics->left_wheel->joint->EnableMotor(false);
+		App->physics->left_wheel->body->SetAngularVelocity(0.0f);
+	}
+
 
 	App->physics->right_wheel->GetPosition(pos_x, pos_y);
-	App->renderer->Blit(wheel, pos_x - 6, pos_y - 7, NULL, 1.0f, App->physics->right_wheel->GetRotation());
+	if (wheels_on[2])
+		App->renderer->Blit(wheel, pos_x - 15, pos_y - 15, NULL, 1.0f, App->physics->right_wheel->GetRotation());
+	else
+	{
+		App->renderer->Blit(wheel_off, pos_x - 15, pos_y - 15, NULL, 1.0f, App->physics->right_wheel->GetRotation());
+		App->physics->right_wheel->joint->EnableMotor(false);
+		App->physics->right_wheel->body->SetAngularVelocity(0.0f);
+	}
+
+	
+
 
 	//All superior Renders
 
@@ -1496,22 +1538,9 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 	
 	App->physics->If_Sensor_contact(bodyA, bodyB);
-
-
+	if (bodyB->body == App->physics->left_wheel->body || bodyB->body == App->physics->mid_wheel->body || bodyB->body == App->physics->right_wheel->body)
+		App->physics->If_wheel_contact(bodyA, bodyB);
 	
-
-	/*
-	if(bodyA)
-	{
-		bodyA->GetPosition(x, y);
-		App->renderer->DrawCircle(x, y, 50, 100, 100, 100);
-	}
-
-	if(bodyB)
-	{
-		bodyB->GetPosition(x, y);
-		App->renderer->DrawCircle(x, y, 50, 100, 100, 100);
-	}*/
 }
 
 void ModuleSceneIntro::switch_up_lights()

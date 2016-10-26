@@ -135,6 +135,10 @@ public:
 
 	SDL_Texture* wheel;
 	SDL_Texture* wheel_off;
+	int time_spinning = 0;
+	bool collide_wheel = false;
+	bool wheels_on[3] = { false, false, false };
+
 
 	SDL_Texture* wheel_flames_1;
 	SDL_Texture* wheel_flames_2;
@@ -183,6 +187,7 @@ public:
 	uint points_fx;
 	uint wheels_1_fx;
 	uint wheels_2_fx;
+	uint wheels_3_fx;
 
 	p2Point<int> ray;
 	bool ray_on;
