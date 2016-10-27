@@ -1517,8 +1517,8 @@ update_status ModuleSceneIntro::Update()
 	}
 	else new_game_button.current_texture = new_game_button.off_texture;
 
-	if (game_state == END_GAME) {
-		
+	if (game_state == END_GAME) 
+	{
 		Balls_count = 0;
 		App->player->extra_balls = 0;
 	}
@@ -1551,4 +1551,22 @@ void ModuleSceneIntro::switch_up_lights()
 		up_lights[i] = up_lights[i - 1];
 
 	up_lights[0] = temp;
+}
+
+void ModuleSceneIntro::Set_lights_to_false()
+{
+
+	down_yellow_light_on = false;
+	down_orange_light_on = false;
+	down_red_light_on = false;
+	up_yellow_light_on = false;
+	up_orange_light_on = false;
+	up_red_light_on = false;
+
+	for (int i = 0; i < 3; i++)
+	{
+		up_lights[i] = false;
+	}
+
+
 }

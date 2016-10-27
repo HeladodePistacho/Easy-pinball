@@ -53,6 +53,7 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
+	void Set_lights_to_false();
 
 public:
 

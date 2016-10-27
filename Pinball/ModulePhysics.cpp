@@ -344,6 +344,7 @@ update_status ModulePhysics::PostUpdate()
 						
 				if (App->scene_intro->Balls_count != App->player->stand_lives)
 				{
+					App->scene_intro->Set_lights_to_false();
 					App->scene_intro->ball_body = CreateCircle(752, 725, 10, BALL);
 					App->scene_intro->circles.add(App->scene_intro->ball_body);
 					App->scene_intro->Balls_count++;
@@ -355,6 +356,7 @@ update_status ModulePhysics::PostUpdate()
 				{
 					App->scene_intro->game_state = END_GAME;
 					App->scene_intro->ball_body = nullptr;
+					App->scene_intro->Set_lights_to_false();
 				}
 
 		}
