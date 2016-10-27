@@ -144,6 +144,7 @@ bool ModuleSceneIntro::Start()
 
 	pause = App->textures->Load("Textures/pause_sprite.png");
 	instructions = App->textures->Load("Textures/instructions.png");
+	end_phrase = App->textures->Load("Textures/end_texture.png");
 
 	wheel = App->textures->Load("Textures/wheel.png");
 	wheel_off = App->textures->Load("Textures/wheel_off.png");
@@ -1180,6 +1181,13 @@ update_status ModuleSceneIntro::Update()
 		}
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN && new_game_button.current_texture == new_game_button.on_texture) {
+
+			game_state == START;
+
+	}
+
+
 	//Check if ball is into jackpot and stop it for 2 seconds
 	int current_time = SDL_GetTicks();
 
@@ -1557,7 +1565,7 @@ update_status ModuleSceneIntro::Update()
 	if (game_state == NO_GAME || game_state == END_GAME) {
 
 		new_game_button.current_texture = new_game_button.on_texture;
-
+		App->renderer->Blit(end_phrase, 350, 400);
 	}
 	else new_game_button.current_texture = new_game_button.off_texture;
 

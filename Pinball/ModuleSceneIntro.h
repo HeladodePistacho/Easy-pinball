@@ -114,7 +114,7 @@ public:
 
 	SDL_Texture* pause;
 	SDL_Texture* instructions;
-
+	SDL_Texture* end_phrase;
 
 	SDL_Texture* launcher;
 	SDL_Texture* scape_1;
