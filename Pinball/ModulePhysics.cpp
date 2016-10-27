@@ -320,6 +320,44 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, collis
 	return pbody;
 }
 
+PhysBody* ModulePhysics::CreateSensorChain(int x, int y, int* points, int size, collision_type type, uint restitution)
+{
+	b2BodyDef body;
+	body.type = b2_staticBody;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	b2Body* b = world->CreateBody(&body);
+
+	b2PolygonShape shape;
+	b2Vec2* p = new b2Vec2[size / 2];
+
+	for (uint i = 0; i < size / 2; ++i)
+	{
+		p[i].x = PIXEL_TO_METERS(points[i * 2 + 0]);
+		p[i].y = PIXEL_TO_METERS(points[i * 2 + 1]);
+		
+	}
+
+	shape.Set(p, 4);
+
+	b2FixtureDef fixture;
+	fixture.shape = &shape;
+	fixture.isSensor = true;
+	fixture.filter.categoryBits = type;
+	fixture.filter.maskBits = BALL;
+
+	fixture.restitution = restitution;
+	b->CreateFixture(&fixture);
+
+	delete p;
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	b->SetUserData(pbody);
+
+	return pbody;
+}
+
 // 
 update_status ModulePhysics::PostUpdate()
 {
@@ -612,7 +650,8 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 		
 		case SENSOR_RAMP_A:
 			
-			filter.maskBits = RAMP_A | FINAL_RAMP | SENSOR;
+			filter.maskBits = RAMP_A | FINAL_RAMP;
+			bodyA->body->ApplyForce({ 0.0f, -200.0f }, bodyA->body->GetPosition(), true);
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
 			App->audio->PlayFx(App->scene_intro->drift_1_fx);
 			App->audio->PlayFx(App->scene_intro->points_fx);
@@ -622,7 +661,8 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 
 		case SENSOR_RAMP_B:
 			
-			filter.maskBits = RAMP_B | FINAL_RAMP | SENSOR;
+			filter.maskBits = RAMP_B | FINAL_RAMP;
+			bodyA->body->ApplyForce({ 0.0f, -200.0f }, bodyA->body->GetPosition(), true);
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
 			App->audio->PlayFx(App->scene_intro->special_ramp_fx);
 			App->audio->PlayFx(App->scene_intro->points_fx);
@@ -632,7 +672,7 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 
 		case SENSOR_RAMP_C:
 			bodyA->body->ApplyForce({ -50.0f, 0.0f }, bodyA->body->GetPosition(), true);
-			filter.maskBits = RAMP_C | FINAL_RAMP | SENSOR;
+			filter.maskBits = RAMP_C | FINAL_RAMP;
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
 			App->audio->PlayFx(App->scene_intro->drift_1_fx);
 			App->audio->PlayFx(App->scene_intro->points_fx);

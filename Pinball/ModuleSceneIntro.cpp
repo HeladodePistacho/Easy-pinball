@@ -976,8 +976,17 @@ bool ModuleSceneIntro::Start()
 	App->physics->CreateRectangleSensor(300, 283, 10, 10, SENSOR, TURBO_UP_LEFT);
 
 	//3 lights under the top left flap
-	App->physics->CreateRectangleSensor(365, 372, 10, 10, YELLOW_LIGHT);
-	App->physics->CreateRectangleSensor(360, 390, 10, 10, YELLOW_LIGHT);
+	//App->physics->CreateRectangleSensor(365, 372, 10, 10, YELLOW_LIGHT);
+	//App->physics->CreateRectangleSensor(360, 390, 10, 10, YELLOW_LIGHT);
+
+	int yellow_light_sensor[8] = 
+	{
+		363, 366, 
+		369, 368, 
+		355, 393, 
+		362, 394 
+	};
+	App->physics->CreateSensorChain(0, 0, yellow_light_sensor, 8, YELLOW_LIGHT);
 
 	App->physics->CreateRectangleSensor(353, 406, 10, 10, ORANGE_LIGHT);
 	App->physics->CreateRectangleSensor(348, 424, 10, 10, ORANGE_LIGHT);
