@@ -652,7 +652,7 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 			break;
 		
 		case SENSOR_RAMP_A:
-			
+			App->scene_intro->level_floor = true;
 			filter.maskBits = RAMP_A | FINAL_RAMP;
 			bodyA->body->ApplyForce({ 0.0f, -200.0f }, bodyA->body->GetPosition(), true);
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
@@ -663,7 +663,7 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 			break;
 
 		case SENSOR_RAMP_B:
-			
+			App->scene_intro->level_floor = true;
 			filter.maskBits = RAMP_B | FINAL_RAMP;
 			bodyA->body->ApplyForce({ 0.0f, -200.0f }, bodyA->body->GetPosition(), true);
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
@@ -758,6 +758,8 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 	case FINAL_RAMP:
 
 		bodyA->body->SetLinearVelocity({ 0.0f,0.0f });
+		App->scene_intro->level_floor = false;
+
 		filter.maskBits = MAP | SENSOR;
 
 		if (!App->scene_intro->down_yellow_light_on)

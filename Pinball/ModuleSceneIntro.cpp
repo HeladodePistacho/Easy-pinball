@@ -994,10 +994,10 @@ bool ModuleSceneIntro::Start()
 
 	int sensor_ramp_a[8]
 	{
-		232, 374,
-		256, 350,
-		262, 359,
-		238, 383
+		232,352,
+		232,360,
+		242,355,
+		242,365
 	};
 	App->physics->CreateSensorChain(0, 0, sensor_ramp_a, 8, SENSOR, SENSOR_RAMP_A);
 
@@ -1529,8 +1529,6 @@ update_status ModuleSceneIntro::Update()
 
 	//All superior Renders
 	
-	//App->renderer->Blit(scape_light_4, 182, 318);
-	//App->renderer->Blit(scape_light_5, 110, 193);
 
 	App->renderer->Blit(left_lung, 286, 588);
 	App->renderer->Blit(right_lung, 530, 582);
@@ -1538,23 +1536,10 @@ update_status ModuleSceneIntro::Update()
 	//Blit the launcher
 	/*
 	App->renderer->Blit(launcher, 655, 450);
-	App->renderer->Blit(scape_1, 158, 91);
-	App->renderer->Blit(scape_2, 121, 16);
-
+	
 	App->renderer->Blit(scape_light_2, 412, 12);
 	App->renderer->Blit(scape_light_3, 148, 70);
 
-	App->renderer->Blit(down_yellow_light, 352, 363);
-	App->renderer->Blit(down_orange_light, 335, 400);
-	App->renderer->Blit(down_red_light, 324, 436);
-
-	App->renderer->Blit(mid_red_light, 308, 252);
-	App->renderer->Blit(mid_orange_light, 333, 212);
-	App->renderer->Blit(mid_yellow_light, 357, 178);
-
-	App->renderer->Blit(up_light_1, 496, 77);
-	App->renderer->Blit(up_light_2, 521, 79);
-	App->renderer->Blit(up_light_3, 548, 84);
 	*/
 
 	//App->renderer->Blit(pause, 0, 0);
@@ -1624,6 +1609,12 @@ update_status ModuleSceneIntro::Update()
 		c = c->next;
 	}
 
+	if (!level_floor)
+	{
+		App->renderer->Blit(scape_1, 158, 91);
+		App->renderer->Blit(scape_2, 121, 16);
+	}
+		
 	if (game_state == PAUSE) {
 		App->renderer->Blit(pause, 0, 0);
 	}

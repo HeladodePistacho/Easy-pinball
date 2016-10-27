@@ -119,6 +119,7 @@ public:
 	SDL_Texture* launcher;
 	SDL_Texture* scape_1;
 	SDL_Texture* scape_2;
+	bool level_floor = false;
 
 	SDL_Texture* scape_light_1;
 	SDL_Texture* scape_light_2;
