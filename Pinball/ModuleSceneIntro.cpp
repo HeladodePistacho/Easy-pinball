@@ -150,6 +150,7 @@ bool ModuleSceneIntro::Start()
 	wheel_flames_1 = App->textures->Load("Textures/wheels_flames_1.png");
 	wheel_flames_2 = App->textures->Load("Textures/wheels_flames_2.png");
 	wheel_flames_3 = App->textures->Load("Textures/wheels_flames_3.png");
+	hot_rod_wheels_light = App->textures->Load("Textures/hot_rod_repair_light.png");
 
 	launcher = App->textures->Load("Textures/launcher.png");
 	scape_1 = App->textures->Load("Textures/scape_1.png");
@@ -160,6 +161,7 @@ bool ModuleSceneIntro::Start()
 	scape_light_3 = App->textures->Load("Textures/scape_light_3.png");
 	scape_light_4 = App->textures->Load("Textures/scape_light_4.png");
 	scape_light_5 = App->textures->Load("Textures/scape_light_5.png");
+	scape_light_6 = App->textures->Load("Textures/scape_light_6.png");
 
 	down_red_light = App->textures->Load("Textures/red_light.png");
 	down_yellow_light = App->textures->Load("Textures/yellow_light.png");
@@ -267,6 +269,31 @@ bool ModuleSceneIntro::Start()
 	393, 841
 	};	
 	App->physics->CreateChain(0, 0, map_walls, 172, MAP);
+
+	//Map sector
+	int map_sector[38] = {
+		356, 365,
+		351, 392,
+		341, 420,
+		333, 438,
+		329, 448,
+		312, 428,
+		298, 399,
+		284, 375,
+		273, 356,
+		263, 339,
+		254, 327,
+		260, 318,
+		269, 313,
+		281, 311,
+		299, 316,
+		315, 322,
+		325, 334,
+		340, 347,
+		352, 357
+	};
+	App->physics->CreateChain(0, 0, map_sector, 38, MAP);
+
 
 	//Left arm
 	int left_arm[76] = {
@@ -835,75 +862,73 @@ bool ModuleSceneIntro::Start()
 	App->physics->CreateChain(0, 0, ramp_c, 190, RAMP_C);
 
 	//Mid wheel chain
-	int mid_wheel_chain[68] = {
-		484, 259,
-		491, 277,
-		501, 288,
-		510, 299,
-		519, 307,
-		529, 311,
-		536, 302,
-		543, 293,
+	int mid_wheel_chain[64] = {
+		529, 312,
+		515, 302,
+		502, 288,
+		492, 277,
+		485, 263,
+		482, 253,
+		487, 244,
+		491, 238,
+		501, 235,
+		517, 232,
+		538, 232,
+		553, 235,
+		567, 237,
+		577, 242,
+		590, 251,
+		594, 258,
+		602, 271,
+		605, 283,
+		600, 293,
+		594, 303,
+		587, 317,
+		581, 334,
+		576, 338,
+		571, 333,
+		576, 319,
+		578, 308,
+		573, 298,
+		564, 292,
 		553, 290,
-		563, 290,
-		573, 297,
-		578, 305,
-		580, 314,
-		580, 321,
-		578, 329,
-		574, 336,
-		585, 324,
-		589, 312,
-		594, 301,
-		601, 291,
-		605, 279,
-		604, 267,
-		597, 258,
-		589, 252,
-		577, 241,
-		569, 239,
-		564, 242,
-		553, 250,
-		543, 254,
-		527, 254,
-		510, 251,
-		497, 246,
-		486, 241,
-		485, 251
+		544, 293,
+		537, 302,
+		535, 309
 	};
-	App->physics->CreateChain(0, 0, mid_wheel_chain, 68, MAP);
+	App->physics->CreateChain(0, 0, mid_wheel_chain, 64, MAP);
+
 
 	//Right wheel chain
-	int right_wheel_chain[54] = {
-		609, 221,
-		624, 228,
-		632, 220,
-		642, 206,
-		648, 192,
-		651, 180,
-		658, 167,
-		664, 154,
-		668, 138,
-		666, 123,
+	int right_wheel_chain[50] = {
+		603, 210,
+		610, 220,
+		619, 226,
+		627, 230,
+		634, 227,
+		638, 219,
+		642, 212,
+		649, 195,
+		655, 178,
+		659, 165,
+		666, 144,
+		664, 122,
 		654, 111,
-		641, 102,
-		624, 95,
-		609, 94,
-		595, 99,
-		585, 114,
-		577, 131,
-		573, 137,
-		570, 149,
-		581, 151,
-		591, 152,
-		601, 155,
-		611, 167,
-		619, 180,
-		620, 194,
-		618, 204,
-		613, 213
+		642, 106,
+		633, 104,
+		619, 103,
+		606, 108,
+		593, 117,
+		585, 132,
+		584, 144,
+		589, 157,
+		596, 169,
+		600, 183,
+		600, 197,
+		600, 202
 	};
-	App->physics->CreateChain(0, 0, right_wheel_chain, 54, MAP);
+	App->physics->CreateChain(0, 0, right_wheel_chain, 50, MAP);
+
 
 	// Right rocket
 	int right_rocket[10] = {
@@ -939,10 +964,15 @@ bool ModuleSceneIntro::Start()
 	App->physics->CreateRectangleSensor(241, 357, 10, 10, SENSOR, SENSOR_RAMP_A);
 
 	//sensors that apply a force to the ball
-	App->physics->CreateRectangleSensor(410, 143, 20, 20, SENSOR, TURBO_UP);
+
 	App->physics->CreateRectangleSensor(241, 357, 10, 10, SENSOR, TURBO_UP);
 	App->physics->CreateRectangleSensor(668, 367, 20, 20, SENSOR, TURBO_UP);
+
+	App->physics->CreateRectangleSensor(410, 143, 20, 20, SENSOR, TURBO_UP);
+	App->physics->CreateRectangleSensor(410, 143, 20, 20, SENSOR, RAMP_LIGHT_UP);
 	App->physics->CreateRectangleSensor(295, 146, 20, 20, SENSOR, TURBO_DOWN);
+
+	
 	App->physics->CreateRectangleSensor(300, 283, 10, 10, SENSOR, TURBO_UP_LEFT);
 
 	//3 lights under the top left flap
@@ -1144,22 +1174,25 @@ update_status ModuleSceneIntro::Update()
 	//Check if ball is into jackpot and stop it for 2 seconds
 	int current_time = SDL_GetTicks();
 
-	if (ball_into_jackpot && first_time)
-	{
-		stop_ball = current_time;
-		first_time = false;
-	}
+	if (ball_body != nullptr) {
 
-	if (current_time <= stop_ball + 2000 && ball_into_jackpot)
-	{
-		ball_body->body->SetTransform({ PIXEL_TO_METERS(556), PIXEL_TO_METERS(313) }, 0);
-		ball_body->body->SetLinearVelocity({ -3.0f, 3.0f });
-	}
-	else
-	{
-		ball_into_jackpot = false;
-	}
+		if (ball_into_jackpot && first_time)
+		{
+			stop_ball = current_time;
+			first_time = false;
+		}
 
+		if (current_time <= stop_ball + 2000 && ball_into_jackpot)
+		{
+			ball_body->body->SetTransform({ PIXEL_TO_METERS(556), PIXEL_TO_METERS(313) }, 0);
+			ball_body->body->SetLinearVelocity({ -3.0f, 3.0f });
+		}
+		else
+		{
+			ball_into_jackpot = false;
+		}
+
+	}
 
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN) {
 
@@ -1443,6 +1476,8 @@ update_status ModuleSceneIntro::Update()
 	App->renderer->Blit(launch_button.current_texture, 846, 716);
 	App->renderer->Blit(new_game_button.current_texture, 943, 717);
 	App->renderer->Blit(volume_button.current_texture, 832, 525);
+	
+	App->renderer->Blit(hot_rod_wheels_light, 445, 165);
 	//App->renderer->Blit(instructions, 382, 460);
 
 

@@ -144,6 +144,7 @@ public:
 	SDL_Texture* wheel_flames_1;
 	SDL_Texture* wheel_flames_2;
 	SDL_Texture* wheel_flames_3;
+	SDL_Texture* hot_rod_wheels_light;
 
 	SDL_Texture* down_red_light;
 	SDL_Texture* down_orange_light;
