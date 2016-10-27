@@ -1272,7 +1272,7 @@ update_status ModuleSceneIntro::Update()
 			circles.getLast()->data->listener = this;
 
 			Balls_count = 1;
-			App->player->stand_lives = 1;
+			App->player->stand_lives = 3;
 		}
 
 		if (SDL_PointInRect(&temp, &volume_button.active_area) && game_state != PAUSE) {
@@ -1517,8 +1517,8 @@ update_status ModuleSceneIntro::Update()
 	}
 	else new_game_button.current_texture = new_game_button.off_texture;
 
-	if (Balls_count > App->player->stand_lives) {
-		game_state = END_GAME;
+	if (game_state == END_GAME) {
+		
 		Balls_count = 0;
 		App->player->extra_balls = 0;
 	}

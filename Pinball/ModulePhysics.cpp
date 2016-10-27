@@ -340,15 +340,24 @@ update_status ModulePhysics::PostUpdate()
 		}
 		App->scene_intro->circles.clear();
 		
-		if (App->scene_intro->Balls_count <= App->player->stand_lives) {
-			App->scene_intro->ball_body = CreateCircle(752, 725, 10, BALL);
-			App->scene_intro->circles.add(App->scene_intro->ball_body);
-			App->scene_intro->Balls_count++;
-			App->scene_intro->circles.getLast()->data->listener = App->scene_intro;
-		}
-		else App->scene_intro->ball_body = nullptr;
+		if (App->scene_intro->Balls_count  <= App->player->stand_lives ) {
+						
+				if (App->scene_intro->Balls_count != App->player->stand_lives)
+				{
+					App->scene_intro->ball_body = CreateCircle(752, 725, 10, BALL);
+					App->scene_intro->circles.add(App->scene_intro->ball_body);
+					App->scene_intro->Balls_count++;
+					App->scene_intro->circles.getLast()->data->listener = App->scene_intro;
 
-		
+					
+				}
+				else
+				{
+					App->scene_intro->game_state = END_GAME;
+					App->scene_intro->ball_body = nullptr;
+				}
+
+		}
 		delete_object = false;
 	}
 
