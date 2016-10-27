@@ -38,6 +38,8 @@ bool ModuleSceneIntro::Start()
 	game_state = NO_GAME;
 
 	
+	//Buttons
+	//New game
 	SDL_Texture* on = App->textures->Load("Textures/new_game_on.png");
 	SDL_Texture* off = App->textures->Load("Textures/new_game_off.png");
 
@@ -51,18 +53,21 @@ bool ModuleSceneIntro::Start()
 	new_game_button.active_area = temp;
 	new_game_button.current_texture = on;
 
+	//Volume
 	on = App->textures->Load("Textures/volume_on.png");
 	off = App->textures->Load("Textures/volume_off.png");
 
 	temp.x = 832;
 	temp.y = 525;
-	temp.h = temp.w = 50;
+	temp.h = 65;
+	temp.w = 75;
 
 	volume_button.on_texture = on;
 	volume_button.off_texture = off;
 	volume_button.active_area = temp;
 	volume_button.current_texture = on;
 
+	//Launch
 	on = App->textures->Load("Textures/launch_on.png");
 	off = App->textures->Load("Textures/launch_off.png");
 
@@ -76,12 +81,13 @@ bool ModuleSceneIntro::Start()
 	launch_button.current_texture = on;
 	
 
-
-
+	//Pause
 	pause_rect.x = 945;
 	pause_rect.y = 536;
 	pause_rect.h = pause_rect.w = 50;
 
+
+	//Unpause
 	unpause_rect.x = 486;
 	unpause_rect.y = 621;
 	unpause_rect.h = 31;
@@ -89,9 +95,7 @@ bool ModuleSceneIntro::Start()
 
 
 
-	
-
-
+	//Fonts
 	score_font = App->textures->LoadFont("Textures/test_source.png", ".0123456789", 1);
 
 	debug_font = App->textures->LoadFont("Textures/debug_font.png", "!*#$%&`()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[[]|`", 1);
@@ -101,13 +105,14 @@ bool ModuleSceneIntro::Start()
 	balls_font = speed_font;
 
 
-
+	//Music Play
 	App->audio->PlayMusic("Audio/pinball_theme.ogg");
 
+	//Camera
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
-	ball = App->textures->Load("Textures/ball.png"); 
-	
+
+	//Fx
 	flap_up_fx = App->audio->LoadFx("Audio/flap_up_fx.wav");
 	flap_down_fx = App->audio->LoadFx("Audio/flap_down_fx.wav");
 	launcher_fx = App->audio->LoadFx("Audio/launcher_fx.wav");
@@ -134,6 +139,10 @@ bool ModuleSceneIntro::Start()
 	
 	wheels_1_fx = App->audio->LoadFx("Audio/wheel_fx.wav");
 	wheels_2_fx = App->audio->LoadFx("Audio/wheel_fx_2.wav");
+
+	//Textures
+	//Ball
+	ball = App->textures->Load("Textures/ball.png");
 
 	//Pinball background
 	background = App->textures->Load("Textures/background_clean.png");
@@ -179,7 +188,11 @@ bool ModuleSceneIntro::Start()
 	left_lung = App->textures->Load("Textures/left_lung.png");
 	right_lung = App->textures->Load("Textures/right_lung.png");
 
+
+
 	
+	//Chains
+
 	//Pinball map walls
 	int map_walls[172] = {
 	434, 860,
@@ -382,7 +395,6 @@ bool ModuleSceneIntro::Start()
 	App->physics->CreateChain(0, 0, right_arm, 74, MAP);
 
 	//Launcher
-	
 	int launcher[66] = {
 		732, 745,
 		762, 748,
@@ -951,7 +963,9 @@ bool ModuleSceneIntro::Start()
 	};
 	App->physics->CreateChain(0, 0, left_rocket, 10, MAP, 4);
 
-	//sensors
+
+
+	//Sensors
 	//door sensor
 	App->physics->CreateRectangleSensor(570, 400, 20, 20, SENSOR, DOOR);
 
