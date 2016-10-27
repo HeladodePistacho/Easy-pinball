@@ -174,6 +174,10 @@ public:
 
 	SDL_Texture* left_lung;
 	SDL_Texture* right_lung;
+	bool lung_contact = false;
+	bool lung_contact_right = false;
+	bool lung_contact_left = false;
+	int turn_off_Lungs = 0;
 
 	uint bonus_fx;
 	uint flap_up_fx;

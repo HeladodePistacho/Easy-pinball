@@ -50,6 +50,8 @@ enum BODY_TYPE
 	RAMP_LIGHT_A,
 	RAMP_LIGHT_B,
 	RAMP_LIGHT_C,
+	LEFT_LUNG,
+	RIGHT_LUNG,
 	END,
 	JACKPOT,
 	DOOR
@@ -93,7 +95,7 @@ public:
 	PhysBody* CreateStaticCircle(int x, int y, int radius, collision_type type);
 	PhysBody* CreateRectangle(int x, int y, int width, int height, collision_type type);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, collision_type type, BODY_TYPE b_type = NONE);
-	PhysBody* CreateChain(int x, int y, int* points, int size, collision_type type,  uint restitution = 0);
+	PhysBody* CreateChain(int x, int y, int* points, int size, collision_type type,  uint restitution = 0, BODY_TYPE b_type = NONE);
 	PhysBody* CreateSensorChain(int x, int y, int* points, int size, collision_type type, BODY_TYPE b_type = NONE, uint restitution = 0);
 	
 	
@@ -101,7 +103,8 @@ public:
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
 	void If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB);
-	void If_wheel_contact(PhysBody* bodyA, PhysBody* bodyB);
+	void If_wheel_contact(PhysBody* bodyA, PhysBody* bodyB) const;
+	void If_Lung_contact(PhysBody* bodyA, PhysBody* bodyB);
 
 private:
 

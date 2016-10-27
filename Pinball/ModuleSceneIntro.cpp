@@ -452,7 +452,7 @@ bool ModuleSceneIntro::Start()
 		560, 696,
 		558, 712
 	};
-	App->physics->CreateChain(0, 0, right_lung, 34, MAP, 1);
+	App->physics->CreateChain(0, 0, right_lung, 34, MAP, 1, RIGHT_LUNG);
 
 	//Left lung
 	int left_lung[32] = {
@@ -473,7 +473,7 @@ bool ModuleSceneIntro::Start()
 		359, 685,
 		361, 699
 	};
-	App->physics->CreateChain(0, 0, left_lung, 32, MAP, 2);
+	App->physics->CreateChain(0, 0, left_lung, 32, MAP, 1, LEFT_LUNG);
 
 	//Ramp a
 	int ramp_a[322] = {
@@ -1277,7 +1277,6 @@ update_status ModuleSceneIntro::Update()
 	}
 
 	//Timer for the little ramps light
-
 	if (little_ramp_contact)
 	{
 		turn_off_the_lights = current_time;
@@ -1289,6 +1288,19 @@ update_status ModuleSceneIntro::Update()
 		scape_light_1_on = false;
 		scape_light_4_on = false;
 	}
+
+	//timer for turn off the lungs
+	if (lung_contact)
+	{
+		turn_off_Lungs = current_time;
+		lung_contact = false;
+	}
+	if (current_time > turn_off_Lungs + 100)
+	{
+		lung_contact_left = false;
+		lung_contact_right = false;
+	}
+
 
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN) {
 
@@ -1553,9 +1565,11 @@ update_status ModuleSceneIntro::Update()
 
 	//All superior Renders
 	
+	if(lung_contact_left)
+		App->renderer->Blit(left_lung, 286, 588);
 
-	App->renderer->Blit(left_lung, 286, 588);
-	App->renderer->Blit(right_lung, 530, 582);
+	if(lung_contact_right)
+		App->renderer->Blit(right_lung, 530, 582);
 
 	//Blit the launcher
 	/*
@@ -1677,9 +1691,12 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 	
 	App->physics->If_Sensor_contact(bodyA, bodyB);
+
 	if (bodyB->body == App->physics->left_wheel->body || bodyB->body == App->physics->mid_wheel->body || bodyB->body == App->physics->right_wheel->body)
 		App->physics->If_wheel_contact(bodyA, bodyB);
 	
+	if (bodyB->collide_type == LEFT_LUNG || bodyB->collide_type == RIGHT_LUNG)
+		App->physics->If_Lung_contact(bodyA, bodyB);
 }
 
 void ModuleSceneIntro::switch_up_lights()

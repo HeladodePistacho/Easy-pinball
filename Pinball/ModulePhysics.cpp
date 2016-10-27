@@ -284,7 +284,7 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, collision_type type, uint restitution)
+PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, collision_type type, uint restitution, BODY_TYPE b_type)
 {
 	b2BodyDef body;
 	body.type = b2_staticBody;
@@ -316,7 +316,7 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, collis
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
 	b->SetUserData(pbody);
-	
+	pbody->collide_type = b_type;
 	pbody->width = pbody->height = 0;
 
 	return pbody;
@@ -889,7 +889,7 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 
 }
 
-void ModulePhysics::If_wheel_contact(PhysBody* bodyA, PhysBody* bodyB)
+void ModulePhysics::If_wheel_contact(PhysBody* bodyA, PhysBody* bodyB) const
 {
 	if (bodyB->body == left_wheel->body)
 	{
@@ -917,5 +917,24 @@ void ModulePhysics::If_wheel_contact(PhysBody* bodyA, PhysBody* bodyB)
 	}
 
 	App->player->score += 250;
+
+}
+
+void ModulePhysics::If_Lung_contact(PhysBody* bodyA, PhysBody* bodyB)
+{
+
+	App->scene_intro->lung_contact = true;
+
+	if (bodyB->collide_type == LEFT_LUNG)
+	{
+		App->scene_intro->lung_contact_left = true;
+		App->audio->PlayFx(App->scene_intro->lung_boom_fx);
+	}
+
+	if (bodyB->collide_type == RIGHT_LUNG)
+	{
+		App->scene_intro->lung_contact_right = true;
+		App->audio->PlayFx(App->scene_intro->lung_boom_fx);
+	}
 
 }
