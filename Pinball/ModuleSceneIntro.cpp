@@ -1468,7 +1468,7 @@ update_status ModuleSceneIntro::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN && new_game_button.current_texture == new_game_button.on_texture) 
 	{
-		App->scene_intro->game_state = START;
+		
 		new_game_button.ChangeState();
 		game_state = START;
 
