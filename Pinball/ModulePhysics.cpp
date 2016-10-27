@@ -654,7 +654,7 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 		case SENSOR_RAMP_A:
 			App->scene_intro->level_floor = true;
 			filter.maskBits = RAMP_A | FINAL_RAMP;
-			bodyA->body->ApplyForce({ 0.0f, -200.0f }, bodyA->body->GetPosition(), true);
+			bodyA->body->ApplyForce({ -50.0f, -200.0f }, bodyA->body->GetPosition(), true);
 			bodyA->body->GetFixtureList()->SetFilterData(filter);
 			App->audio->PlayFx(App->scene_intro->drift_1_fx);
 			App->audio->PlayFx(App->scene_intro->points_fx);
