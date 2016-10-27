@@ -964,6 +964,26 @@ bool ModuleSceneIntro::Start()
 	App->physics->CreateChain(0, 0, left_rocket, 10, MAP, 4);
 
 
+	// Pivot 0, 0
+	int Separator_1[10] = 
+	{
+		518, 133,
+		522, 133,
+		522, 89,
+		518, 88,
+		518, 124
+	};
+	App->physics->CreateChain(0, 0, Separator_1, 10, MAP);
+
+	int Separator_2[10] =
+	{
+		548, 133,
+		552, 133,
+		552, 89,
+		548, 88,
+		548, 124
+	};
+	App->physics->CreateChain(0, 0, Separator_2, 10, MAP);
 
 	//Sensors
 	//door sensor
@@ -1503,7 +1523,7 @@ update_status ModuleSceneIntro::Update()
 	}
 
 	// All draw functions ------------------------------------------------------
-	//wheeels
+	//timer for wheeels
 	int pos_x, pos_y;
 	int wheel_time = SDL_GetTicks();
 
@@ -1520,7 +1540,7 @@ update_status ModuleSceneIntro::Update()
 		}
 	}
 
-
+	//Blits the wheels when collision and activates the engine to spin
 	App->physics->mid_wheel->GetPosition(pos_x, pos_y);
 	if (wheels_on[0])
 		App->renderer->Blit(wheel, pos_x - 15, pos_y - 15, NULL, 1.0f, App->physics->mid_wheel->GetRotation());
@@ -1552,44 +1572,24 @@ update_status ModuleSceneIntro::Update()
 		App->physics->right_wheel->body->SetAngularVelocity(0.0f);
 	}
 
-	
-
-
-	//All superior Renders
 
 	//Blit the wheel flames
 	App->renderer->Blit(wheel_flames_1, 425, 54);
 	App->renderer->Blit(wheel_flames_2, 585, 95);
 	App->renderer->Blit(wheel_flames_3, 474, 228);
-
-
-	//All superior Renders
 	
+	//lung bit
 	if(lung_contact_left)
 		App->renderer->Blit(left_lung, 286, 588);
 
 	if(lung_contact_right)
 		App->renderer->Blit(right_lung, 530, 582);
 
-	//Blit the launcher
-	/*
-	App->renderer->Blit(launcher, 655, 450);
-	
-	App->renderer->Blit(scape_light_2, 412, 12);
-	App->renderer->Blit(scape_light_3, 148, 70);
-
-	*/
-
-	//App->renderer->Blit(pause, 0, 0);
-	//App->renderer->Blit(scape_light_6, 215, 6);
-
+	//button textures
 	App->renderer->Blit(launch_button.current_texture, 846, 716);
 	App->renderer->Blit(new_game_button.current_texture, 943, 717);
 	App->renderer->Blit(volume_button.current_texture, 832, 525);
 	
-	App->renderer->Blit(hot_rod_wheels_light, 445, 165);
-	//App->renderer->Blit(instructions, 382, 460);
-
 
 	if(scape_light_1_on)
 		App->renderer->Blit(scape_light_1, 620, 354);
@@ -1646,6 +1646,9 @@ update_status ModuleSceneIntro::Update()
 		App->renderer->Blit(ball, x, y, NULL, 1.0f, c->data->GetRotation());
 		c = c->next;
 	}
+
+	//hot rod repair light
+	App->renderer->Blit(hot_rod_wheels_light, 445, 165);
 
 	if (!level_floor)
 	{
