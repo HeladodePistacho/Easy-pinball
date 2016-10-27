@@ -718,12 +718,14 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 
 		case RAMP_LIGHT_RIGHT:
 			App->scene_intro->scape_light_4_on = true;
+			App->scene_intro->little_ramp_contact = true;
 			bodyA->body->ApplyForce({ 20.0f, -50.0f }, bodyA->body->GetPosition(), true);
 			App->audio->PlayFx(App->scene_intro->drift_2_fx);
 			break;
 
 		case RAMP_LIGHT_LEFT:
 			App->scene_intro->scape_light_1_on = true;
+			App->scene_intro->little_ramp_contact = true;
 			bodyA->body->ApplyForce({ -20.0f, -50.0f }, bodyA->body->GetPosition(), true);
 			App->audio->PlayFx(App->scene_intro->drift_2_fx);
 			break;

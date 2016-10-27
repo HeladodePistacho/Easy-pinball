@@ -135,6 +135,9 @@ public:
 	bool scape_light_5_on = false;
 	bool scape_light_6_on = false;
 
+	bool little_ramp_contact = false;
+	int turn_off_the_lights = 0;
+
 	SDL_Texture* wheel;
 	SDL_Texture* wheel_off;
 	int time_spinning = 0;

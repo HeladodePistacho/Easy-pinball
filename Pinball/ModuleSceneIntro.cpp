@@ -1254,7 +1254,8 @@ update_status ModuleSceneIntro::Update()
 	//Check if ball is into jackpot and stop it for 2 seconds
 	int current_time = SDL_GetTicks();
 
-	if (ball_body != nullptr) {
+	if (ball_body != nullptr) 
+	{
 
 		if (ball_into_jackpot && first_time)
 		{
@@ -1273,6 +1274,20 @@ update_status ModuleSceneIntro::Update()
 			ball_into_jackpot = false;
 		}
 
+	}
+
+	//Timer for the little ramps light
+
+	if (little_ramp_contact)
+	{
+		turn_off_the_lights = current_time;
+		little_ramp_contact = false;
+	}
+
+	if (current_time > turn_off_the_lights + 500)
+	{
+		scape_light_1_on = false;
+		scape_light_4_on = false;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN) {
