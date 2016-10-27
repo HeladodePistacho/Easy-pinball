@@ -786,7 +786,7 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 		break;
 
 		case YELLOW_LIGHT:
-			bodyA->body->SetLinearVelocity({ -bodyA->body->GetLinearVelocity().x * 1.1f ,bodyA->body->GetLinearVelocity().y * 0.5f });
+			bodyA->body->SetLinearVelocity({ -bodyA->body->GetLinearVelocity().x * 0.5f ,bodyA->body->GetLinearVelocity().y * 0.5f });
 			filter.maskBits -= YELLOW_LIGHT;
 			{
 				App->scene_intro->down_yellow_light_on = true;

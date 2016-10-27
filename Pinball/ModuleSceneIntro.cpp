@@ -985,19 +985,19 @@ bool ModuleSceneIntro::Start()
 
 	int sensor_ramp_b[8]
 	{
-		640, 382,
-		636, 389,
-		671, 393,
-		668, 401
+		653, 374,
+		670, 384,
+		665, 385,
+		650, 379
 	};
 	App->physics->CreateSensorChain(0, 0, sensor_ramp_b, 8, SENSOR, SENSOR_RAMP_B);
 
 	int sensor_ramp_a[8]
 	{
-		232,352,
-		232,360,
-		242,355,
-		242,365
+		247,356,
+		252,363,
+		243,369,
+		239,361
 	};
 	App->physics->CreateSensorChain(0, 0, sensor_ramp_a, 8, SENSOR, SENSOR_RAMP_A);
 
@@ -1076,8 +1076,8 @@ bool ModuleSceneIntro::Start()
 	App->physics->CreateRectangleSensor(555, 315, 20, 20, SENSOR, JACKPOT);
 
 	//left and right ramps sensors
-	App->physics->CreateRectangleSensor(685, 408, 20, 20, SENSOR, RAMP_LIGHT_LEFT);
-	App->physics->CreateRectangleSensor(216, 404, 20, 20, SENSOR, RAMP_LIGHT_RIGHT);
+	App->physics->CreateRectangleSensor(650, 477, 20, 20, SENSOR, RAMP_LIGHT_LEFT);
+	App->physics->CreateRectangleSensor(244, 458, 20, 20, SENSOR, RAMP_LIGHT_RIGHT);
 
 	//The loser sensor
 	App->physics->CreateRectangleSensor(460, 930, 70, 10, SENSOR, END);
