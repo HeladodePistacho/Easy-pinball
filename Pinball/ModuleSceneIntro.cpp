@@ -250,9 +250,9 @@ bool ModuleSceneIntro::Start()
 	285, 159,
 	302, 174,
 	327, 190,
-	343, 209,
-	327, 226,
-	307, 250,
+	354, 215,
+	338, 226,
+	318, 256,
 	282, 238,
 	260, 226,
 	229, 207,
@@ -974,20 +974,38 @@ bool ModuleSceneIntro::Start()
 	App->physics->CreateRectangleSensor(293, 616, 20, 10, FINAL_RAMP);
 
 	//sensor to enter each ramp
-	App->physics->CreateRectangleSensor(218, 230, 10, 10, SENSOR, SENSOR_RAMP_C);
-	App->physics->CreateRectangleSensor(648, 389, 10, 10, SENSOR, SENSOR_RAMP_B);
-	App->physics->CreateRectangleSensor(241, 357, 10, 10, SENSOR, SENSOR_RAMP_A);
+	int sensor_ramp_c[8]
+	{
+		233, 218,
+		216, 250,
+		209, 245,
+		226, 213
+	};
+	App->physics->CreateSensorChain(0, 0, sensor_ramp_c, 8, SENSOR, SENSOR_RAMP_C);
+
+	int sensor_ramp_b[8]
+	{
+		640, 382,
+		636, 389,
+		671, 393,
+		668, 401
+	};
+	App->physics->CreateSensorChain(0, 0, sensor_ramp_b, 8, SENSOR, SENSOR_RAMP_B);
+
+	int sensor_ramp_a[8]
+	{
+		232, 374,
+		256, 350,
+		262, 359,
+		238, 383
+	};
+	App->physics->CreateSensorChain(0, 0, sensor_ramp_a, 8, SENSOR, SENSOR_RAMP_A);
 
 	//sensors that apply a force to the ball
-
-	App->physics->CreateRectangleSensor(241, 357, 10, 10, SENSOR, TURBO_UP);
-	App->physics->CreateRectangleSensor(668, 367, 20, 20, SENSOR, TURBO_UP);
 
 	App->physics->CreateRectangleSensor(410, 143, 20, 20, SENSOR, TURBO_UP);
 	App->physics->CreateRectangleSensor(410, 143, 20, 20, SENSOR, RAMP_LIGHT_UP);
 	App->physics->CreateRectangleSensor(295, 146, 20, 20, SENSOR, TURBO_DOWN);
-
-	
 	App->physics->CreateRectangleSensor(300, 283, 10, 10, SENSOR, TURBO_UP_LEFT);
 
 	//3 lights under the top left flap
@@ -1003,21 +1021,51 @@ bool ModuleSceneIntro::Start()
 	};
 	App->physics->CreateSensorChain(0, 0, yellow_light_sensor, 8, YELLOW_LIGHT);
 
-	App->physics->CreateRectangleSensor(353, 406, 10, 10, ORANGE_LIGHT);
-	App->physics->CreateRectangleSensor(348, 424, 10, 10, ORANGE_LIGHT);
+	int orange_light_sensor[8] =
+	{
+		352, 401,
+		358, 404,
+		348, 430,
+		343, 428
+	};
+	App->physics->CreateSensorChain(0, 0, orange_light_sensor, 8, ORANGE_LIGHT);
 
-	App->physics->CreateRectangleSensor(340, 439, 10, 10, RED_LIGHT);
-	App->physics->CreateRectangleSensor(335, 457, 10, 10, RED_LIGHT);
+	int red_light_sensor[8] =
+	{
+		341, 436,
+		346, 439,
+		335, 462,
+		329, 459
+	};
+	App->physics->CreateSensorChain(0, 0, red_light_sensor, 8, RED_LIGHT);
 
 	//3 light under the car
-	App->physics->CreateRectangleSensor(376, 195, 10, 10, YELLOW_LIGHT_UP);
-	App->physics->CreateRectangleSensor(367, 208, 10, 10, YELLOW_LIGHT_UP);
+	int yellow_light_sensor_up[8] =
+	{
+		377, 189,
+		383, 192,
+		367, 214,
+		362, 211
+	};
+	App->physics->CreateSensorChain(0, 0, yellow_light_sensor_up, 8, YELLOW_LIGHT_UP);
 
-	App->physics->CreateRectangleSensor(355, 228, 10, 10, ORANGE_LIGHT_UP);
-	App->physics->CreateRectangleSensor(347, 242, 10, 10, ORANGE_LIGHT_UP);
+	int orange_light_sensor_up[8] =
+	{
+		356, 219,
+		361, 222,
+		345, 239,
+		349, 241
+	};
+	App->physics->CreateSensorChain(0, 0, orange_light_sensor_up, 8, ORANGE_LIGHT_UP);
 
-	App->physics->CreateRectangleSensor(333, 256, 10, 10, RED_LIGHT_UP);
-	App->physics->CreateRectangleSensor(323, 266, 10, 10, RED_LIGHT_UP);
+	int red_light_sensor_up[8] =
+	{
+		319, 268,
+		325, 273,
+		339, 254,
+		334, 249
+	};
+	App->physics->CreateSensorChain(0, 0, red_light_sensor_up, 8, RED_LIGHT_UP);
 
 	//Lights over the wheels
 	App->physics->CreateRectangleSensor(505, 100, 20, 20, SENSOR, WHEEL_LIGHT_LEFT);
@@ -1030,11 +1078,9 @@ bool ModuleSceneIntro::Start()
 	//left and right ramps sensors
 	App->physics->CreateRectangleSensor(685, 408, 20, 20, SENSOR, RAMP_LIGHT_LEFT);
 	App->physics->CreateRectangleSensor(216, 404, 20, 20, SENSOR, RAMP_LIGHT_RIGHT);
-	App->physics->CreateRectangleSensor(600, 320, 20, 20, STOP_SENSOR);
-	App->physics->CreateRectangleSensor(328, 293, 10, 40, STOP_SENSOR);
 
 	//The loser sensor
-	App->physics->CreateRectangleSensor(460, 881, 70, 10, SENSOR, END);
+	App->physics->CreateRectangleSensor(460, 930, 70, 10, SENSOR, END);
 
 	
 
@@ -1174,8 +1220,7 @@ update_status ModuleSceneIntro::Update()
 	//debug tool
 	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
-		App->input->GetMouseX();
-		App->input->GetMouseY();
+		LOG("X=%i Y=%i", App->input->GetMouseX(), App->input->GetMouseY());
 	}
 
 	//Active ball launch
@@ -1195,11 +1240,7 @@ update_status ModuleSceneIntro::Update()
 		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN && new_game_button.current_texture == new_game_button.on_texture) {
-
-			game_state == START;
-
-	}
+	
 
 
 	//Check if ball is into jackpot and stop it for 2 seconds
@@ -1368,6 +1409,21 @@ update_status ModuleSceneIntro::Update()
 		}
 
 	}
+
+	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN && new_game_button.current_texture == new_game_button.on_texture) 
+	{
+		App->scene_intro->game_state = START;
+		new_game_button.ChangeState();
+		game_state = START;
+
+		ball_body = App->physics->CreateCircle(752, 725, 10, BALL);
+		circles.add(ball_body);
+		circles.getLast()->data->listener = this;
+
+		Balls_count = 1;
+		App->player->stand_lives = 3;
+	}
+
 
 
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)

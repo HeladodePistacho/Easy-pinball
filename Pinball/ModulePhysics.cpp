@@ -186,6 +186,7 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, collision_type t
 	fixture.filter.categoryBits = type;
 
 	if (type == BALL)
+		b->SetBullet(true);
 		fixture.filter.maskBits = LAUNCHER | SENSOR;
 	if (type == MAP)
 	{
@@ -315,12 +316,13 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, collis
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
 	b->SetUserData(pbody);
+	
 	pbody->width = pbody->height = 0;
 
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateSensorChain(int x, int y, int* points, int size, collision_type type, uint restitution)
+PhysBody* ModulePhysics::CreateSensorChain(int x, int y, int* points, int size, collision_type type, BODY_TYPE b_type, uint restitution)
 {
 	b2BodyDef body;
 	body.type = b2_staticBody;
@@ -338,7 +340,7 @@ PhysBody* ModulePhysics::CreateSensorChain(int x, int y, int* points, int size, 
 		
 	}
 
-	shape.Set(p, 4);
+	shape.Set(p, size / 2);
 
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
@@ -354,6 +356,7 @@ PhysBody* ModulePhysics::CreateSensorChain(int x, int y, int* points, int size, 
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
 	b->SetUserData(pbody);
+	pbody->collide_type = b_type;
 
 	return pbody;
 }
@@ -714,15 +717,14 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 		case RAMP_LIGHT_RIGHT:
 			App->scene_intro->scape_light_4_on = true;
 			bodyA->body->ApplyForce({ 20.0f, -50.0f }, bodyA->body->GetPosition(), true);
-			filter.maskBits = STOP_SENSOR | MAP;
-			bodyA->body->GetFixtureList()->SetFilterData(filter);
+		
 			//FX RAMPES PETITES
 			break;
 
 		case RAMP_LIGHT_LEFT:
+			App->scene_intro->scape_light_1_on = true;
 			bodyA->body->ApplyForce({ -20.0f, -50.0f }, bodyA->body->GetPosition(), true);
-			filter.maskBits = STOP_SENSOR | MAP;
-			bodyA->body->GetFixtureList()->SetFilterData(filter);
+			
 			//FX RAMPES PETITES
 			break;
 
@@ -783,67 +785,73 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 
 		case YELLOW_LIGHT:
 			bodyA->body->SetLinearVelocity({ -bodyA->body->GetLinearVelocity().x * 1.1f ,bodyA->body->GetLinearVelocity().y * 0.5f });
-			filter.maskBits = MAP | SENSOR;
+			filter.maskBits -= YELLOW_LIGHT;
 			{
 				App->scene_intro->down_yellow_light_on = true;
 				App->audio->PlayFx(App->scene_intro->jackpot_fx);
 				App->player->score += 250;
 			}
+			bodyA->body->GetFixtureList()->SetFilterData(filter);
 		break;
 
 		case ORANGE_LIGHT:
 			bodyA->body->SetLinearVelocity({ -bodyA->body->GetLinearVelocity().x * 1.1f ,bodyA->body->GetLinearVelocity().y * 0.5f });
-			filter.maskBits = MAP | SENSOR;
+			filter.maskBits -= ORANGE_LIGHT;
 			if (App->scene_intro->down_orange_light_on == false)
 			{
 				App->scene_intro->down_orange_light_on = true;
 				App->audio->PlayFx(App->scene_intro->jackpot_fx);
 				App->player->score += 250;
 			}
+			bodyA->body->GetFixtureList()->SetFilterData(filter);
 		break;
 
 		case RED_LIGHT:
 			bodyA->body->SetLinearVelocity({ -bodyA->body->GetLinearVelocity().x * 1.1f ,bodyA->body->GetLinearVelocity().y * 0.5f });
-			filter.maskBits = MAP | SENSOR;
+			filter.maskBits -= RED_LIGHT;
 			if (App->scene_intro->down_red_light_on == false) 
 			{
 				App->scene_intro->down_red_light_on = true;
 				App->audio->PlayFx(App->scene_intro->jackpot_fx);
 				App->player->score += 250;
 			}
+			bodyA->body->GetFixtureList()->SetFilterData(filter);
 		break;
 
 		case YELLOW_LIGHT_UP:
 			bodyA->body->SetLinearVelocity({ -bodyA->body->GetLinearVelocity().x * 1.1f,bodyA->body->GetLinearVelocity().y * 0.5f });
-			filter.maskBits = MAP | SENSOR;
+			filter.maskBits -= YELLOW_LIGHT_UP;
 			if (App->scene_intro->up_yellow_light_on == false) 
 			{
 				App->scene_intro->up_yellow_light_on = true;
 				App->audio->PlayFx(App->scene_intro->jackpot_fx);
 				App->player->score += 250;
 			}
+			bodyA->body->GetFixtureList()->SetFilterData(filter);
 		break;
 
 		case ORANGE_LIGHT_UP:
 			bodyA->body->SetLinearVelocity({ -bodyA->body->GetLinearVelocity().x * 1.1f,bodyA->body->GetLinearVelocity().y * 0.5f });
-			filter.maskBits = MAP | SENSOR;
+			filter.maskBits -= ORANGE_LIGHT_UP;
 			if (App->scene_intro->up_orange_light_on == false)
 			{
 				App->scene_intro->up_orange_light_on = true;
 				App->audio->PlayFx(App->scene_intro->jackpot_fx);
 				App->player->score += 250;
 			}
+			bodyA->body->GetFixtureList()->SetFilterData(filter);
 		break;
 
 		case RED_LIGHT_UP:
 			bodyA->body->SetLinearVelocity({ -bodyA->body->GetLinearVelocity().x * 1.1f,bodyA->body->GetLinearVelocity().y * 0.5f });
-			filter.maskBits = MAP | SENSOR;
+			filter.maskBits -= RED_LIGHT_UP;
 			if (App->scene_intro->up_red_light_on == false) 
 			{
 				App->scene_intro->up_red_light_on = true;
 				App->audio->PlayFx(App->scene_intro->jackpot_fx);
 				App->player->score += 250;
 			}
+			bodyA->body->GetFixtureList()->SetFilterData(filter);
 		break;
 
 		case STOP_SENSOR:
