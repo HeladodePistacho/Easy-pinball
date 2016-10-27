@@ -1153,9 +1153,17 @@ update_status ModuleSceneIntro::Update()
 	sprintf_s(time_count_text, 14, "%i:%i%i", minutes, decimes, seconds);
 	App->textures->BlitFont(100, 45, debug_font, time_count_text);
 	
+
+	//max puntuation number
+	sprintf_s(temp_text, 13, "%s", "MAX.POINTS:");
+	App->textures->BlitFont(100, 70, debug_font, temp_text);
+	sprintf_s(debug_text, 100, "%i", App->player->total_score);
+	App->textures->BlitFont(220, 70, debug_font, debug_text);
+
+
 	//rotations
 
-	float rotation = 0;
+	/*float rotation = 0;
 
 	sprintf_s(temp_text, 17, "%s", "FLAPS.ROTATION");
 	App->textures->BlitFont(80, 60, debug_font, temp_text);
@@ -1187,7 +1195,7 @@ update_status ModuleSceneIntro::Update()
 	rotation = App->physics->flap_down_right->body->GetAngle() * RADTODEG;
 	sprintf_s(debug_text, 100, "%f", rotation);
 	App->textures->BlitFont(170, 120, debug_font, debug_text);
-
+	*/
 	
 	if (ball_body != nullptr) {
 	
@@ -1258,6 +1266,7 @@ update_status ModuleSceneIntro::Update()
 		{
 			ball_body->body->SetTransform({ PIXEL_TO_METERS(556), PIXEL_TO_METERS(313) }, 0);
 			ball_body->body->SetLinearVelocity({ -3.0f, 3.0f });
+			App->player->score += 5;
 		}
 		else
 		{
@@ -1634,6 +1643,8 @@ update_status ModuleSceneIntro::Update()
 	{
 		Balls_count = 0;
 		App->player->extra_balls = 0;
+		if (App->player->score > App->player->total_score)App->player->total_score = App->player->score;
+		App->player->score = 0;
 	}
 
 	return UPDATE_CONTINUE;

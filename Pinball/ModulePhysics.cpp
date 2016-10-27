@@ -381,9 +381,9 @@ update_status ModulePhysics::PostUpdate()
 		}
 		App->scene_intro->circles.clear();
 		
-		if (App->scene_intro->Balls_count  <= App->player->stand_lives ) {
+		if (App->scene_intro->Balls_count <= (App->player->stand_lives + App->player->extra_balls)) {
 						
-				if (App->scene_intro->Balls_count != App->player->stand_lives)
+				if (App->scene_intro->Balls_count != (App->player->stand_lives + App->player->extra_balls))
 				{
 					App->scene_intro->Set_lights_to_false();
 					App->scene_intro->ball_body = CreateCircle(752, 725, 10, BALL);
@@ -670,6 +670,7 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 			App->audio->PlayFx(App->scene_intro->special_ramp_fx);
 			App->audio->PlayFx(App->scene_intro->points_fx);
 			App->scene_intro->scape_light_2_on = true;
+			App->player->extra_balls += 1;
 			App->player->score += 25000;
 			break;
 
@@ -708,24 +709,23 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 			break;
 
 		case JACKPOT:
+			App->player->score+= 5000;
 			App->scene_intro->ball_into_jackpot = true;
 			App->scene_intro->first_time = true;
-			//FX
+			App->audio->PlayFx(App->scene_intro->jackpot_fx);
 			break;
 
 
 		case RAMP_LIGHT_RIGHT:
 			App->scene_intro->scape_light_4_on = true;
 			bodyA->body->ApplyForce({ 20.0f, -50.0f }, bodyA->body->GetPosition(), true);
-		
-			//FX RAMPES PETITES
+			App->audio->PlayFx(App->scene_intro->drift_2_fx);
 			break;
 
 		case RAMP_LIGHT_LEFT:
 			App->scene_intro->scape_light_1_on = true;
 			bodyA->body->ApplyForce({ -20.0f, -50.0f }, bodyA->body->GetPosition(), true);
-			
-			//FX RAMPES PETITES
+			App->audio->PlayFx(App->scene_intro->drift_2_fx);
 			break;
 
 		case RAMP_LIGHT_UP:
@@ -746,7 +746,7 @@ void ModulePhysics::If_Sensor_contact(PhysBody* bodyA, PhysBody* bodyB)
 
 		case END:
 			delete_object = true;
-			//FX DESTROY TRISTE SENSOR
+			App->audio->PlayFx(App->scene_intro->crash_2_fx);
 			break;
 
 
@@ -897,6 +897,7 @@ void ModulePhysics::If_wheel_contact(PhysBody* bodyA, PhysBody* bodyB)
 		App->audio->PlayFx(App->scene_intro->wheels_1_fx);
 
 	}
+	
 	if (bodyB->body == mid_wheel->body)
 	{
 		App->scene_intro->collide_wheel = true;
@@ -904,6 +905,7 @@ void ModulePhysics::If_wheel_contact(PhysBody* bodyA, PhysBody* bodyB)
 		mid_wheel_engine->EnableMotor(true);
 		App->audio->PlayFx(App->scene_intro->wheels_2_fx);
 	}
+	
 	if (bodyB->body == right_wheel->body)
 	{
 		App->scene_intro->collide_wheel = true;
@@ -911,4 +913,7 @@ void ModulePhysics::If_wheel_contact(PhysBody* bodyA, PhysBody* bodyB)
 		right_wheel_engine->EnableMotor(true);
 		App->audio->PlayFx(App->scene_intro->wheels_1_fx);
 	}
+
+	App->player->score += 250;
+
 }
